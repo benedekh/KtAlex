@@ -1,21 +1,27 @@
 package ktalex.model
 
-abstract class BaseCountsByYear(
-    open val citedByCount: Int,
-    open val year: Int,
-)
+import kotlinx.serialization.Serializable
 
+@Serializable
+abstract class BaseCountsByYear {
+    abstract val citedByCount: Int
+    abstract val year: Int
+}
+
+@Serializable
 data class CitedByCountYear(
     override val citedByCount: Int,
     override val year: Int,
-) : BaseCountsByYear(citedByCount, year)
+) : BaseCountsByYear()
 
+@Serializable
 data class CountsByYear(
     override val citedByCount: Int,
     override val year: Int,
     val worksCount: Int,
-) : BaseCountsByYear(citedByCount, year)
+) : BaseCountsByYear()
 
+@Serializable
 data class CitationMetrics(
     val twoYearMeanCitedness: Float, // TODO field is called 2yr_mean_citedness in the API
     val hIndex: Int,

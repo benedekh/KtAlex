@@ -1,5 +1,8 @@
 package ktalex.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Geo(
     val city: String,
     val geonamesCityId: String,

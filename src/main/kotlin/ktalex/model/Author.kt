@@ -1,21 +1,26 @@
 package ktalex.model
 
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 import ktalex.utils.DateUtil
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-abstract class BaseAuthor(
-    open val id: String,
-    open val displayName: String,
-    open val orcid: String
-)
+@Serializable
+abstract class BaseAuthor {
+    abstract val id: String
+    abstract val displayName: String
+    abstract val orcid: String?
+}
 
+@Serializable
 data class DehydratedAuthor(
     override val id: String,
     override val displayName: String,
-    override val orcid: String
-) : BaseAuthor(id, displayName, orcid)
+    override val orcid: String?
+) : BaseAuthor()
 
+@Serializable
 data class Author(
     val citedByCount: Int,
     val countsByYear: List<CountsByYear>,
@@ -25,17 +30,21 @@ data class Author(
     override val id: String,
     val ids: AuthorIds,
     val lastKnownInstitution: DehydratedInstitution,
-    override val orcid: String,
+    override val orcid: String?,
     val summaryStats: CitationMetrics,
     val updatedDate: String,
     val worksApiUrl: String,
     val worksCount: List<CountsByYear>,
     val xConcepts: List<RelatedConcept>
-) : BaseAuthor(id, displayName, orcid) {
+) : BaseAuthor() {
+    @Contextual // TODO replace with class that holds both string and type-specific field
     val createdDateAsDate: LocalDate? = DateUtil.toDate(createdDate)
+
+    @Contextual // TODO replace with class that holds both string and type-specific field
     val updatedDateAsDateTime: LocalDateTime? = DateUtil.toDateTime(updatedDate)
 }
 
+@Serializable
 data class AuthorIds(
     val mag: String,
     val openalex: String,

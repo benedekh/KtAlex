@@ -1,9 +1,12 @@
 package ktalex.model
 
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 import ktalex.utils.DateUtil
 import java.time.LocalDate
 import java.time.LocalDateTime
 
+@Serializable
 data class Funder(
     val alternateTitles: List<String>,
     val citedByCount: Int,
@@ -23,10 +26,14 @@ data class Funder(
     val updatedDate: String,
     val worksCount: Int
 ) {
+    @Contextual // TODO replace with class that holds both string and type-specific field
     val createdDateAsDate: LocalDate? = DateUtil.toDate(createdDate)
+
+    @Contextual // TODO replace with class that holds both string and type-specific field
     val updatedDateAsDateTime: LocalDateTime? = DateUtil.toDateTime(updatedDate)
 }
 
+@Serializable
 data class FunderIds(
     val crossref: String,
     val doi: String,
