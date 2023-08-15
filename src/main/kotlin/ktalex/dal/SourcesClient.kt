@@ -1,6 +1,5 @@
 package ktalex.dal
 
-import ktalex.model.Institution
 import ktalex.model.Source
 
 class SourcesClient : BaseClient() {

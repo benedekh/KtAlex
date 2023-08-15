@@ -1,10 +1,8 @@
 package ktalex.model
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
-import ktalex.utils.DateUtil
-import java.time.LocalDate
-import java.time.LocalDateTime
+import ktalex.model.serialization.SerializedDate
+import ktalex.model.serialization.SerializedDateTime
 
 @Serializable
 abstract class BaseAuthor {
@@ -24,7 +22,7 @@ data class DehydratedAuthor(
 data class Author(
     val citedByCount: Int,
     val countsByYear: List<CountsByYear>,
-    val createdDate: String,
+    val createdDate: SerializedDate,
     override val displayName: String,
     val displayNameAlternatives: List<String>,
     override val id: String,
@@ -32,17 +30,11 @@ data class Author(
     val lastKnownInstitution: DehydratedInstitution,
     override val orcid: String?,
     val summaryStats: CitationMetrics,
-    val updatedDate: String,
+    val updatedDate: SerializedDateTime,
     val worksApiUrl: String,
     val worksCount: Int,
     val xConcepts: List<RelatedConcept>
-) : BaseAuthor() {
-    @Contextual // TODO replace with class that holds both string and type-specific field
-    val createdDateAsDate: LocalDate? = DateUtil.toDate(createdDate)
-
-    @Contextual // TODO replace with class that holds both string and type-specific field
-    val updatedDateAsDateTime: LocalDateTime? = DateUtil.toDateTime(updatedDate)
-}
+) : BaseAuthor()
 
 @Serializable
 data class AuthorIds(

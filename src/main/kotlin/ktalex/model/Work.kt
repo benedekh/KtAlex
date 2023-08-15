@@ -1,10 +1,8 @@
 package ktalex.model
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
-import ktalex.utils.DateUtil
-import java.time.LocalDate
-import java.time.LocalDateTime
+import ktalex.model.serialization.SerializedDate
+import ktalex.model.serialization.SerializedDateTime
 
 @Serializable
 data class Work(
@@ -20,7 +18,7 @@ data class Work(
     val correspondingAuthorIds: List<String>, // TODO query by ID
     val correspondingInstitutionIds: List<String>, // TODO query by ID
     val countsByYear: List<CitedByCountYear>,
-    val createdDate: String,
+    val createdDate: SerializedDate,
     val displayName: String,
     val doi: String,
     val grants: List<Grant>,
@@ -38,7 +36,7 @@ data class Work(
     val ngramsUrl: String, // TODO query by ngrams
     val openAccess: OpenAccess,
     val primaryLocation: Location,
-    val publicationDate: String,
+    val publicationDate: SerializedDate,
     val publicationYear: Int,
     val referencedWorks: List<String>, // TODO query by ID
     val referencedWorksCount: Int,
@@ -47,17 +45,8 @@ data class Work(
     val title: String,
     val type: String,
     val typeCrossref: String,
-    val updatedDate: String,
-) {
-    @Contextual // TODO replace with class that holds both string and type-specific field
-    val createdDateAsDate: LocalDate? = DateUtil.toDate(createdDate)
-
-    @Contextual // TODO replace with class that holds both string and type-specific field
-    val publicationDateAsDate: LocalDate? = DateUtil.toDate(publicationDate)
-
-    @Contextual // TODO replace with class that holds both string and type-specific field
-    val updatedDateAsDateTime: LocalDateTime? = DateUtil.toDateTime(updatedDate)
-}
+    val updatedDate: SerializedDateTime,
+)
 
 @Serializable
 data class WorkIds(

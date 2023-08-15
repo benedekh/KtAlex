@@ -1,11 +1,9 @@
 package ktalex.model
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
-import ktalex.utils.DateUtil
-import ktalex.utils.EnumUtil
-import java.time.LocalDate
-import java.time.LocalDateTime
+import ktalex.model.serialization.SerializedDate
+import ktalex.model.serialization.SerializedDateTime
+import ktalex.model.serialization.SerializedEnum
 
 @Serializable
 abstract class BaseInstitution {
@@ -13,10 +11,7 @@ abstract class BaseInstitution {
     abstract val displayName: String
     abstract val id: String
     abstract val ror: String?
-    abstract val type: String?
-
-    val typeEnum: InstitutionType?
-        get() = EnumUtil.valueOfOrNull<InstitutionType>(type)
+    abstract val type: SerializedEnum<InstitutionType>?
 }
 
 @Serializable
@@ -25,7 +20,7 @@ data class DehydratedInstitution(
     override val displayName: String,
     override val id: String,
     override val ror: String?,
-    override val type: String?
+    override val type: SerializedEnum<InstitutionType>?
 ) : BaseInstitution()
 
 @Serializable
@@ -34,11 +29,9 @@ data class AssociatedInstitution(
     override val displayName: String,
     override val id: String,
     override val ror: String?,
-    override val type: String?,
-    val relationship: String
-) : BaseInstitution() {
-    val relationshipEnum: RelationshipType? = EnumUtil.valueOfOrNull<RelationshipType>(relationship)
-}
+    override val type: SerializedEnum<InstitutionType>?,
+    val relationship: SerializedEnum<RelationshipType>
+) : BaseInstitution()
 
 @Serializable
 data class Institution(
@@ -46,7 +39,7 @@ data class Institution(
     val citedByCount: Int,
     override val countryCode: String?,
     val countsByYear: List<CountsByYear>,
-    val createdDate: String,
+    val createdDate: SerializedDate,
     override val displayName: String,
     val displayNameAcronyms: List<String>,
     val displayNameAlternatives: List<String>,
@@ -61,18 +54,12 @@ data class Institution(
     val roles: List<Role>,
     override val ror: String?,
     val summaryStats: CitationMetrics,
-    override val type: String?,
-    val updatedDate: String,
+    override val type: SerializedEnum<InstitutionType>?,
+    val updatedDate: SerializedDateTime,
     val worksApiUrl: String, // TODO A URL that will get you a list of all the Works affiliated with this institution.
     val worksCount: Int,
     val xConcepts: List<RelatedConcept>
-) : BaseInstitution() {
-    @Contextual // TODO replace with class that holds both string and type-specific field
-    val createdDateAsDate: LocalDate? = DateUtil.toDate(createdDate)
-
-    @Contextual // TODO replace with class that holds both string and type-specific field
-    val updatedDateAsDateTime: LocalDateTime? = DateUtil.toDateTime(updatedDate)
-}
+) : BaseInstitution()
 
 enum class InstitutionType {
     EDUCATION, HEALTHCARE, COMPANY, ARCHIVE, NONPROFIT, GOVERNMENT, FACILITY, OTHER

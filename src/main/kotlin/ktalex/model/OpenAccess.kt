@@ -1,18 +1,16 @@
 package ktalex.model
 
 import kotlinx.serialization.Serializable
-import ktalex.utils.EnumUtil
+import ktalex.model.serialization.SerializedEnum
 
 @Serializable
 data class OpenAccess(
     val anyRepositoryHasFulltext: Boolean,
     val isOa: Boolean,
-    val oaStatus: String,
+    val oaStatus: SerializedEnum<OaStatus>,
     val oaUrl: String?
-) {
-    val oaStatusEnum: OaStatusEnum? = EnumUtil.valueOfOrNull<OaStatusEnum>(oaStatus)
-}
+)
 
-enum class OaStatusEnum {
+enum class OaStatus {
     GOLD, GREEN, HYBRID, BRONZE, CLOSED
 }

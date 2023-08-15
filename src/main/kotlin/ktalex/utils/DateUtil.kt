@@ -7,6 +7,7 @@ import java.time.format.DateTimeParseException
 object DateUtil {
 
     fun toDate(date: String): LocalDate? {
+
         return try {
             LocalDate.parse(date)
         } catch (ex: DateTimeParseException) {

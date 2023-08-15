@@ -1,10 +1,8 @@
 package ktalex.model
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
-import ktalex.utils.DateUtil
-import java.time.LocalDate
-import java.time.LocalDateTime
+import ktalex.model.serialization.SerializedDate
+import ktalex.model.serialization.SerializedDateTime
 
 @Serializable
 data class Publisher(
@@ -12,7 +10,7 @@ data class Publisher(
     val citedByCount: Int,
     val countryCodes: List<String>,
     val countsByYear: List<CountsByYear>,
-    val createdDate: String,
+    val createdDate: SerializedDate,
     val displayName: String,
     val hierarchyLevel: Int,
     val homepageUrl: String,
@@ -25,15 +23,9 @@ data class Publisher(
     val roles: List<Role>,
     val sourcesApiUrl: String, // TODO An URL that will get you a list of all the sources published by this publisher.
     val summaryStats: CitationMetrics,
-    val updatedDate: String,
+    val updatedDate: SerializedDateTime,
     val worksCount: Int
-) {
-    @Contextual // TODO replace with class that holds both string and type-specific field
-    val createdDateAsDate: LocalDate? = DateUtil.toDate(createdDate)
-
-    @Contextual // TODO replace with class that holds both string and type-specific field
-    val updatedDateAsDateTime: LocalDateTime? = DateUtil.toDateTime(updatedDate)
-}
+)
 
 @Serializable
 data class PublisherIds(
