@@ -13,8 +13,10 @@ import kotlinx.serialization.json.JsonNamingStrategy
 
 abstract class BaseClient : AutoCloseable {
     companion object {
-        const val BASE_URL = "https://api.openalex.org"
+        const val OPENALEX_BASE_URL = "https://api.openalex.org"
     }
+
+    protected abstract val baseUrl: String
 
     @OptIn(ExperimentalSerializationApi::class)
     protected val client = HttpClient(CIO) {
@@ -28,6 +30,7 @@ abstract class BaseClient : AutoCloseable {
     }
 
     protected suspend inline fun <reified T> getItem(url: String): T? {
+        println(url)
         val response = client.get(url)
         return if (response.status == HttpStatusCode.OK) {
             response.body()

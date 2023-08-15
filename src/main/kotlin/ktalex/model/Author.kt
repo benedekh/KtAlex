@@ -34,7 +34,7 @@ data class Author(
     val summaryStats: CitationMetrics,
     val updatedDate: String,
     val worksApiUrl: String,
-    val worksCount: List<CountsByYear>,
+    val worksCount: Int,
     val xConcepts: List<RelatedConcept>
 ) : BaseAuthor() {
     @Contextual // TODO replace with class that holds both string and type-specific field
@@ -46,10 +46,10 @@ data class Author(
 
 @Serializable
 data class AuthorIds(
-    val mag: String,
+    val mag: String?,
     val openalex: String,
     val orcid: String,
     val scopus: String,
-    val twitter: String,
-    val wikipedia: String
+    val twitter: String?,
+    val wikipedia: String?
 )

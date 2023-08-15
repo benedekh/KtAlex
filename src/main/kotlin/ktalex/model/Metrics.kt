@@ -1,5 +1,6 @@
 package ktalex.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -23,7 +24,8 @@ data class CountsByYear(
 
 @Serializable
 data class CitationMetrics(
-    val twoYearMeanCitedness: Float, // TODO field is called 2yr_mean_citedness in the API
+    @SerialName("2yr_mean_citedness")
+    val twoYearMeanCitedness: Float,
     val hIndex: Int,
-    val i10Index: String
+    val i10Index: Int
 )

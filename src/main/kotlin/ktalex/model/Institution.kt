@@ -9,11 +9,11 @@ import java.time.LocalDateTime
 
 @Serializable
 abstract class BaseInstitution {
-    abstract val countryCode: String
+    abstract val countryCode: String?
     abstract val displayName: String
     abstract val id: String
-    abstract val ror: String
-    abstract val type: String
+    abstract val ror: String?
+    abstract val type: String?
 
     val typeEnum: InstitutionType?
         get() = EnumUtil.valueOfOrNull<InstitutionType>(type)
@@ -21,20 +21,20 @@ abstract class BaseInstitution {
 
 @Serializable
 data class DehydratedInstitution(
-    override val countryCode: String,
+    override val countryCode: String?,
     override val displayName: String,
     override val id: String,
-    override val ror: String,
-    override val type: String
+    override val ror: String?,
+    override val type: String?
 ) : BaseInstitution()
 
 @Serializable
 data class AssociatedInstitution(
-    override val countryCode: String,
+    override val countryCode: String?,
     override val displayName: String,
     override val id: String,
-    override val ror: String,
-    override val type: String,
+    override val ror: String?,
+    override val type: String?,
     val relationship: String
 ) : BaseInstitution() {
     val relationshipEnum: RelationshipType? = EnumUtil.valueOfOrNull<RelationshipType>(relationship)
@@ -44,7 +44,7 @@ data class AssociatedInstitution(
 data class Institution(
     val associatedInstitutions: List<AssociatedInstitution>,
     val citedByCount: Int,
-    override val countryCode: String,
+    override val countryCode: String?,
     val countsByYear: List<CountsByYear>,
     val createdDate: String,
     override val displayName: String,
@@ -56,12 +56,12 @@ data class Institution(
     val ids: InstitutionIds,
     val imageThumbnailUrl: String,
     val imageUrl: String,
-    val international: DisplayNames,
+    val international: CustomMaps,
     val repositories: List<DehydratedSource>,
     val roles: List<Role>,
-    override val ror: String,
+    override val ror: String?,
     val summaryStats: CitationMetrics,
-    override val type: String,
+    override val type: String?,
     val updatedDate: String,
     val worksApiUrl: String, // TODO A URL that will get you a list of all the Works affiliated with this institution.
     val worksCount: Int,

@@ -11,7 +11,7 @@ abstract class BaseConcept {
     abstract val displayName: String
     abstract val id: String
     abstract val level: Int
-    abstract val wikidata: String
+    abstract val wikidata: String?
 }
 
 @Serializable
@@ -19,7 +19,7 @@ data class DehydratedConcept(
     override val displayName: String,
     override val id: String,
     override val level: Int,
-    override val wikidata: String
+    override val wikidata: String?
 ) : BaseConcept()
 
 @Serializable
@@ -27,7 +27,7 @@ data class RelatedConcept(
     override val displayName: String,
     override val id: String,
     override val level: Int,
-    override val wikidata: String,
+    override val wikidata: String?,
     val score: Float
 ) : BaseConcept()
 
@@ -43,12 +43,12 @@ data class Concept(
     val ids: ConceptIds,
     val imageThumbnailUrl: String,
     val imageUrl: String,
-    val international: DisplayNames,
+    val international: CustomMaps,
     override val level: Int,
     val relatedConcepts: List<RelatedConcept>,
     val summaryStats: CitationMetrics,
     val updatedDate: String,
-    override val wikidata: String,
+    override val wikidata: String?,
     val worksApiUrl: String, // TODO An URL that will get you a list of all the works tagged with this concept.
     val worksCount: Int
 ) : BaseConcept() {
@@ -63,8 +63,8 @@ data class Concept(
 data class ConceptIds(
     val mag: String,
     val openalex: String,
-    val umlsCui: String,
-    val umlsAui: String,
+    val umlsCui: List<String>?,
+    val umlsAui: String?,
     val wikidata: String,
     val wikipedia: String
 )
