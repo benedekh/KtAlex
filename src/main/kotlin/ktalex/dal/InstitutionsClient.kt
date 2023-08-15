@@ -6,12 +6,12 @@ class InstitutionsClient : BaseClient() {
 
     override val baseUrl = "${OPENALEX_BASE_URL}/institutions"
 
-    suspend fun getByOpenAlexId(id: String): Institution? = getItem("$baseUrl/$id")
+    fun getByOpenAlexId(id: String): Institution? = getItem("$baseUrl/$id")
 
-    suspend fun getByMicrosoftAcademicGraphId(id: String): Institution? = getItem("$baseUrl/mag:$id")
+    fun getByMicrosoftAcademicGraphId(id: String): Institution? = getItem("$baseUrl/mag:$id")
 
-    suspend fun getByRorId(id: String): Institution? = getItem("$baseUrl/ror:$id")
+    fun getByRorId(id: String): Institution? = getItem("$baseUrl/ror:$id")
 
-    suspend fun getByWikidataId(id: String): Institution? = getItem("$baseUrl/wikidata:$id")
+    fun getByWikidataId(id: String): Institution? = getItem("$baseUrl/wikidata:$id")
 
 }

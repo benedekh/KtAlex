@@ -7,6 +7,7 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNamingStrategy
@@ -29,13 +30,15 @@ abstract class BaseClient : AutoCloseable {
         }
     }
 
-    protected suspend inline fun <reified T> getItem(url: String): T? {
-        val response = client.get(url)
-        return if (response.status == HttpStatusCode.OK) {
-            response.body()
-        } else {
-            null
+    protected inline fun <reified T> getItem(url: String): T? {
+        var result: T? = null
+        runBlocking {
+            val response = client.get(url)
+            if (response.status == HttpStatusCode.OK) {
+                result = response.body()
+            }
         }
+        return result
     }
 
     override fun close() {
