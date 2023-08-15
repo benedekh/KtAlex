@@ -3,11 +3,12 @@ package ktalex.model
 import kotlinx.serialization.Serializable
 import ktalex.model.serialization.SerializedDate
 import ktalex.model.serialization.SerializedDateTime
+import ktalex.model.serialization.SerializedId
 
 @Serializable
 abstract class BaseConcept {
     abstract val displayName: String
-    abstract val id: String
+    abstract val id: SerializedId
     abstract val level: Int
     abstract val wikidata: String?
 }
@@ -15,7 +16,7 @@ abstract class BaseConcept {
 @Serializable
 data class DehydratedConcept(
     override val displayName: String,
-    override val id: String,
+    override val id: SerializedId,
     override val level: Int,
     override val wikidata: String?
 ) : BaseConcept()
@@ -23,7 +24,7 @@ data class DehydratedConcept(
 @Serializable
 data class RelatedConcept(
     override val displayName: String,
-    override val id: String,
+    override val id: SerializedId,
     override val level: Int,
     override val wikidata: String?,
     val score: Float
@@ -37,7 +38,7 @@ data class Concept(
     val createdDate: SerializedDate,
     val description: String,
     override val displayName: String,
-    override val id: String,
+    override val id: SerializedId,
     val ids: ConceptIds,
     val imageThumbnailUrl: String,
     val imageUrl: String,
@@ -54,9 +55,9 @@ data class Concept(
 @Serializable
 data class ConceptIds(
     val mag: String,
-    val openalex: String,
+    val openalex: SerializedId,
     val umlsCui: List<String>?,
     val umlsAui: String?,
-    val wikidata: String,
+    val wikidata: SerializedId,
     val wikipedia: String
 )

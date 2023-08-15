@@ -4,12 +4,13 @@ import kotlinx.serialization.Serializable
 import ktalex.model.serialization.SerializedDate
 import ktalex.model.serialization.SerializedDateTime
 import ktalex.model.serialization.SerializedEnum
+import ktalex.model.serialization.SerializedId
 
 @Serializable
 abstract class BaseInstitution {
     abstract val countryCode: String?
     abstract val displayName: String
-    abstract val id: String
+    abstract val id: SerializedId
     abstract val ror: String?
     abstract val type: SerializedEnum<InstitutionType>?
 }
@@ -18,7 +19,7 @@ abstract class BaseInstitution {
 data class DehydratedInstitution(
     override val countryCode: String?,
     override val displayName: String,
-    override val id: String,
+    override val id: SerializedId,
     override val ror: String?,
     override val type: SerializedEnum<InstitutionType>?
 ) : BaseInstitution()
@@ -27,7 +28,7 @@ data class DehydratedInstitution(
 data class AssociatedInstitution(
     override val countryCode: String?,
     override val displayName: String,
-    override val id: String,
+    override val id: SerializedId,
     override val ror: String?,
     override val type: SerializedEnum<InstitutionType>?,
     val relationship: SerializedEnum<RelationshipType>
@@ -45,7 +46,7 @@ data class Institution(
     val displayNameAlternatives: List<String>,
     val geo: Geo,
     val homepageUrl: String,
-    override val id: String,
+    override val id: SerializedId,
     val ids: InstitutionIds,
     val imageThumbnailUrl: String,
     val imageUrl: String,
@@ -73,8 +74,8 @@ enum class RelationshipType {
 data class InstitutionIds(
     val grid: String,
     val mag: Int,
-    val openalex: String,
-    val ror: String,
+    val openalex: SerializedId,
+    val ror: SerializedId,
     val wikipedia: String,
-    val wikidata: String
+    val wikidata: SerializedId
 )

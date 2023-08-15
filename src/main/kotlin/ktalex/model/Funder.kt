@@ -3,6 +3,7 @@ package ktalex.model
 import kotlinx.serialization.Serializable
 import ktalex.model.serialization.SerializedDate
 import ktalex.model.serialization.SerializedDateTime
+import ktalex.model.serialization.SerializedId
 
 @Serializable
 data class Funder(
@@ -15,7 +16,7 @@ data class Funder(
     val displayName: String,
     val grantsCount: Int,
     val homepageUrl: String,
-    val id: String,
+    val id: SerializedId,
     val ids: FunderIds,
     val imageThumbnailUrl: String,
     val imageUrl: String,
@@ -29,8 +30,8 @@ data class Funder(
 data class FunderIds(
     val crossref: String,
     val doi: String,
-    val openalex: String,
-    val ror: String,
-    val wikidata: String
+    val openalex: SerializedId,
+    val ror: SerializedId,
+    val wikidata: SerializedId
 )
 

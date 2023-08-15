@@ -30,7 +30,6 @@ abstract class BaseClient : AutoCloseable {
     }
 
     protected suspend inline fun <reified T> getItem(url: String): T? {
-        println(url)
         val response = client.get(url)
         return if (response.status == HttpStatusCode.OK) {
             response.body()

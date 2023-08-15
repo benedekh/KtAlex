@@ -3,6 +3,7 @@ package ktalex.model
 import kotlinx.serialization.Serializable
 import ktalex.model.serialization.SerializedDate
 import ktalex.model.serialization.SerializedDateTime
+import ktalex.model.serialization.SerializedId
 
 @Serializable
 data class Work(
@@ -22,7 +23,7 @@ data class Work(
     val displayName: String,
     val doi: String,
     val grants: List<Grant>,
-    val id: String,
+    val id: SerializedId,
     val ids: WorkIds,
     val institutionsDistinctCount: Int,
     val isOa: Boolean?,
@@ -52,7 +53,7 @@ data class Work(
 data class WorkIds(
     val doi: String,
     val mag: String,
-    val openalex: String,
-    val pmid: String,
+    val openalex: SerializedId,
+    val pmid: SerializedId,
     val pmcid: String?
 )

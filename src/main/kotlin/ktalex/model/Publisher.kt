@@ -3,6 +3,7 @@ package ktalex.model
 import kotlinx.serialization.Serializable
 import ktalex.model.serialization.SerializedDate
 import ktalex.model.serialization.SerializedDateTime
+import ktalex.model.serialization.SerializedId
 
 @Serializable
 data class Publisher(
@@ -14,7 +15,7 @@ data class Publisher(
     val displayName: String,
     val hierarchyLevel: Int,
     val homepageUrl: String,
-    val id: String,
+    val id: SerializedId,
     val ids: PublisherIds,
     val imageThumbnailUrl: String,
     val imageUrl: String,
@@ -29,7 +30,7 @@ data class Publisher(
 
 @Serializable
 data class PublisherIds(
-    val openalex: String,
-    val ror: String,
-    val wikidata: String
+    val openalex: SerializedId,
+    val ror: SerializedId,
+    val wikidata: SerializedId
 )

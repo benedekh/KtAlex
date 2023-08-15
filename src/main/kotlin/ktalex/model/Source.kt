@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import ktalex.model.serialization.SerializedDate
 import ktalex.model.serialization.SerializedDateTime
 import ktalex.model.serialization.SerializedEnum
+import ktalex.model.serialization.SerializedId
 
 @Serializable
 abstract class BaseSource {
@@ -12,7 +13,7 @@ abstract class BaseSource {
     abstract val hostOrganizationLineage: List<String>
     abstract val hostOrganizationLineageNames: List<String>?
     abstract val hostOrganizationName: String
-    abstract val id: String
+    abstract val id: SerializedId
     abstract val isInDoaj: Boolean?
     abstract val isOa: Boolean?
     abstract val issn: List<String>?
@@ -27,7 +28,7 @@ data class DehydratedSource(
     override val hostOrganizationLineage: List<String>,
     override val hostOrganizationLineageNames: List<String>?,
     override val hostOrganizationName: String,
-    override val id: String,
+    override val id: SerializedId,
     override val isInDoaj: Boolean?,
     override val isOa: Boolean?,
     override val issn: List<String>?,
@@ -51,7 +52,7 @@ data class Source(
     override val hostOrganizationLineage: List<String>,
     override val hostOrganizationLineageNames: List<String>?,
     override val hostOrganizationName: String,
-    override val id: String,
+    override val id: SerializedId,
     val ids: SourceIds,
     override val isInDoaj: Boolean?,
     override val isOa: Boolean?,
@@ -76,6 +77,6 @@ data class SourceIds(
     val issn: List<String>,
     val issnL: String,
     val mag: String,
-    val openalex: String,
-    val wikidata: String
+    val openalex: SerializedId,
+    val wikidata: SerializedId
 )

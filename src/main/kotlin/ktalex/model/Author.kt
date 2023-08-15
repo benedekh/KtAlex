@@ -3,17 +3,18 @@ package ktalex.model
 import kotlinx.serialization.Serializable
 import ktalex.model.serialization.SerializedDate
 import ktalex.model.serialization.SerializedDateTime
+import ktalex.model.serialization.SerializedId
 
 @Serializable
 abstract class BaseAuthor {
-    abstract val id: String
+    abstract val id: SerializedId
     abstract val displayName: String
     abstract val orcid: String?
 }
 
 @Serializable
 data class DehydratedAuthor(
-    override val id: String,
+    override val id: SerializedId,
     override val displayName: String,
     override val orcid: String?
 ) : BaseAuthor()
@@ -25,7 +26,7 @@ data class Author(
     val createdDate: SerializedDate,
     override val displayName: String,
     val displayNameAlternatives: List<String>,
-    override val id: String,
+    override val id: SerializedId,
     val ids: AuthorIds,
     val lastKnownInstitution: DehydratedInstitution,
     override val orcid: String?,
@@ -39,7 +40,7 @@ data class Author(
 @Serializable
 data class AuthorIds(
     val mag: String?,
-    val openalex: String,
+    val openalex: SerializedId,
     val orcid: String,
     val scopus: String,
     val twitter: String?,
