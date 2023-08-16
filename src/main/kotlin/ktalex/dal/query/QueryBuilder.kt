@@ -24,6 +24,9 @@ class QueryBuilder {
     private var sampleSize: Int? = null
     private var sampleSeed: Int? = null
 
+    // group by
+    private var groupBy: String? = null
+
     fun pagination(page: Int?, perPage: Int?, cursor: String?): QueryBuilder {
         if (page == null && cursor == null) throw IllegalArgumentException("Page or cursor must be provided")
         if (page != null) {
@@ -50,6 +53,14 @@ class QueryBuilder {
         this.sampleSize = sampleSize
         this.sampleSeed = sampleSeed
 
+        return this
+    }
+
+    /**
+     * @param fieldPath fully qualified path of the field you want to group by (e.g. author.id)
+     */
+    fun groupBy(fieldPath: String): QueryBuilder {
+        groupBy = fieldPath.camelToSnakeCase()
         return this
     }
 
@@ -159,8 +170,7 @@ class QueryBuilder {
      */
     fun gt(fieldPath: String, value: LocalDate): QueryBuilder {
         val preparedField = prependToLastFieldName(fieldPath, "from_")
-        val preparedValue = value.toString()
-        put(preparedField, preparedValue)
+        return eq(preparedField, value)
     }
 
     /**
@@ -171,8 +181,7 @@ class QueryBuilder {
      */
     fun lt(fieldPath: String, value: LocalDate): QueryBuilder {
         val preparedField = prependToLastFieldName(fieldPath, "to_")
-        val preparedValue = value.toString()
-        put(preparedField, preparedValue)
+        return eq(preparedField, value)
     }
 
     /**
@@ -235,6 +244,7 @@ class QueryBuilder {
                 }&"
             )
         }
+        groupBy?.let { sb.append("group_by=$it&") }
         sampleSize?.let { sb.append("sample=$it&") }
         sampleSeed?.let { sb.append("seed=$it&") }
         page?.let { sb.append("page=$it&") }
