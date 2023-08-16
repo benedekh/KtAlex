@@ -12,12 +12,10 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNamingStrategy
 
-abstract class BaseClient : AutoCloseable {
-    companion object {
-        const val OPENALEX_BASE_URL = "https://api.openalex.org"
-    }
+abstract class BaseClient<out T>(protected val openAlexBaseUrl: String = "https://api.openalex.org") : AutoCloseable {
 
     protected abstract val baseUrl: String
+    abstract fun getRandom(): T
 
     @OptIn(ExperimentalSerializationApi::class)
     protected val client = HttpClient(CIO) {

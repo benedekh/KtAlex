@@ -2,9 +2,11 @@ package ktalex.dal
 
 import ktalex.model.Author
 
-class AuthorsClient : BaseClient() {
+class AuthorsClient : BaseClient<Author>() {
 
-    override val baseUrl = "${OPENALEX_BASE_URL}/authors"
+    override val baseUrl = "${openAlexBaseUrl}/authors"
+
+    override fun getRandom(): Author = getItem("$baseUrl/random")!!
 
     fun getByOpenAlexId(id: String): Author? = getItem("$baseUrl/$id")
 

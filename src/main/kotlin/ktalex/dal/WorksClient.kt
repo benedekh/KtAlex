@@ -2,9 +2,11 @@ package ktalex.dal
 
 import ktalex.model.Work
 
-class WorksClient : BaseClient() {
+class WorksClient : BaseClient<Work>() {
 
-    override val baseUrl = "${OPENALEX_BASE_URL}/works"
+    override val baseUrl = "$openAlexBaseUrl/works"
+
+    override fun getRandom(): Work = getItem("$baseUrl/random")!!
 
     fun getByOpenAlexId(id: String): Work? = getItem("$baseUrl/$id")
 

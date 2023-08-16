@@ -2,9 +2,11 @@ package ktalex.dal
 
 import ktalex.model.Concept
 
-class ConceptsClient : BaseClient() {
+class ConceptsClient : BaseClient<Concept>() {
 
-    override val baseUrl = "${OPENALEX_BASE_URL}/concepts"
+    override val baseUrl = "${openAlexBaseUrl}/concepts"
+
+    override fun getRandom(): Concept = getItem("$baseUrl/random")!!
 
     fun getByOpenAlexId(id: String): Concept? = getItem("$baseUrl/$id")
 

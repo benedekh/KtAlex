@@ -2,9 +2,11 @@ package ktalex.dal
 
 import ktalex.model.Institution
 
-class InstitutionsClient : BaseClient() {
+class InstitutionsClient : BaseClient<Institution>() {
 
-    override val baseUrl = "${OPENALEX_BASE_URL}/institutions"
+    override val baseUrl = "$openAlexBaseUrl/institutions"
+
+    override fun getRandom(): Institution = getItem("$baseUrl/random")!!
 
     fun getByOpenAlexId(id: String): Institution? = getItem("$baseUrl/$id")
 

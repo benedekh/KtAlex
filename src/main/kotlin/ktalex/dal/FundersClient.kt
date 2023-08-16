@@ -2,9 +2,11 @@ package ktalex.dal
 
 import ktalex.model.Funder
 
-class FundersClient : BaseClient() {
+class FundersClient : BaseClient<Funder>() {
 
-    override val baseUrl = "${OPENALEX_BASE_URL}/funders"
+    override val baseUrl = "${openAlexBaseUrl}/funders"
+
+    override fun getRandom(): Funder = getItem("$baseUrl/random")!!
 
     fun getByOpenAlexId(id: String): Funder? = getItem("$baseUrl/$id")
 
