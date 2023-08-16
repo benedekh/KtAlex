@@ -32,6 +32,7 @@ abstract class BaseClient<out T>(protected val openAlexBaseUrl: String = "https:
         var result: T? = null
         runBlocking {
             val response = client.get(url)
+            // TODO in filter queries HTTP 403 is returned if there is an error. The message field contains some info in this case. Probably we should throw an exception with the message field in this case.
             if (response.status == HttpStatusCode.OK) {
                 result = response.body()
             }

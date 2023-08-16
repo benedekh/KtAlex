@@ -19,7 +19,7 @@ object EnumUtil {
         }
     }
 
-    inline fun <reified T : Enum<T>> valueOfOrNull(literal: String?): T? {
+    private inline fun <reified T : Enum<T>> valueOfOrNull(literal: String?): T? {
         return try {
             if (literal == null) {
                 null
