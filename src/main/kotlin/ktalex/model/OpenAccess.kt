@@ -5,9 +5,9 @@ import ktalex.model.serialization.SerializedEnum
 
 @Serializable
 data class OpenAccess(
-    val anyRepositoryHasFulltext: Boolean,
-    val isOa: Boolean,
-    val oaStatus: SerializedEnum<OaStatus>,
+    val anyRepositoryHasFulltext: Boolean?,
+    val isOa: Boolean?,
+    val oaStatus: SerializedEnum<OaStatus>?,
     val oaUrl: String?
 )
 

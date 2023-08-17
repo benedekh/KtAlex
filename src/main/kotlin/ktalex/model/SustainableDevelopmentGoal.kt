@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SustainableDevelopmentGoal(
-    val id: String,
-    val displayName: String,
-    val score: Float
+    val id: String?,
+    val displayName: String?,
+    val score: Float?
 )

@@ -11,11 +11,14 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNamingStrategy
+import ktalex.dal.error.ErrorResponse
+import ktalex.dal.error.OpenAlexException
+import ktalex.dal.query.QueryBuilder
+import ktalex.model.QueryResults
 
-abstract class BaseClient<out T>(protected val openAlexBaseUrl: String = "https://api.openalex.org") : AutoCloseable {
+abstract class BaseClient<T>(protected val openAlexBaseUrl: String = "https://api.openalex.org") : AutoCloseable {
 
     protected abstract val baseUrl: String
-    abstract fun getRandom(): T
 
     @OptIn(ExperimentalSerializationApi::class)
     protected val client = HttpClient(CIO) {
@@ -28,13 +31,19 @@ abstract class BaseClient<out T>(protected val openAlexBaseUrl: String = "https:
         }
     }
 
-    protected inline fun <reified T> getItem(url: String): T? {
+    abstract fun getRandom(queryBuilder: QueryBuilder? = null): T
+    abstract fun getEntities(queryBuilder: QueryBuilder? = null): QueryResults<T>
+
+    protected inline fun <reified T> getEntity(url: String): T? {
+        println(url)
         var result: T? = null
         runBlocking {
             val response = client.get(url)
-            // TODO in filter queries HTTP 403 is returned if there is an error. The message field contains some info in this case. Probably we should throw an exception with the message field in this case.
             if (response.status == HttpStatusCode.OK) {
                 result = response.body()
+            } else if (response.status == HttpStatusCode.Forbidden) {
+                val error: ErrorResponse = response.body()
+                error.message?.let { throw OpenAlexException(it) }
             }
         }
         return result

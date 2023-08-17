@@ -1,17 +1,27 @@
 package ktalex.dal
 
+import ktalex.dal.query.QueryBuilder
 import ktalex.model.Author
+import ktalex.model.QueryResults
 
 class AuthorsClient : BaseClient<Author>() {
 
     override val baseUrl = "${openAlexBaseUrl}/authors"
 
-    override fun getRandom(): Author = getItem("$baseUrl/random")!!
+    override fun getRandom(queryBuilder: QueryBuilder?): Author = getEntity(
+        "$baseUrl/random${queryBuilder?.build() ?: ""}"
+    )!!
 
-    fun getByOpenAlexId(id: String): Author? = getItem("$baseUrl/$id")
+    override fun getEntities(queryBuilder: QueryBuilder?): QueryResults<Author> =
+        getEntity("$baseUrl${queryBuilder?.build() ?: ""}")!!
 
-    fun getByOrcid(id: String): Author? = getItem("$baseUrl/$id")
+    fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Author? =
+        getEntity("$baseUrl/$id${queryBuilder?.build() ?: ""}")
 
-    fun getByMicrosoftAcademicGraphId(id: String): Author? = getItem("$baseUrl/mag:$id")
+    fun getByOrcid(id: String, queryBuilder: QueryBuilder? = null): Author? =
+        getEntity("$baseUrl/$id${queryBuilder?.build() ?: ""}")
+
+    fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Author? =
+        getEntity("$baseUrl/mag:$id${queryBuilder?.build() ?: ""}")
 
 }

@@ -27,8 +27,7 @@ class QueryBuilder {
     // group by
     private var groupBy: String? = null
 
-    fun pagination(page: Int?, perPage: Int?, cursor: String?): QueryBuilder {
-        if (page == null && cursor == null) throw IllegalArgumentException("Page or cursor must be provided")
+    fun pagination(page: Int? = null, perPage: Int? = null, cursor: String? = null): QueryBuilder {
         if (page != null) {
             if (page < 1) throw IllegalArgumentException("Page must be greater than 0")
             if (cursor != null) throw IllegalArgumentException("Cursor cannot be used with page")
@@ -47,7 +46,7 @@ class QueryBuilder {
      * @param sampleSize number of items to sample randomly
      * @param sampleSeed seed to get the same sample every time. You must provide a seed value when paging beyond the first page of results. Without a seed value, you might get duplicate records in your results. (See https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/sample-entity-lists)
      */
-    fun sampling(sampleSize: Int, sampleSeed: Int?): QueryBuilder {
+    fun sampling(sampleSize: Int, sampleSeed: Int? = null): QueryBuilder {
         if (sampleSize > 10000) throw IllegalArgumentException("Sample size cannot be greater than 10000")
 
         this.sampleSize = sampleSize
@@ -228,10 +227,15 @@ class QueryBuilder {
     }
 
     fun build(): String {
-        val sb = StringBuilder("?")
-        filters.forEach { (key, values) ->
-            sb.append("filter=$key:${values.joinToString("|")}&")
+        val sb = StringBuilder()
+
+        if (filters.isNotEmpty()) {
+            sb.append("filter=")
         }
+        val filter =
+            filters.map { (key, values) -> values.joinToString(",", transform = { "$key:$it" }) }.joinToString(",")
+        sb.append("$filter&")
+
         selectFields?.let { sb.append("select=${it.joinToString(",")}&") }
         sortByField?.let {
             sb.append(
@@ -251,7 +255,11 @@ class QueryBuilder {
         perPage?.let { sb.append("per_page=$it&") }
         cursor?.let { sb.append("cursor=$it&") }
 
-        return sb.toString()
+        return if (sb.isNotEmpty()) {
+            return "?${sb.toString().removeSuffix("&")}"
+        } else {
+            ""
+        }
     }
 
     private fun prependToLastFieldName(fieldPath: String, prefix: String): String {
@@ -274,7 +282,7 @@ class QueryBuilder {
     private fun <E> put(fieldPath: String, negate: Boolean, values: Array<E>): QueryBuilder {
         if (values.size > 50) throw IllegalArgumentException("Cannot use more than 50 values in OR filter")
 
-        val value = values.joinToString { "|" }
+        val value = values.joinToString("|")
         if (negate) {
             put(fieldPath, "!$value")
         } else {

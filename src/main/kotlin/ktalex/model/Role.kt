@@ -5,9 +5,9 @@ import ktalex.model.serialization.SerializedEnum
 
 @Serializable
 data class Role(
-    val role: SerializedEnum<RoleEnum>,
-    val id: String,
-    val worksCount: Int
+    val role: SerializedEnum<RoleEnum>?,
+    val id: String?,
+    val worksCount: Int?
 )
 
 enum class RoleEnum {

@@ -9,11 +9,11 @@ import ktalex.model.serialization.SerializedId
 @Serializable
 abstract class BaseSource {
     abstract val displayName: String?
-    abstract val hostOrganization: String
-    abstract val hostOrganizationLineage: List<String>
+    abstract val hostOrganization: String?
+    abstract val hostOrganizationLineage: List<String>?
     abstract val hostOrganizationLineageNames: List<String>?
-    abstract val hostOrganizationName: String
-    abstract val id: SerializedId
+    abstract val hostOrganizationName: String?
+    abstract val id: SerializedId?
     abstract val isInDoaj: Boolean?
     abstract val isOa: Boolean?
     abstract val issn: List<String>?
@@ -24,11 +24,11 @@ abstract class BaseSource {
 @Serializable
 data class DehydratedSource(
     override val displayName: String?,
-    override val hostOrganization: String,
-    override val hostOrganizationLineage: List<String>,
+    override val hostOrganization: String?,
+    override val hostOrganizationLineage: List<String>?,
     override val hostOrganizationLineageNames: List<String>?,
-    override val hostOrganizationName: String,
-    override val id: SerializedId,
+    override val hostOrganizationName: String?,
+    override val id: SerializedId?,
     override val isInDoaj: Boolean?,
     override val isOa: Boolean?,
     override val issn: List<String>?,
@@ -39,32 +39,33 @@ data class DehydratedSource(
 @Serializable
 data class Source(
     val abbreviatedTitle: String?,
-    val alternateTitles: List<String>,
-    val apcPrices: List<Price>,
-    val apcUsd: Int,
-    val citedByCount: Int,
-    val countryCode: String,
-    val countsByYear: List<CountsByYear>,
-    val createdDate: SerializedDate,
+    val alternateTitles: List<String>?,
+    val apcPrices: List<Price>?,
+    val apcUsd: Int?,
+    val citedByCount: Int?,
+    val countryCode: String?,
+    val countsByYear: List<CountsByYear>?,
+    val createdDate: SerializedDate?,
     override val displayName: String?,
-    val homepageUrl: String,
-    override val hostOrganization: String,
-    override val hostOrganizationLineage: List<String>,
+    val homepageUrl: String?,
+    override val hostOrganization: String?,
+    override val hostOrganizationLineage: List<String>?,
     override val hostOrganizationLineageNames: List<String>?,
-    override val hostOrganizationName: String,
-    override val id: SerializedId,
-    val ids: SourceIds,
+    override val hostOrganizationName: String?,
+    override val id: SerializedId?,
+    val ids: SourceIds?,
     override val isInDoaj: Boolean?,
     override val isOa: Boolean?,
     override val issn: List<String>?,
     override val issnL: String?,
-    val societies: List<Society>,
-    val summaryStats: CitationMetrics,
+    val relevanceScore: Float?,
+    val societies: List<Society>?,
+    val summaryStats: CitationMetrics?,
     override val type: SerializedEnum<SourceType>?,
-    val updatedDate: SerializedDateTime,
-    val worksApiUrl: String, // TODO A URL that will get you a list of all this source's Works.
-    val worksCount: Int,
-    val xConcepts: List<RelatedConcept>
+    val updatedDate: SerializedDateTime?,
+    val worksApiUrl: String?, // TODO A URL that will get you a list of all this source's Works.
+    val worksCount: Int?,
+    val xConcepts: List<RelatedConcept>?
 ) : BaseSource()
 
 enum class SourceType {
@@ -74,9 +75,9 @@ enum class SourceType {
 @Serializable
 data class SourceIds(
     val fatcat: String?,
-    val issn: List<String>,
-    val issnL: String,
-    val mag: String,
-    val openalex: SerializedId,
-    val wikidata: SerializedId
+    val issn: List<String>?,
+    val issnL: String?,
+    val mag: String?,
+    val openalex: SerializedId?,
+    val wikidata: SerializedId?
 )
