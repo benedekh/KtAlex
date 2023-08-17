@@ -1,6 +1,7 @@
 package ktalex.dal.query
 
 import ktalex.utils.camelToSnakeCase
+import java.net.URLEncoder
 import java.time.LocalDate
 
 class QueryBuilder {
@@ -16,6 +17,9 @@ class QueryBuilder {
     // sort
     private var sortByField: String? = null
     private var sortDescending: Boolean = false
+
+    // search
+    private var searchTerm: String? = null
 
     // filter
     private val filters: MutableMap<String, MutableList<String>> = mutableMapOf()
@@ -82,9 +86,62 @@ class QueryBuilder {
     }
 
     /**
+     * Excerpts from the [documentation](https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/search-entities):
+     *
+     * When you search Works, the API looks for matches in titles, abstracts, and fulltext.
+     * When you search Concepts, we look in each concept's display_name and description fields.
+     * When you search Sources, we look at the display_name, alternate_titles, and abbreviated_title fields.
+     * Searching Authors or Institutions will look for matches within each entities' display_name field.
+     *
+     * For most text search we remove stop words and use stemming to improve results. So words like "the" and "an" are
+     * transparently removed, and a search for "possums" will also return records using the word "possum." With the
+     * except of raw affiliation strings, we do not search within words but rather try to match whole words. So a search
+     * with "lun" will not match the word "lunar".
+     *
+     * If you search for a multiple-word phrase, the algorithm will treat each word separately, and rank results higher
+     * when the words appear close together. If you want to return only results where the exact phrase is used, just
+     * enclose your phrase within quotes.
+     *
+     * Including any of the words AND, OR, or NOT in any of your searches will enable boolean search.
+     * Those words must be UPPERCASE.
+     *
+     * Examples:
+     *
+     * - Search for works that mention "elmo" and "sesame street," but not the words "cookie" or "monster":
+     * "elmo" AND "sesame street" NOT (cookie OR monster)
+     *
+     * - Get works with the exact phrase "fierce creatures":
+     * "fierce creatures"
+     *
+     * - Get works with the words "fierce" and "creatures":
+     * fierce creatures
+     *
+     * @param searchTerm: the term(s) to search for
+     */
+    fun search(searchTerm: String): QueryBuilder {
+        this.searchTerm = URLEncoder.encode(searchTerm, "utf-8")
+        return this
+    }
+
+    /***
+     * Searches the field for the given term.
+     *
+     * @param fieldPath fully qualified path of the field you want to filter by (e.g. displayName, title)
+     * @param searchTerm: the term(s) to search for. For further explanation see [search]
+     */
+    fun search(fieldPath: String, searchTerm: String): QueryBuilder {
+        val preparedFieldName = fieldPath.camelToSnakeCase()
+        val key = "$preparedFieldName.search"
+
+        val preparedSearchTerm = URLEncoder.encode(searchTerm, "utf-8")
+        filters[key] = mutableListOf(preparedSearchTerm)
+        return this
+    }
+
+    /**
      * Adds an AND EQUALS operator to the filter as follows:
      *
-     * @param fieldPath fully qualified path of the field you want to filter by (e.g. id, institutions.country_code)
+     * @param fieldPath fully qualified path of the field you want to filter by (e.g. id, institutions.countryCode)
      * @param value value to filter by
      */
     fun eq(fieldPath: String, value: String): QueryBuilder = put(fieldPath, value)
@@ -92,7 +149,7 @@ class QueryBuilder {
     /**
      * Adds an AND EQUALS operator to the filter as follows:
      *
-     * @param fieldPath fully qualified path of the field you want to filter by (e.g. id, institutions.country_code)
+     * @param fieldPath fully qualified path of the field you want to filter by (e.g. id, institutions.countryCode)
      * @param value value to filter by
      */
     fun eq(fieldPath: String, value: Number): QueryBuilder = put(fieldPath, value.toString())
@@ -100,7 +157,7 @@ class QueryBuilder {
     /**
      * Adds an AND EQUALS operator to the filter as follows:
      *
-     * @param fieldPath fully qualified path of the field you want to filter by (e.g. id, institutions.country_code)
+     * @param fieldPath fully qualified path of the field you want to filter by (e.g. id, institutions.countryCode)
      * @param value value to filter by
      */
     fun eq(fieldPath: String, value: LocalDate): QueryBuilder = put(fieldPath, value.toString())
@@ -108,7 +165,7 @@ class QueryBuilder {
     /**
      * Adds an AND EQUALS operator to the filter as follows:
      *
-     * @param fieldPath fully qualified path of the field you want to filter by (e.g. is_oa)
+     * @param fieldPath fully qualified path of the field you want to filter by (e.g. isOa)
      * @param value value to filter by
      */
     fun eq(fieldPath: String, value: Boolean): QueryBuilder = put(fieldPath, value.toString())
@@ -116,7 +173,7 @@ class QueryBuilder {
     /**
      * Adds an AND NOT EQUALS operator to the filter as follows:
      *
-     * @param fieldPath fully qualified path of the field you want to filter by (e.g. id, institutions.country_code)
+     * @param fieldPath fully qualified path of the field you want to filter by (e.g. id, institutions.countryCode)
      * @param value value to filter by
      */
     fun notEq(fieldPath: String, value: String): QueryBuilder = put(fieldPath, "!$value")
@@ -124,7 +181,7 @@ class QueryBuilder {
     /**
      * Adds an AND NOT EQUALS operator to the filter as follows:
      *
-     * @param fieldPath fully qualified path of the field you want to filter by (e.g. id, institutions.country_code)
+     * @param fieldPath fully qualified path of the field you want to filter by (e.g. id, institutions.countryCode)
      * @param value value to filter by
      */
     fun notEq(fieldPath: String, value: Number): QueryBuilder = put(fieldPath, "<$value|>$value")
@@ -132,7 +189,7 @@ class QueryBuilder {
     /**
      * Adds an AND NOT EQUALS operator to the filter as follows:
      *
-     * @param fieldPath fully qualified path of the field you want to filter by (e.g. created_date)
+     * @param fieldPath fully qualified path of the field you want to filter by (e.g. createdDate)
      * @param value value to filter by
      */
     fun notEq(fieldPath: String, value: LocalDate): QueryBuilder = put(fieldPath, "<$value|>$value")
@@ -140,7 +197,7 @@ class QueryBuilder {
     /**
      * Adds an AND NOT EQUALS operator to the filter as follows:
      *
-     * @param fieldPath fully qualified path of the field you want to filter by (e.g. is_oa)
+     * @param fieldPath fully qualified path of the field you want to filter by (e.g. isOa)
      * @param value value to filter by
      */
     fun notEq(fieldPath: String, value: Boolean): QueryBuilder = put(fieldPath, (!value).toString())
@@ -148,7 +205,7 @@ class QueryBuilder {
     /**
      * Adds an AND GREATER THAN operator to the filter as follows:
      *
-     * @param fieldPath fully qualified path of the field you want to filter by (e.g. id, institutions.country_code)
+     * @param fieldPath fully qualified path of the field you want to filter by (e.g. id, institutions.countryCode)
      * @param value value to filter by
      */
     fun gt(fieldPath: String, value: Number): QueryBuilder = put(fieldPath, ">$value")
@@ -156,7 +213,7 @@ class QueryBuilder {
     /**
      * Adds an AND SMALLER THAN operator to the filter as follows:
      *
-     * @param fieldPath fully qualified path of the field you want to filter by (e.g. id, institutions.country_code)
+     * @param fieldPath fully qualified path of the field you want to filter by (e.g. id, institutions.countryCode)
      * @param value value to filter by
      */
     fun lt(fieldPath: String, value: Number): QueryBuilder = put(fieldPath, "<$value")
@@ -164,7 +221,7 @@ class QueryBuilder {
     /**
      * Adds an AND GREATER THAN operator to the filter as follows:
      *
-     * @param fieldPath fully qualified path of the field you want to filter by (e.g. created_date)
+     * @param fieldPath fully qualified path of the field you want to filter by (e.g. createdDate)
      * @param value value to filter by
      */
     fun gt(fieldPath: String, value: LocalDate): QueryBuilder {
@@ -175,7 +232,7 @@ class QueryBuilder {
     /**
      * Adds an AND SMALLER THAN operator to the filter as follows:
      *
-     * @param fieldPath fully qualified path of the field you want to filter by (e.g. created_date)
+     * @param fieldPath fully qualified path of the field you want to filter by (e.g. createdDate)
      * @param value value to filter by
      */
     fun lt(fieldPath: String, value: LocalDate): QueryBuilder {
@@ -206,7 +263,7 @@ class QueryBuilder {
     /**
      * Adds an AND (NOT) EQUALS operator to the filter with OR operator between the values, as follows:
      *
-     * @param fieldPath fully qualified path of the field you want to filter by (e.g. works_count)
+     * @param fieldPath fully qualified path of the field you want to filter by (e.g. worksCount)
      * @param negate whether to negate the filter (i.e. NOT (value1 OR value2 OR ...))
      * @param values values to filter by.
      *
@@ -229,12 +286,16 @@ class QueryBuilder {
     fun build(): String {
         val sb = StringBuilder()
 
+        searchTerm?.let { sb.append("search=$it&") }
+
         if (filters.isNotEmpty()) {
             sb.append("filter=")
+            val filter =
+                filters
+                    .map { (key, values) -> values.joinToString(",", transform = { "$key:$it" }) }
+                    .joinToString(",")
+            sb.append("$filter&")
         }
-        val filter =
-            filters.map { (key, values) -> values.joinToString(",", transform = { "$key:$it" }) }.joinToString(",")
-        sb.append("$filter&")
 
         selectFields?.let { sb.append("select=${it.joinToString(",")}&") }
         sortByField?.let {

@@ -35,7 +35,6 @@ abstract class BaseClient<T>(protected val openAlexBaseUrl: String = "https://ap
     abstract fun getEntities(queryBuilder: QueryBuilder? = null): QueryResults<T>
 
     protected inline fun <reified T> getEntity(url: String): T? {
-        println(url)
         var result: T? = null
         runBlocking {
             val response = client.get(url)
