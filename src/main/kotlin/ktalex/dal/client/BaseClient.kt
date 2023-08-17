@@ -1,4 +1,4 @@
-package ktalex.dal
+package ktalex.dal.client
 
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -11,14 +11,15 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNamingStrategy
+import ktalex.dal.autocomplete.AutocompleteResponse
 import ktalex.dal.error.ErrorResponse
 import ktalex.dal.error.OpenAlexException
 import ktalex.dal.query.QueryBuilder
-import ktalex.model.QueryResults
+import ktalex.dal.query.QueryResponse
 
 abstract class BaseClient<T>(protected val openAlexBaseUrl: String = "https://api.openalex.org") : AutoCloseable {
 
-    protected abstract val baseUrl: String
+    protected val baseUrl: String = "$openAlexBaseUrl/$entityType"
 
     @OptIn(ExperimentalSerializationApi::class)
     protected val client = HttpClient(CIO) {
@@ -31,8 +32,26 @@ abstract class BaseClient<T>(protected val openAlexBaseUrl: String = "https://ap
         }
     }
 
+    protected abstract val entityType: String
+
     abstract fun getRandom(queryBuilder: QueryBuilder? = null): T
-    abstract fun getEntities(queryBuilder: QueryBuilder? = null): QueryResults<T>
+    abstract fun getEntities(queryBuilder: QueryBuilder? = null): QueryResponse<T>
+
+    /**
+     * Completes the given term with possible continuations to get a list of entities. For details see the [OpenAlex documentation](https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/autocomplete-entities).
+     *
+     * @param term the term to complete
+     * @param queryBuilder to use "filter" and "search" queries in autocomplete
+     */
+    fun autocomplete(term: String, queryBuilder: QueryBuilder? = null): AutocompleteResponse = getEntity(
+        "$openAlexBaseUrl/autocomplete/$entityType?q=$term${
+            if (queryBuilder != null) {
+                "&${queryBuilder.build().removePrefix("?")}"
+            } else {
+                ""
+            }
+        }"
+    )!!
 
     protected inline fun <reified T> getEntity(url: String): T? {
         var result: T? = null

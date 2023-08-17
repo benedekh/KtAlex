@@ -1,17 +1,17 @@
-package ktalex.dal
+package ktalex.dal.client
 
 import ktalex.dal.query.QueryBuilder
-import ktalex.model.QueryResults
+import ktalex.dal.query.QueryResponse
 import ktalex.model.Source
 
 class SourcesClient : BaseClient<Source>() {
 
-    override val baseUrl = "$openAlexBaseUrl/sources"
+    override val entityType = "sources"
 
     override fun getRandom(queryBuilder: QueryBuilder?): Source =
         getEntity("$baseUrl/random${queryBuilder?.build() ?: ""}")!!
 
-    override fun getEntities(queryBuilder: QueryBuilder?): QueryResults<Source> =
+    override fun getEntities(queryBuilder: QueryBuilder?): QueryResponse<Source> =
         getEntity("$baseUrl${queryBuilder?.build() ?: ""}")!!
 
     fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Source? =

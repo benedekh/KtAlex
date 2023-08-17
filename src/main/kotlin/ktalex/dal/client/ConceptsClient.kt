@@ -1,17 +1,17 @@
-package ktalex.dal
+package ktalex.dal.client
 
 import ktalex.dal.query.QueryBuilder
 import ktalex.model.Concept
-import ktalex.model.QueryResults
+import ktalex.dal.query.QueryResponse
 
 class ConceptsClient : BaseClient<Concept>() {
 
-    override val baseUrl = "${openAlexBaseUrl}/concepts"
+    override val entityType = "concepts"
 
     override fun getRandom(queryBuilder: QueryBuilder?): Concept =
         getEntity("$baseUrl/random${queryBuilder?.build() ?: ""}")!!
 
-    override fun getEntities(queryBuilder: QueryBuilder?): QueryResults<Concept> =
+    override fun getEntities(queryBuilder: QueryBuilder?): QueryResponse<Concept> =
         getEntity("$baseUrl${queryBuilder?.build() ?: ""}")!!
 
     fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Concept? =

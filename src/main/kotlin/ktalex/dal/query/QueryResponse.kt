@@ -1,9 +1,9 @@
-package ktalex.model
+package ktalex.dal.query
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class QueryResults<T>(
+data class QueryResponse<T>(
     val meta: MetaInfo?,
     val results: List<T>?,
     val groupBy: List<GroupByMetaInfo>?

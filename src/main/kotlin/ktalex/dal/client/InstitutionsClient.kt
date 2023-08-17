@@ -1,17 +1,17 @@
-package ktalex.dal
+package ktalex.dal.client
 
 import ktalex.dal.query.QueryBuilder
 import ktalex.model.Institution
-import ktalex.model.QueryResults
+import ktalex.dal.query.QueryResponse
 
 class InstitutionsClient : BaseClient<Institution>() {
 
-    override val baseUrl = "$openAlexBaseUrl/institutions"
+    override val entityType = "institutions"
 
     override fun getRandom(queryBuilder: QueryBuilder?): Institution =
         getEntity("$baseUrl/random${queryBuilder?.build() ?: ""}")!!
 
-    override fun getEntities(queryBuilder: QueryBuilder?): QueryResults<Institution> =
+    override fun getEntities(queryBuilder: QueryBuilder?): QueryResponse<Institution> =
         getEntity("$baseUrl${queryBuilder?.build() ?: ""}")!!
 
     fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Institution? =

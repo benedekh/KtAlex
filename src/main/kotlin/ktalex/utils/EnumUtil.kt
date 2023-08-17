@@ -11,7 +11,9 @@ object EnumUtil {
                 valueOfOrNull<ktalex.model.InstitutionType>(literal) ?: run {
                     valueOfOrNull<ktalex.model.RelationshipType>(literal) ?: run {
                         valueOfOrNull<ktalex.model.OaStatus>(literal) ?: run {
-                            valueOfOrNull<ktalex.model.SourceType>(literal)
+                            valueOfOrNull<ktalex.model.SourceType>(literal) ?: run {
+                                valueOfOrNull<ktalex.dal.autocomplete.EntityType>(literal)
+                            }
                         }
                     }
                 }
