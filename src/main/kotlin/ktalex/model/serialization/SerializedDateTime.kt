@@ -29,11 +29,7 @@ class SerializedDateTimeSerializer : KSerializer<SerializedDateTime> {
     override fun deserialize(decoder: Decoder): SerializedDateTime {
         val serialized = decoder.decodeString()
         val dateTime = DateUtil.toDateTime(serialized)
-        val date = if (dateTime != null) {
-            dateTime.toLocalDate()
-        } else {
-            DateUtil.toDate(serialized)
-        }
+        val date = dateTime?.toLocalDate() ?: DateUtil.toDate(serialized)
         return SerializedDateTime(serialized, date, dateTime)
     }
 

@@ -1,6 +1,8 @@
 package ktalex.model
 
 import kotlinx.serialization.Serializable
+import ktalex.dal.client.WorksClient
+import ktalex.dal.query.QueryResponse
 import ktalex.model.serialization.SerializedDate
 import ktalex.model.serialization.SerializedDateTime
 import ktalex.model.serialization.SerializedEnum
@@ -63,10 +65,13 @@ data class Source(
     val summaryStats: CitationMetrics?,
     override val type: SerializedEnum<SourceType>?,
     val updatedDate: SerializedDateTime?,
-    val worksApiUrl: String?, // TODO A URL that will get you a list of all this source's Works.
+    val worksApiUrl: String?,
     val worksCount: Int?,
     val xConcepts: List<RelatedConcept>?
-) : BaseSource()
+) : BaseSource() {
+    // TODO testme
+    fun resolveWorks(): QueryResponse<Work>? = worksApiUrl?.let { WorksClient().getEntities(it) }
+}
 
 enum class SourceType {
     JOURNAL, BOOK_SERIES, CONFERENCE, REPOSITORY, EBOOK_PLATFORM

@@ -23,11 +23,7 @@ object EnumUtil {
 
     private inline fun <reified T : Enum<T>> valueOfOrNull(literal: String?): T? {
         return try {
-            if (literal == null) {
-                null
-            } else {
-                enumValueOf<T>(literal.uppercase(Locale.ENGLISH).replace(" ", "_"))
-            }
+            literal?.let { enumValueOf<T>(it.uppercase(Locale.ENGLISH).replace(" ", "_")) }
         } catch (ex: IllegalArgumentException) {
             null
         }

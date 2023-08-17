@@ -1,6 +1,8 @@
 package ktalex.model
 
 import kotlinx.serialization.Serializable
+import ktalex.dal.client.WorksClient
+import ktalex.dal.query.QueryResponse
 import ktalex.model.serialization.SerializedDate
 import ktalex.model.serialization.SerializedDateTime
 import ktalex.model.serialization.SerializedId
@@ -49,9 +51,12 @@ data class Concept(
     val summaryStats: CitationMetrics?,
     val updatedDate: SerializedDateTime?,
     override val wikidata: String?,
-    val worksApiUrl: String?, // TODO An URL that will get you a list of all the works tagged with this concept.
+    val worksApiUrl: String?,
     val worksCount: Int?
-) : BaseConcept()
+) : BaseConcept() {
+    // TODO testme
+    fun resolveWorks(): QueryResponse<Work>? = worksApiUrl?.let { WorksClient().getEntities(it) }
+}
 
 @Serializable
 data class ConceptIds(

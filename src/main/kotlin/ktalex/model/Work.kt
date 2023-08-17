@@ -1,6 +1,11 @@
 package ktalex.model
 
 import kotlinx.serialization.Serializable
+import ktalex.dal.client.NgramsClient
+import ktalex.dal.client.WorksClient
+import ktalex.dal.ngrams.NgramsResponse
+import ktalex.dal.query.QueryResponse
+import ktalex.model.serialization.ResolvableEntity
 import ktalex.model.serialization.SerializedDate
 import ktalex.model.serialization.SerializedDateTime
 import ktalex.model.serialization.SerializedId
@@ -16,8 +21,8 @@ data class Work(
     val citedByApiUrl: String?,
     val citedByCount: Int?,
     val concepts: List<RelatedConcept>?,
-    val correspondingAuthorIds: List<String>?, // TODO query by ID
-    val correspondingInstitutionIds: List<String>?, // TODO query by ID
+    val correspondingAuthorIds: List<ResolvableEntity<Author>>?, // TODO testme
+    val correspondingInstitutionIds: List<ResolvableEntity<Institution>>?, // TODO testme
     val countsByYear: List<CitedByCountYear>?,
     val createdDate: SerializedDate?,
     val displayName: String?,
@@ -35,21 +40,25 @@ data class Work(
     val locations: List<Location>?,
     val locationsCount: Int?,
     val mesh: List<Mesh>?,
-    val ngramsUrl: String?, // TODO query by ngrams
+    val ngramsUrl: String?,
     val openAccess: OpenAccess?,
     val primaryLocation: Location?,
     val publicationDate: SerializedDate?,
     val publicationYear: Int?,
-    val referencedWorks: List<String>?, // TODO query by ID
+    val referencedWorks: List<ResolvableEntity<Work>>?,
     val referencedWorksCount: Int?,
     val relevanceScore: Float?,
-    val relatedWorks: List<String>?, // TODO query by ID
+    val relatedWorks: List<ResolvableEntity<Work>>?,
     val sustainableDevelopmentGoals: List<SustainableDevelopmentGoal>?,
     val title: String?,
     val type: String?,
     val typeCrossref: String?,
     val updatedDate: SerializedDateTime?,
-)
+) {
+    // TODO testme
+    fun resolveCitedBys(): QueryResponse<Work>? = citedByApiUrl?.let { WorksClient().getEntities(it) }
+    fun resolveNgrams(): NgramsResponse? = ngramsUrl?.let { NgramsClient().getNgrams(it) }
+}
 
 @Serializable
 data class WorkIds(

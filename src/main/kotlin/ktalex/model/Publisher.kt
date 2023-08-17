@@ -1,6 +1,8 @@
 package ktalex.model
 
 import kotlinx.serialization.Serializable
+import ktalex.dal.client.SourcesClient
+import ktalex.dal.query.QueryResponse
 import ktalex.model.serialization.SerializedDate
 import ktalex.model.serialization.SerializedDateTime
 import ktalex.model.serialization.SerializedId
@@ -23,11 +25,14 @@ data class Publisher(
     val parentPublisher: String?,
     val relevanceScore: Float?,
     val roles: List<Role>?,
-    val sourcesApiUrl: String?, // TODO An URL that will get you a list of all the sources published by this publisher.
+    val sourcesApiUrl: String?,
     val summaryStats: CitationMetrics?,
     val updatedDate: SerializedDateTime?,
     val worksCount: Int?
-)
+) {
+    // TODO testme
+    fun resolveResources(): QueryResponse<Source>? = sourcesApiUrl?.let { SourcesClient().getEntities(it) }
+}
 
 @Serializable
 data class PublisherIds(
