@@ -2,7 +2,7 @@ package ktalex.model
 
 import kotlinx.serialization.Serializable
 import ktalex.dal.client.SourcesClient
-import ktalex.dal.query.QueryResponse
+import ktalex.dal.query.PageableQueryResponse
 import ktalex.model.serialization.SerializedDate
 import ktalex.model.serialization.SerializedDateTime
 import ktalex.model.serialization.SerializedId
@@ -30,7 +30,7 @@ data class Publisher(
     val updatedDate: SerializedDateTime?,
     val worksCount: Int?
 ) {
-    fun resolveSources(): QueryResponse<Source>? = sourcesApiUrl?.let { SourcesClient().getEntities(it) }
+    fun resolveSources(): PageableQueryResponse<Source>? = sourcesApiUrl?.let { SourcesClient().getEntities(it) }
 }
 
 @Serializable

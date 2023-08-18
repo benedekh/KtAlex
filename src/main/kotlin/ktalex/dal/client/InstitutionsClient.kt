@@ -1,7 +1,7 @@
 package ktalex.dal.client
 
+import ktalex.dal.query.PageableQueryResponse
 import ktalex.dal.query.QueryBuilder
-import ktalex.dal.query.QueryResponse
 import ktalex.model.Institution
 
 class InstitutionsClient : BaseEntityClient<Institution>() {
@@ -11,7 +11,13 @@ class InstitutionsClient : BaseEntityClient<Institution>() {
     override fun getRandom(queryBuilder: QueryBuilder?): Institution =
         getEntity("$baseUrl/random${queryBuilder?.build() ?: ""}")!!
 
-    override fun getEntities(url: String): QueryResponse<Institution> = getEntity(url)!!
+    override fun getEntities(url: String): PageableQueryResponse<Institution> = getEntitiesInternal(url)
+
+    override fun getEntities(queryBuilder: QueryBuilder?): PageableQueryResponse<Institution> =
+        getEntitiesInternal(queryBuilder)
+
+    override fun getEntities(url: String, queryBuilder: QueryBuilder?): PageableQueryResponse<Institution> =
+        getEntitiesInternal(url, queryBuilder)
 
     fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Institution? =
         getEntity("$baseUrl/$id${queryBuilder?.build() ?: ""}")

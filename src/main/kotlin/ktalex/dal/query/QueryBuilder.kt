@@ -7,9 +7,8 @@ import java.time.LocalDate
 class QueryBuilder {
 
     // pagination
-    private var page: Int? = null
-    private var perPage: Int? = null
-    private var cursor: String? = null
+    var paginationSettings: PaginationSettings? = null
+        private set
 
     // select
     private var selectFields: List<String>? = null
@@ -31,6 +30,21 @@ class QueryBuilder {
     // group by
     private var groupBy: String? = null
 
+    fun copy(): QueryBuilder {
+        val copy = QueryBuilder()
+        copy.paginationSettings =
+            PaginationSettings(paginationSettings?.page, paginationSettings?.perPage, paginationSettings?.cursor)
+        copy.selectFields = selectFields?.toMutableList()
+        copy.sortByField = sortByField
+        copy.sortDescending = sortDescending
+        copy.searchTerm = searchTerm
+        copy.filters.forEach { (key, value) -> copy.filters[key] = value.toMutableList() }
+        copy.sampleSize = sampleSize
+        copy.sampleSeed = sampleSeed
+        copy.groupBy = groupBy
+        return copy
+    }
+
     fun pagination(page: Int? = null, perPage: Int? = null, cursor: String? = null): QueryBuilder {
         if (page != null) {
             if (page < 1) throw IllegalArgumentException("Page must be greater than 0")
@@ -39,11 +53,17 @@ class QueryBuilder {
         if (cursor != null && sampleSize != null) throw IllegalArgumentException("Cursor cannot be used with sampling")
         if (perPage != null && (perPage < 1 || perPage > 200)) throw IllegalArgumentException("PerPage must be between 1 and 200")
 
-        this.page = page
-        this.perPage = perPage
-        this.cursor = cursor
+        this.paginationSettings = PaginationSettings(page, perPage, cursor)
 
         return this
+    }
+
+    fun withDefaultPagination(): QueryBuilder {
+        return if (paginationSettings == null || (paginationSettings?.page == null && paginationSettings?.cursor == null)) {
+            pagination(perPage = paginationSettings?.perPage, cursor = "*")
+        } else {
+            this
+        }
     }
 
     /**
@@ -312,9 +332,9 @@ class QueryBuilder {
         groupBy?.let { sb.append("group_by=$it&") }
         sampleSize?.let { sb.append("sample=$it&") }
         sampleSeed?.let { sb.append("seed=$it&") }
-        page?.let { sb.append("page=$it&") }
-        perPage?.let { sb.append("per_page=$it&") }
-        cursor?.let { sb.append("cursor=$it&") }
+        paginationSettings?.page?.let { sb.append("page=$it&") }
+        paginationSettings?.perPage?.let { sb.append("per_page=$it&") }
+        paginationSettings?.cursor?.let { sb.append("cursor=$it&") }
 
         return if (sb.isNotEmpty()) {
             return "?${sb.toString().removeSuffix("&")}"
@@ -369,3 +389,9 @@ data class NumberFieldValue(
         if (greaterThan && lessThan) throw IllegalArgumentException("Cannot use both greater than, less than operators")
     }
 }
+
+data class PaginationSettings(
+    val page: Int?,
+    val perPage: Int?,
+    val cursor: String?
+)

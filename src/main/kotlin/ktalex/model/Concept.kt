@@ -2,7 +2,7 @@ package ktalex.model
 
 import kotlinx.serialization.Serializable
 import ktalex.dal.client.WorksClient
-import ktalex.dal.query.QueryResponse
+import ktalex.dal.query.PageableQueryResponse
 import ktalex.model.serialization.SerializedDate
 import ktalex.model.serialization.SerializedDateTime
 import ktalex.model.serialization.SerializedId
@@ -54,7 +54,7 @@ data class Concept(
     val worksApiUrl: String?,
     val worksCount: Int?
 ) : BaseConcept() {
-    fun resolveWorks(): QueryResponse<Work>? = worksApiUrl?.let { WorksClient().getEntities(it) }
+    fun resolveWorks(): PageableQueryResponse<Work>? = worksApiUrl?.let { WorksClient().getEntities(it) }
 }
 
 @Serializable

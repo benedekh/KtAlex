@@ -14,8 +14,10 @@ import kotlinx.serialization.json.JsonNamingStrategy
 import ktalex.dal.autocomplete.AutocompleteResponse
 import ktalex.dal.error.ErrorResponse
 import ktalex.dal.error.OpenAlexException
+import ktalex.dal.query.PageableQueryResponse
 import ktalex.dal.query.QueryBuilder
 import ktalex.dal.query.QueryResponse
+import ktalex.utils.extractFirstMatch
 
 abstract class BaseClient<T> : AutoCloseable {
 
@@ -60,10 +62,11 @@ abstract class BaseEntityClient<T>(protected val openAlexBaseUrl: String = "http
 
     abstract fun getRandom(queryBuilder: QueryBuilder? = null): T
 
-    abstract fun getEntities(url: String): QueryResponse<T>
+    abstract fun getEntities(url: String): PageableQueryResponse<T>
 
-    fun getEntities(queryBuilder: QueryBuilder? = null): QueryResponse<T> =
-        getEntity("$baseUrl${queryBuilder?.build() ?: ""}")!!
+    abstract fun getEntities(queryBuilder: QueryBuilder? = null): PageableQueryResponse<T>
+
+    abstract fun getEntities(url: String, queryBuilder: QueryBuilder? = null): PageableQueryResponse<T>
 
     /**
      * Completes the given term with possible continuations to get a list of entities. For details see the [OpenAlex documentation](https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/autocomplete-entities).
@@ -76,5 +79,38 @@ abstract class BaseEntityClient<T>(protected val openAlexBaseUrl: String = "http
             queryBuilder?.let { "&${it.build().removePrefix("?")}" } ?: ""
         }"
     )!!
+
+    protected fun getEntitiesInternal(url: String): PageableQueryResponse<T> {
+        val (page, urlAfterPageRemoved) = url.extractFirstMatch("page", true)
+        val (perPage, urlAfterPerPageRemoved) = urlAfterPageRemoved.extractFirstMatch("per_page", true)
+        val (cursor, urlAfterCursorRemoved) = urlAfterPerPageRemoved.extractFirstMatch("cursor", true)
+
+        val queryBuilder = QueryBuilder().pagination(page?.toInt(), perPage?.toInt(), cursor)
+        return getEntities(urlAfterCursorRemoved, queryBuilder)
+    }
+
+    protected fun getEntitiesInternal(queryBuilder: QueryBuilder? = null): PageableQueryResponse<T> =
+        getEntities(baseUrl, queryBuilder)
+
+    protected fun getEntitiesInternal(url: String, queryBuilder: QueryBuilder? = null): PageableQueryResponse<T> {
+        val preparedQueryBuilder = (queryBuilder ?: QueryBuilder()).withDefaultPagination()
+
+        val queryParams = preparedQueryBuilder.build()
+        val preparedUrl = if (url.contains("?") || url.contains("&")) {
+            // the URL already contains query params
+            "$url&${queryParams.removePrefix("?")}"
+        } else {
+            "$url$queryParams"
+        }
+        val response: QueryResponse<T> = getEntity(preparedUrl)!!
+        return PageableQueryResponse(
+            meta = response.meta,
+            results = response.results,
+            groupBy = response.groupBy,
+            url = url,
+            queryBuilder = preparedQueryBuilder.copy(),
+            client = this
+        )
+    }
 
 }
