@@ -32,6 +32,7 @@ abstract class BaseClient<T> : AutoCloseable {
 
 
     protected inline fun <reified T> getEntity(url: String): T? {
+        println(url)
         var result: T? = null
         runBlocking {
             val response = client.get(url)
@@ -59,7 +60,8 @@ abstract class BaseEntityClient<T>(protected val openAlexBaseUrl: String = "http
 
     abstract fun getRandom(queryBuilder: QueryBuilder? = null): T
 
-    fun getEntities(url: String): QueryResponse<T> = getEntity(url)!!
+    abstract fun getEntities(url: String): QueryResponse<T>
+
     fun getEntities(queryBuilder: QueryBuilder? = null): QueryResponse<T> =
         getEntity("$baseUrl${queryBuilder?.build() ?: ""}")!!
 

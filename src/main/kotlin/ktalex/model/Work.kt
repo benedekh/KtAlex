@@ -21,8 +21,8 @@ data class Work(
     val citedByApiUrl: String?,
     val citedByCount: Int?,
     val concepts: List<RelatedConcept>?,
-    val correspondingAuthorIds: List<ResolvableEntity<Author>>?, // TODO testme
-    val correspondingInstitutionIds: List<ResolvableEntity<Institution>>?, // TODO testme
+    val correspondingAuthorIds: List<ResolvableEntity<Author>>?,
+    val correspondingInstitutionIds: List<ResolvableEntity<Institution>>?,
     val countsByYear: List<CitedByCountYear>?,
     val createdDate: SerializedDate?,
     val displayName: String?,
@@ -55,7 +55,6 @@ data class Work(
     val typeCrossref: String?,
     val updatedDate: SerializedDateTime?,
 ) {
-    // TODO testme
     fun resolveCitedBys(): QueryResponse<Work>? = citedByApiUrl?.let { WorksClient().getEntities(it) }
     fun resolveNgrams(): NgramsResponse? = ngramsUrl?.let { NgramsClient().getNgrams(it) }
 }

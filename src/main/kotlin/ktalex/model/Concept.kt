@@ -54,7 +54,6 @@ data class Concept(
     val worksApiUrl: String?,
     val worksCount: Int?
 ) : BaseConcept() {
-    // TODO testme
     fun resolveWorks(): QueryResponse<Work>? = worksApiUrl?.let { WorksClient().getEntities(it) }
 }
 

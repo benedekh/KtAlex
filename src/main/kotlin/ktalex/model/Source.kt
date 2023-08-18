@@ -69,7 +69,6 @@ data class Source(
     val worksCount: Int?,
     val xConcepts: List<RelatedConcept>?
 ) : BaseSource() {
-    // TODO testme
     fun resolveWorks(): QueryResponse<Work>? = worksApiUrl?.let { WorksClient().getEntities(it) }
 }
 

@@ -39,7 +39,6 @@ data class Author(
     val worksCount: Int?,
     val xConcepts: List<RelatedConcept>?
 ) : BaseAuthor() {
-    // TODO testme
     fun resolveWorks(): QueryResponse<Work>? = worksApiUrl?.let { WorksClient().getEntities(it) }
 }
 

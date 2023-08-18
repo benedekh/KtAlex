@@ -30,8 +30,7 @@ data class Publisher(
     val updatedDate: SerializedDateTime?,
     val worksCount: Int?
 ) {
-    // TODO testme
-    fun resolveResources(): QueryResponse<Source>? = sourcesApiUrl?.let { SourcesClient().getEntities(it) }
+    fun resolveSources(): QueryResponse<Source>? = sourcesApiUrl?.let { SourcesClient().getEntities(it) }
 }
 
 @Serializable

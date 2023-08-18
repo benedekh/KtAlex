@@ -64,7 +64,6 @@ data class Institution(
     val worksCount: Int?,
     val xConcepts: List<RelatedConcept>?,
 ) : BaseInstitution() {
-    // TODO testme
     fun resolveWorks(): QueryResponse<Work>? = worksApiUrl?.let { WorksClient().getEntities(it) }
 }
 
