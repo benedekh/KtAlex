@@ -10,13 +10,12 @@ import ktalex.model.serialization.SerializedDateTime
 import ktalex.model.serialization.SerializedEnum
 import ktalex.model.serialization.SerializedId
 
-@Serializable
-abstract class BaseInstitution {
-    abstract val countryCode: String?
-    abstract val displayName: String?
-    abstract val id: SerializedId?
-    abstract val ror: String?
-    abstract val type: SerializedEnum<InstitutionType>?
+interface BaseInstitution {
+    val countryCode: String?
+    val displayName: String?
+    val id: SerializedId?
+    val ror: String?
+    val type: SerializedEnum<InstitutionType>?
 }
 
 @Serializable
@@ -27,7 +26,7 @@ data class DehydratedInstitution(
     override val ror: String?,
     @Serializable(with = InstitutionTypeSerializer::class)
     override val type: SerializedEnum<InstitutionType>?,
-) : BaseInstitution()
+) : BaseInstitution
 
 @Serializable
 data class AssociatedInstitution(
@@ -39,7 +38,7 @@ data class AssociatedInstitution(
     override val type: SerializedEnum<InstitutionType>?,
     @Serializable(with = RelationshipTypeSerializer::class)
     val relationship: SerializedEnum<RelationshipType>?,
-) : BaseInstitution()
+) : BaseInstitution
 
 @Serializable
 data class Institution(
@@ -69,7 +68,7 @@ data class Institution(
     val worksApiUrl: String?,
     val worksCount: Int?,
     val xConcepts: List<RelatedConcept>?,
-) : BaseInstitution() {
+) : BaseInstitution {
     fun resolveWorks(): PageableQueryResponse<Work>? = worksApiUrl?.let { WorksClient().getEntities(it) }
 }
 

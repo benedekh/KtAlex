@@ -2,28 +2,25 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.9.0"
+    // kotlinx.serialization
     kotlin("plugin.serialization") version "1.9.0"
-    id("com.diffplug.spotless") version "6.20.0"
+    // detekt
+    id("io.gitlab.arturbosch.detekt") version ("1.23.1")
 }
 
 group = "org.example"
 version = "1.0-SNAPSHOT"
-
-
-spotless {
-    kotlin {
-        ktlint("0.50.0")
-    }
-}
-
 
 repositories {
     mavenCentral()
 }
 
 val ktorVersion by extra { "2.3.3" }
+val detektVersion by extra { "1.23.1" }
 
 dependencies {
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
+
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
@@ -41,5 +38,5 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }

@@ -9,19 +9,18 @@ import ktalex.model.serialization.SerializedEnum
 import ktalex.model.serialization.SerializedId
 import ktalex.model.serialization.SourceTypeSerializer
 
-@Serializable
-abstract class BaseSource {
-    abstract val displayName: String?
-    abstract val hostOrganization: String?
-    abstract val hostOrganizationLineage: List<String>?
-    abstract val hostOrganizationLineageNames: List<String>?
-    abstract val hostOrganizationName: String?
-    abstract val id: SerializedId?
-    abstract val isInDoaj: Boolean?
-    abstract val isOa: Boolean?
-    abstract val issn: List<String>?
-    abstract val issnL: String?
-    abstract val type: SerializedEnum<SourceType>?
+interface BaseSource {
+    val displayName: String?
+    val hostOrganization: String?
+    val hostOrganizationLineage: List<String>?
+    val hostOrganizationLineageNames: List<String>?
+    val hostOrganizationName: String?
+    val id: SerializedId?
+    val isInDoaj: Boolean?
+    val isOa: Boolean?
+    val issn: List<String>?
+    val issnL: String?
+    val type: SerializedEnum<SourceType>?
 }
 
 @Serializable
@@ -38,7 +37,7 @@ data class DehydratedSource(
     override val issnL: String?,
     @Serializable(with = SourceTypeSerializer::class)
     override val type: SerializedEnum<SourceType>?,
-) : BaseSource()
+) : BaseSource
 
 @Serializable
 data class Source(
@@ -71,7 +70,7 @@ data class Source(
     val worksApiUrl: String?,
     val worksCount: Int?,
     val xConcepts: List<RelatedConcept>?,
-) : BaseSource() {
+) : BaseSource {
     fun resolveWorks(): PageableQueryResponse<Work>? = worksApiUrl?.let { WorksClient().getEntities(it) }
 }
 

@@ -8,16 +8,16 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-abstract class BaseSerializedId {
-    abstract val url: String
-    abstract val id: String
+interface BaseSerializedId {
+    val url: String
+    val id: String
 }
 
 @Serializable(with = SerializedIdSerializer::class)
 data class SerializedId(
     override val url: String,
     override val id: String,
-) : BaseSerializedId()
+) : BaseSerializedId
 
 class SerializedIdSerializer : KSerializer<SerializedId> {
     override val descriptor: SerialDescriptor =

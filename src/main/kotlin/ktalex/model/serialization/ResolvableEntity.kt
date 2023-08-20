@@ -19,7 +19,7 @@ import ktalex.dal.client.WorksClient
 data class ResolvableEntity<T>(
     override val url: String,
     override val id: String,
-) : BaseSerializedId() {
+) : BaseSerializedId {
     @Suppress("UNCHECKED_CAST")
     fun resolveEntity(): T? {
         if (id.isEmpty()) return null

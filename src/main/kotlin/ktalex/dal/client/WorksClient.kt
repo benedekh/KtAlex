@@ -11,9 +11,9 @@ class WorksClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
     override val entityType = "works"
 
     override fun getRandom(queryBuilder: QueryBuilder?): Work =
-        getEntity("$baseUrl/random${queryBuilder?.build() ?: ""}")!!
+        getEntity("$baseUrl/random${queryBuilder?.build().orEmpty()}")
 
-    override fun getEntityWithExactType(url: String): QueryResponse<Work> = getEntity(url)!!
+    override fun getEntityWithExactType(url: String): QueryResponse<Work> = getEntity(url)
 
     override fun getEntities(url: String): PageableQueryResponse<Work> = getEntitiesInternal(url)
 
@@ -24,14 +24,14 @@ class WorksClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
         getEntitiesInternal(url, queryBuilder)
 
     fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Work? =
-        getEntity("$baseUrl/$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
 
     fun getByDoi(id: String, queryBuilder: QueryBuilder? = null): Work? =
-        getEntity("$baseUrl/$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
 
     fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Work? =
-        getEntity("$baseUrl/mag:$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/mag:$id${queryBuilder?.build().orEmpty()}")
 
     fun getByPubMedId(id: String, queryBuilder: QueryBuilder? = null): Work? =
-        getEntity("$baseUrl/pmid:$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/pmid:$id${queryBuilder?.build().orEmpty()}")
 }

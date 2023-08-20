@@ -9,15 +9,13 @@ fun String.camelToSnakeCase(): String {
 }
 
 /**
- * Extracts the first match of a part from a string. After that it replaces all occurrences of that part with an empty string.
+ * Extracts the first match of a part from a string. After that it replaces all occurrences of that part with an empty
+ * string.
  *
  * @param partName the name of the part to be extracted
  * @param isDecimal whether the part is a decimal number or not
  */
 fun String.extractFirstMatch(partName: String, isDecimal: Boolean): Pair<String?, String> {
-    var remainingString: String = this
-    var firstMatch: String? = null
-
     val regexps = if (isDecimal) {
         listOf(Regex("\\?$partName=(\\d+)(&|$)"), Regex("&$partName=(\\d+)(&|$)"))
     } else {
@@ -25,39 +23,41 @@ fun String.extractFirstMatch(partName: String, isDecimal: Boolean): Pair<String?
     }
 
     // find the regex that matches first
+    var firstMatch: String? = null
     var lowestMatchingIndex: Int = Int.MAX_VALUE
-    var regexWithLowestMatchingIndex: Regex? = null
     regexps.forEach { regexp ->
-        regexp.find(remainingString)?.let { matchResult ->
-            val matchIndex = remainingString.indexOf(matchResult.value)
+        regexp.find(this)?.let { matchResult ->
+            val matchIndex = this.indexOf(matchResult.value)
             if (matchIndex < lowestMatchingIndex) {
+                firstMatch = matchResult.groupValues[1]
                 lowestMatchingIndex = matchIndex
-                regexWithLowestMatchingIndex = regexp
             }
         }
     }
 
-    regexWithLowestMatchingIndex?.let { regexp ->
-        firstMatch = regexp.find(remainingString)!!.let { it.groupValues[1] }
-
-        // remove all matches from the string
-        regexps.forEach {
-            it.findAll(remainingString).forEach { matchResult ->
-                val toBeCut = matchResult.value
-                val lengthToBeCut = if (toBeCut.endsWith("&")) {
-                    toBeCut.length - 1
-                } else {
-                    toBeCut.length
-                }
-                remainingString = remainingString.removeRange(
-                    remainingString.indexOf(toBeCut),
-                    remainingString.indexOf(toBeCut) + lengthToBeCut,
-                )
-            }
-        }
-    }
+    var remainingString: String = this
+    firstMatch?.let { remainingString = this.removeAllMatchesOfRegexps(regexps) }
 
     return Pair(firstMatch, remainingString)
+}
+
+fun String.removeAllMatchesOfRegexps(regexps: List<Regex>): String {
+    var remainingString: String = this
+    regexps.forEach {
+        it.findAll(remainingString).forEach { matchResult ->
+            val toBeCut = matchResult.value
+            val lengthToBeCut = if (toBeCut.endsWith("&")) {
+                toBeCut.length - 1
+            } else {
+                toBeCut.length
+            }
+            remainingString = remainingString.removeRange(
+                remainingString.indexOf(toBeCut),
+                remainingString.indexOf(toBeCut) + lengthToBeCut,
+            )
+        }
+    }
+    return remainingString
 }
 
 fun String.urlEncode(): String = URLEncoder.encode(this, StandardCharsets.UTF_8.toString())

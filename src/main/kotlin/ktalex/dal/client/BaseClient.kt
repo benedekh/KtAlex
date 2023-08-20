@@ -24,8 +24,9 @@ import ktalex.dal.query.QueryBuilder
 import ktalex.dal.query.QueryResponse
 import ktalex.utils.extractFirstMatch
 import mu.KotlinLogging
+import java.util.concurrent.atomic.AtomicReference
 
-abstract class BaseClient<out T>(protected val mailTo: String? = null) : AutoCloseable {
+open class BaseClient<out T>(protected val mailTo: String? = null) : AutoCloseable {
 
     companion object {
         protected val LOGGER = KotlinLogging.logger {}
@@ -37,15 +38,16 @@ abstract class BaseClient<out T>(protected val mailTo: String? = null) : AutoClo
             json(
                 Json {
                     explicitNulls = false
-                    // ignoreUnknownKeys = true // TODO enable in production
+                    ignoreUnknownKeys = true
                     namingStrategy = JsonNamingStrategy.SnakeCase
                 },
             )
         }
     }
 
-    protected inline fun <reified T> getEntity(url: String): T? {
-        var result: T? = null
+    protected inline fun <reified T> getEntity(url: String): T {
+        val reference = AtomicReference<T>()
+
         runBlocking {
             val requestBuilder = HttpRequestBuilder().apply {
                 url(url)
@@ -56,14 +58,23 @@ abstract class BaseClient<out T>(protected val mailTo: String? = null) : AutoClo
 
             val response = client.get(requestBuilder)
 
-            if (response.status == HttpStatusCode.OK) {
-                result = response.body()
-            } else if (response.status == HttpStatusCode.Forbidden) {
-                val error: ErrorResponse = response.body()
-                error.message?.let { throw OpenAlexException(it) }
+            when (response.status) {
+                HttpStatusCode.OK -> {
+                    reference.set(response.body())
+                }
+
+                HttpStatusCode.Forbidden -> {
+                    val error: ErrorResponse = response.body()
+                    error.message?.let { throw OpenAlexException(it) }
+                }
+
+                else -> {
+                    throw OpenAlexException("Unexpected response status: ${response.status}")
+                }
             }
         }
-        return result
+
+        return reference.get()
     }
 
     override fun close() {
@@ -96,13 +107,14 @@ abstract class BaseEntityClient<T> : BaseClient<T> {
     abstract fun getEntities(url: String, queryBuilder: QueryBuilder? = null): PageableQueryResponse<T>
 
     /**
-     * Completes the given term with possible continuations to get a list of entities. For details see the [OpenAlex documentation](https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/autocomplete-entities).
+     * Completes the given term with possible continuations to get a list of entities. For details see the OpenAlex
+     * documentation [here](https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/autocomplete-entities).
      *
      * @param term the term to complete
      * @param queryBuilder to use "filter" and "search" queries in autocomplete
      */
     fun autocomplete(term: String, queryBuilder: QueryBuilder? = null): AutocompleteResponse =
-        getEntity("$autocompleteBaseUrl?q=$term${queryBuilder?.let { "&${it.build().removePrefix("?")}" } ?: ""}")!!
+        getEntity("$autocompleteBaseUrl?q=$term${queryBuilder?.let { "&${it.build().removePrefix("?")}" }.orEmpty()}")
 
     protected abstract fun getEntityWithExactType(url: String): QueryResponse<T>
 

@@ -3,24 +3,23 @@ package ktalex.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Serializable
-abstract class BaseCountsByYear {
-    abstract val citedByCount: Int?
-    abstract val year: Int?
+interface BaseCountsByYear {
+    val citedByCount: Int?
+    val year: Int?
 }
 
 @Serializable
 data class CitedByCountYear(
     override val citedByCount: Int?,
     override val year: Int?,
-) : BaseCountsByYear()
+) : BaseCountsByYear
 
 @Serializable
 data class CountsByYear(
     override val citedByCount: Int?,
     override val year: Int?,
     val worksCount: Int?,
-) : BaseCountsByYear()
+) : BaseCountsByYear
 
 @Serializable
 data class CitationMetrics(

@@ -7,12 +7,11 @@ import ktalex.model.serialization.SerializedDate
 import ktalex.model.serialization.SerializedDateTime
 import ktalex.model.serialization.SerializedId
 
-@Serializable
-abstract class BaseConcept {
-    abstract val displayName: String?
-    abstract val id: SerializedId?
-    abstract val level: Int?
-    abstract val wikidata: String?
+interface BaseConcept {
+    val displayName: String?
+    val id: SerializedId?
+    val level: Int?
+    val wikidata: String?
 }
 
 @Serializable
@@ -21,7 +20,7 @@ data class DehydratedConcept(
     override val id: SerializedId?,
     override val level: Int?,
     override val wikidata: String?,
-) : BaseConcept()
+) : BaseConcept
 
 @Serializable
 data class RelatedConcept(
@@ -30,7 +29,7 @@ data class RelatedConcept(
     override val level: Int?,
     override val wikidata: String?,
     val score: Float?,
-) : BaseConcept()
+) : BaseConcept
 
 @Serializable
 data class Concept(
@@ -53,7 +52,7 @@ data class Concept(
     override val wikidata: String?,
     val worksApiUrl: String?,
     val worksCount: Int?,
-) : BaseConcept() {
+) : BaseConcept {
     fun resolveWorks(): PageableQueryResponse<Work>? = worksApiUrl?.let { WorksClient().getEntities(it) }
 }
 

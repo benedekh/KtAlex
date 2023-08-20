@@ -4,7 +4,12 @@ import ktalex.utils.camelToSnakeCase
 import ktalex.utils.urlEncode
 import java.time.LocalDate
 
+@Suppress("detekt:TooManyFunctions")
 class QueryBuilder {
+
+    companion object {
+        private const val MAX_NUMBER_OF_OR_FILTER_CLAUSES = 50
+    }
 
     // pagination
     var paginationSettings: PaginationSettings? = null
@@ -47,10 +52,10 @@ class QueryBuilder {
 
     fun pagination(page: Int? = null, perPage: Int? = null, cursor: String? = null): QueryBuilder {
         if (page != null) {
-            if (page < 1) throw IllegalArgumentException("Page must be greater than 0")
-            if (cursor != null) throw IllegalArgumentException("Cursor cannot be used with page")
+            require(page >= 1) { "Page must be greater than 0" }
+            require(cursor == null) { "Cursor cannot be used with page" }
         }
-        if (cursor != null && sampleSize != null) throw IllegalArgumentException("Cursor cannot be used with sampling")
+        require(cursor == null || sampleSize == null) { "Cursor cannot be used with sampling" }
 
         this.paginationSettings = PaginationSettings(page, perPage, cursor)
 
@@ -58,7 +63,9 @@ class QueryBuilder {
     }
 
     fun withDefaultPagination(): QueryBuilder {
-        return if (paginationSettings == null || (paginationSettings?.page == null && paginationSettings?.cursor == null)) {
+        return if (paginationSettings == null ||
+            (paginationSettings?.page == null && paginationSettings?.cursor == null)
+        ) {
             pagination(perPage = paginationSettings?.perPage, cursor = "*")
         } else {
             this
@@ -67,11 +74,11 @@ class QueryBuilder {
 
     /**
      * @param sampleSize number of items to sample randomly
-     * @param sampleSeed seed to get the same sample every time. You must provide a seed value when paging beyond the first page of results. Without a seed value, you might get duplicate records in your results. (See https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/sample-entity-lists)
+     * @param sampleSeed seed to get the same sample every time. You must provide a seed value when paging beyond the
+     * first page of results. Without a seed value, you might get duplicate records in your results. (See the OpenAlex
+     * documentation [here](https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/sample-entity-lists).)
      */
     fun sampling(sampleSize: Int, sampleSeed: Int? = null): QueryBuilder {
-        if (sampleSize > 10000) throw IllegalArgumentException("Sample size cannot be greater than 10000")
-
         this.sampleSize = sampleSize
         this.sampleSeed = sampleSeed
         return this
@@ -86,7 +93,7 @@ class QueryBuilder {
     }
 
     /**
-     * @param fields name of the top-level fields in camelCase that you want to get in the response (i.e. displayName, id)
+     * @param fields name of the top-level fields in camelCase that you want to get in the response (e.g. displayName)
      */
     fun select(vararg fields: String): QueryBuilder {
         selectFields = fields.map { it.camelToSnakeCase() }
@@ -104,7 +111,8 @@ class QueryBuilder {
     }
 
     /**
-     * Excerpts from the [documentation](https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/search-entities):
+     * Excerpts from the OpenAlex documentation
+     * [here](https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/search-entities):
      *
      * When you search Works, the API looks for matches in titles, abstracts, and fulltext.
      * When you search Concepts, we look in each concept's display_name and description fields.
@@ -352,7 +360,7 @@ class QueryBuilder {
         val preparedValue = value.urlEncode()
 
         if (filters.containsKey(preparedFieldPath)) {
-            filters[preparedFieldPath]!!.add(preparedValue)
+            filters[preparedFieldPath]?.add(preparedValue)
         } else {
             filters[preparedFieldPath] = mutableListOf(preparedValue)
         }
@@ -360,7 +368,7 @@ class QueryBuilder {
     }
 
     private fun <E> put(fieldPath: String, negate: Boolean, values: Array<E>): QueryBuilder {
-        if (values.size > 50) throw IllegalArgumentException("Cannot use more than 50 values in OR filter")
+        require(values.size < MAX_NUMBER_OF_OR_FILTER_CLAUSES) { "Cannot use more than 50 values in OR filter" }
 
         val value = values.joinToString("|")
         if (negate) {
@@ -371,15 +379,20 @@ class QueryBuilder {
         return this
     }
 
-    override fun toString(): String {
-        return "QueryBuilder(paginationSettings=$paginationSettings, selectFields=$selectFields, sortByField=$sortByField, sortDescending=$sortDescending, searchTerm=$searchTerm, filters=$filters, sampleSize=$sampleSize, sampleSeed=$sampleSeed, groupBy=$groupBy)"
-    }
+    override fun toString(): String =
+        "QueryBuilder(paginationSettings=$paginationSettings, selectFields=$selectFields, " +
+            "sortByField=$sortByField, sortDescending=$sortDescending, searchTerm=$searchTerm, filters=$filters, " +
+            "sampleSize=$sampleSize, sampleSeed=$sampleSeed, groupBy=$groupBy)"
 }
 
 /**
  * @param value the value of the number field
- * @param greaterThan whether the value should be greater than the given value. greaterThan and lessThan cannot be used together.
- * @param lessThan whether the value should be less than the given value. greaterThan and lessThan cannot be used together.
+ *
+ * @param greaterThan whether the value should be greater than the given value.
+ * greaterThan and lessThan cannot be used together.
+ *
+ * @param lessThan whether the value should be less than the given value.
+ * greaterThan and lessThan cannot be used together.
  */
 data class NumberFieldValue(
     val value: Number,
@@ -387,7 +400,7 @@ data class NumberFieldValue(
     val lessThan: Boolean = false,
 ) {
     init {
-        if (greaterThan && lessThan) throw IllegalArgumentException("Cannot use both greater than, less than operators")
+        require(!(greaterThan && lessThan)) { "Cannot use both greater than, less than operators" }
     }
 }
 

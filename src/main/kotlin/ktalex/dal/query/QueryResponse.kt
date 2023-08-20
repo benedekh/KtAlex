@@ -3,11 +3,10 @@ package ktalex.dal.query
 import kotlinx.serialization.Serializable
 import ktalex.dal.client.BaseEntityClient
 
-@Serializable
-abstract class BaseQueryResponse<T> {
-    abstract val meta: MetaInfo?
-    abstract val results: List<T>?
-    abstract val groupBy: List<GroupByMetaInfo>?
+interface BaseQueryResponse<T> {
+    val meta: MetaInfo?
+    val results: List<T>?
+    val groupBy: List<GroupByMetaInfo>?
 }
 
 @Serializable
@@ -15,7 +14,7 @@ data class QueryResponse<T>(
     override val meta: MetaInfo?,
     override val results: List<T>?,
     override val groupBy: List<GroupByMetaInfo>?,
-) : BaseQueryResponse<T>()
+) : BaseQueryResponse<T>
 
 @Serializable
 data class MetaInfo(
@@ -40,7 +39,7 @@ data class PageableQueryResponse<T>(
     private val url: String? = null,
     private val queryBuilder: QueryBuilder,
     private val client: BaseEntityClient<T>,
-) : BaseQueryResponse<T>(), Iterable<PageableQueryResponse<T>> {
+) : BaseQueryResponse<T>, Iterable<PageableQueryResponse<T>> {
 
     fun nextPage(): PageableQueryResponse<T>? {
         if (results.isNullOrEmpty()) {
@@ -87,7 +86,7 @@ class PageableQueryResponseIterator<T>(
         } ?: queryBuilder.pagination(cursor = nextCursor ?: "*")
 
         peekedResponse = url?.let { client.getEntities(it, queryBuilder) } ?: client.getEntities(queryBuilder)
-        return peekedResponse!!.results?.isNotEmpty() ?: false
+        return peekedResponse?.results?.isNotEmpty() ?: false
     }
 
     override fun next(): PageableQueryResponse<T> {
@@ -96,13 +95,6 @@ class PageableQueryResponseIterator<T>(
             nextCursor = it.meta?.nextCursor
             peekedResponse = null
             it
-        } ?: PageableQueryResponse(
-            meta = lastResult.meta,
-            results = lastResult.results,
-            groupBy = lastResult.groupBy,
-            url = url,
-            queryBuilder = queryBuilder.copy(),
-            client = client,
-        )
+        } ?: throw NoSuchElementException()
     }
 }

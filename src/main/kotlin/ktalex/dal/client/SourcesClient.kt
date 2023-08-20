@@ -11,9 +11,9 @@ class SourcesClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
     override val entityType = "sources"
 
     override fun getRandom(queryBuilder: QueryBuilder?): Source =
-        getEntity("$baseUrl/random${queryBuilder?.build() ?: ""}")!!
+        getEntity("$baseUrl/random${queryBuilder?.build().orEmpty()}")
 
-    override fun getEntityWithExactType(url: String): QueryResponse<Source> = getEntity(url)!!
+    override fun getEntityWithExactType(url: String): QueryResponse<Source> = getEntity(url)
 
     override fun getEntities(url: String): PageableQueryResponse<Source> = getEntitiesInternal(url)
 
@@ -24,14 +24,14 @@ class SourcesClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
         getEntitiesInternal(url, queryBuilder)
 
     fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Source? =
-        getEntity("$baseUrl/$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
 
     fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Source? =
-        getEntity("$baseUrl/mag:$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/mag:$id${queryBuilder?.build().orEmpty()}")
 
     fun getByIssn(id: String, queryBuilder: QueryBuilder? = null): Source? =
-        getEntity("$baseUrl/issn:$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/issn:$id${queryBuilder?.build().orEmpty()}")
 
     fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Source? =
-        getEntity("$baseUrl/wikidata:$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/wikidata:$id${queryBuilder?.build().orEmpty()}")
 }

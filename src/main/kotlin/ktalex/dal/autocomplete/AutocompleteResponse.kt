@@ -12,7 +12,8 @@ data class AutocompleteResponse(
 )
 
 /**
- * See [OpenAlex documentation](https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/autocomplete-entities#response-format).
+ * See OpenAlex documentation
+ * [here](https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/autocomplete-entities#response-format).
  */
 @Serializable
 data class AutocompleteResult(

@@ -11,9 +11,9 @@ class PublishersClient(openAlexBaseUrl: String? = null, mailTo: String? = null) 
     override val entityType = "publishers"
 
     override fun getRandom(queryBuilder: QueryBuilder?): Publisher =
-        getEntity("$baseUrl/random${queryBuilder?.build() ?: ""}")!!
+        getEntity("$baseUrl/random${queryBuilder?.build().orEmpty()}")
 
-    override fun getEntityWithExactType(url: String): QueryResponse<Publisher> = getEntity(url)!!
+    override fun getEntityWithExactType(url: String): QueryResponse<Publisher> = getEntity(url)
 
     override fun getEntities(url: String): PageableQueryResponse<Publisher> = getEntitiesInternal(url)
 
@@ -24,11 +24,11 @@ class PublishersClient(openAlexBaseUrl: String? = null, mailTo: String? = null) 
         getEntitiesInternal(url, queryBuilder)
 
     fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Publisher? =
-        getEntity("$baseUrl/$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
 
     fun getByRorId(id: String, queryBuilder: QueryBuilder? = null): Publisher? =
-        getEntity("$baseUrl/ror:$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/ror:$id${queryBuilder?.build().orEmpty()}")
 
     fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Publisher? =
-        getEntity("$baseUrl/wikidata:$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/wikidata:$id${queryBuilder?.build().orEmpty()}")
 }

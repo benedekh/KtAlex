@@ -11,9 +11,9 @@ class FundersClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
     override val entityType = "funders"
 
     override fun getRandom(queryBuilder: QueryBuilder?): Funder =
-        getEntity("$baseUrl/random${queryBuilder?.build() ?: ""}")!!
+        getEntity("$baseUrl/random${queryBuilder?.build().orEmpty()}")
 
-    override fun getEntityWithExactType(url: String): QueryResponse<Funder> = getEntity(url)!!
+    override fun getEntityWithExactType(url: String): QueryResponse<Funder> = getEntity(url)
 
     override fun getEntities(url: String): PageableQueryResponse<Funder> = getEntitiesInternal(url)
 
@@ -24,11 +24,11 @@ class FundersClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
         getEntitiesInternal(url, queryBuilder)
 
     fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Funder? =
-        getEntity("$baseUrl/$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
 
     fun getByRorId(id: String, queryBuilder: QueryBuilder? = null): Funder? =
-        getEntity("$baseUrl/ror:$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/ror:$id${queryBuilder?.build().orEmpty()}")
 
     fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Funder? =
-        getEntity("$baseUrl/wikidata:$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/wikidata:$id${queryBuilder?.build().orEmpty()}")
 }

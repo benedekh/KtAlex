@@ -11,9 +11,9 @@ class ConceptsClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
     override val entityType = "concepts"
 
     override fun getRandom(queryBuilder: QueryBuilder?): Concept =
-        getEntity("$baseUrl/random${queryBuilder?.build() ?: ""}")!!
+        getEntity("$baseUrl/random${queryBuilder?.build().orEmpty()}")
 
-    override fun getEntityWithExactType(url: String): QueryResponse<Concept> = getEntity(url)!!
+    override fun getEntityWithExactType(url: String): QueryResponse<Concept> = getEntity(url)
 
     override fun getEntities(url: String): PageableQueryResponse<Concept> = getEntitiesInternal(url)
 
@@ -23,11 +23,11 @@ class ConceptsClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
         getEntitiesInternal(url, queryBuilder)
 
     fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Concept? =
-        getEntity("$baseUrl/$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
 
     fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Concept? =
-        getEntity("$baseUrl/mag:$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/mag:$id${queryBuilder?.build().orEmpty()}")
 
     fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Concept? =
-        getEntity("$baseUrl/wikidata:$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/wikidata:$id${queryBuilder?.build().orEmpty()}")
 }

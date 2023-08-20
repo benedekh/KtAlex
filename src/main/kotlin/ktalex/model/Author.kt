@@ -7,11 +7,10 @@ import ktalex.model.serialization.SerializedDate
 import ktalex.model.serialization.SerializedDateTime
 import ktalex.model.serialization.SerializedId
 
-@Serializable
-abstract class BaseAuthor {
-    abstract val id: SerializedId?
-    abstract val displayName: String?
-    abstract val orcid: String?
+interface BaseAuthor {
+    val id: SerializedId?
+    val displayName: String?
+    val orcid: String?
 }
 
 @Serializable
@@ -19,7 +18,7 @@ data class DehydratedAuthor(
     override val id: SerializedId?,
     override val displayName: String?,
     override val orcid: String?,
-) : BaseAuthor()
+) : BaseAuthor
 
 @Serializable
 data class Author(
@@ -38,7 +37,7 @@ data class Author(
     val worksApiUrl: String?,
     val worksCount: Int?,
     val xConcepts: List<RelatedConcept>?,
-) : BaseAuthor() {
+) : BaseAuthor {
     fun resolveWorks(): PageableQueryResponse<Work>? = worksApiUrl?.let { WorksClient().getEntities(it) }
 }
 

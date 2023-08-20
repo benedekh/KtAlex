@@ -11,9 +11,9 @@ class AuthorsClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
     override val entityType = "authors"
 
     override fun getRandom(queryBuilder: QueryBuilder?): Author =
-        getEntity("$baseUrl/random${queryBuilder?.build() ?: ""}")!!
+        getEntity("$baseUrl/random${queryBuilder?.build().orEmpty()}")
 
-    override fun getEntityWithExactType(url: String): QueryResponse<Author> = getEntity(url)!!
+    override fun getEntityWithExactType(url: String): QueryResponse<Author> = getEntity(url)
 
     override fun getEntities(url: String): PageableQueryResponse<Author> = getEntitiesInternal(url)
 
@@ -24,11 +24,11 @@ class AuthorsClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
         getEntitiesInternal(url, queryBuilder)
 
     fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Author? =
-        getEntity("$baseUrl/$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
 
     fun getByOrcid(id: String, queryBuilder: QueryBuilder? = null): Author? =
-        getEntity("$baseUrl/$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
 
     fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Author? =
-        getEntity("$baseUrl/mag:$id${queryBuilder?.build() ?: ""}")
+        getEntity("$baseUrl/mag:$id${queryBuilder?.build().orEmpty()}")
 }
