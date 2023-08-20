@@ -5,7 +5,8 @@ import ktalex.dal.query.QueryBuilder
 import ktalex.dal.query.QueryResponse
 import ktalex.model.Publisher
 
-class PublishersClient : BaseEntityClient<Publisher>() {
+class PublishersClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
+    BaseEntityClient<Publisher>(openAlexBaseUrl, mailTo) {
 
     override val entityType = "publishers"
 

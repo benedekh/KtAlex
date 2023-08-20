@@ -5,7 +5,8 @@ import ktalex.dal.query.QueryBuilder
 import ktalex.dal.query.QueryResponse
 import ktalex.model.Concept
 
-class ConceptsClient : BaseEntityClient<Concept>() {
+class ConceptsClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
+    BaseEntityClient<Concept>(openAlexBaseUrl, mailTo) {
 
     override val entityType = "concepts"
 

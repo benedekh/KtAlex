@@ -5,7 +5,8 @@ import ktalex.dal.query.QueryBuilder
 import ktalex.dal.query.QueryResponse
 import ktalex.model.Funder
 
-class FundersClient : BaseEntityClient<Funder>() {
+class FundersClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
+    BaseEntityClient<Funder>(openAlexBaseUrl, mailTo) {
 
     override val entityType = "funders"
 

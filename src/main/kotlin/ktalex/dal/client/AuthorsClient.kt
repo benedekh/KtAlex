@@ -4,9 +4,9 @@ import ktalex.dal.query.PageableQueryResponse
 import ktalex.dal.query.QueryBuilder
 import ktalex.dal.query.QueryResponse
 import ktalex.model.Author
-import java.time.LocalDate
 
-class AuthorsClient : BaseEntityClient<Author>() {
+class AuthorsClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
+    BaseEntityClient<Author>(openAlexBaseUrl, mailTo) {
 
     override val entityType = "authors"
 
@@ -32,4 +32,8 @@ class AuthorsClient : BaseEntityClient<Author>() {
     fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Author? =
         getEntity("$baseUrl/mag:$id${queryBuilder?.build() ?: ""}")
 
+}
+
+fun main() {
+    val client = AuthorsClient()
 }

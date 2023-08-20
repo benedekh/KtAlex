@@ -19,7 +19,7 @@ import ktalex.dal.query.QueryBuilder
 import ktalex.dal.query.QueryResponse
 import ktalex.utils.extractFirstMatch
 
-abstract class BaseClient<out T> : AutoCloseable {
+abstract class BaseClient<out T>(protected val mailTo: String? = null) : AutoCloseable {
 
     @OptIn(ExperimentalSerializationApi::class)
     protected val client = HttpClient(CIO) {
@@ -35,7 +35,14 @@ abstract class BaseClient<out T> : AutoCloseable {
     protected inline fun <reified T> getEntity(url: String): T? {
         var result: T? = null
         runBlocking {
-            val response = client.get(url)
+            val response = mailTo?.let {
+                client.get(url) {
+                    headers {
+                        append(HttpHeaders.UserAgent, "mailto:$mailTo")
+                    }
+                }
+            } ?: client.get(url)
+
             if (response.status == HttpStatusCode.OK) {
                 result = response.body()
             } else if (response.status == HttpStatusCode.Forbidden) {
@@ -51,12 +58,21 @@ abstract class BaseClient<out T> : AutoCloseable {
     }
 }
 
-abstract class BaseEntityClient<T>(private val openAlexBaseUrl: String = "https://api.openalex.org") :
-    BaseClient<T>() {
-    protected val baseUrl: String
-        get() = "$openAlexBaseUrl/$entityType"
+abstract class BaseEntityClient<T> : BaseClient<T> {
+
+    constructor(openAlexBaseUrl: String? = null, mailTo: String? = null) : super(mailTo) {
+        this.openAlexBaseUrl = openAlexBaseUrl ?: "https://api.openalex.org"
+    }
+
+    private val openAlexBaseUrl: String
 
     protected abstract val entityType: String
+
+    private val autocompleteBaseUrl: String
+        get() = "$openAlexBaseUrl/autocomplete/$entityType"
+
+    protected val baseUrl: String
+        get() = "$openAlexBaseUrl/$entityType"
 
     abstract fun getRandom(queryBuilder: QueryBuilder? = null): T
 
@@ -72,11 +88,8 @@ abstract class BaseEntityClient<T>(private val openAlexBaseUrl: String = "https:
      * @param term the term to complete
      * @param queryBuilder to use "filter" and "search" queries in autocomplete
      */
-    fun autocomplete(term: String, queryBuilder: QueryBuilder? = null): AutocompleteResponse = getEntity(
-        "$openAlexBaseUrl/autocomplete/$entityType?q=$term${
-            queryBuilder?.let { "&${it.build().removePrefix("?")}" } ?: ""
-        }"
-    )!!
+    fun autocomplete(term: String, queryBuilder: QueryBuilder? = null): AutocompleteResponse =
+        getEntity("$autocompleteBaseUrl?q=$term${queryBuilder?.let { "&${it.build().removePrefix("?")}" } ?: ""}")!!
 
     protected abstract fun getEntityWithExactType(url: String): QueryResponse<T>
 

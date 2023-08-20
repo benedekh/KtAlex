@@ -5,7 +5,8 @@ import ktalex.dal.query.QueryBuilder
 import ktalex.dal.query.QueryResponse
 import ktalex.model.Institution
 
-class InstitutionsClient : BaseEntityClient<Institution>() {
+class InstitutionsClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
+    BaseEntityClient<Institution>(openAlexBaseUrl, mailTo) {
 
     override val entityType = "institutions"
 
