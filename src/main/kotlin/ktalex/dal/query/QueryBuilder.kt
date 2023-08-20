@@ -51,7 +51,6 @@ class QueryBuilder {
             if (cursor != null) throw IllegalArgumentException("Cursor cannot be used with page")
         }
         if (cursor != null && sampleSize != null) throw IllegalArgumentException("Cursor cannot be used with sampling")
-        if (perPage != null && (perPage < 1 || perPage > 200)) throw IllegalArgumentException("PerPage must be between 1 and 200")
 
         this.paginationSettings = PaginationSettings(page, perPage, cursor)
 
