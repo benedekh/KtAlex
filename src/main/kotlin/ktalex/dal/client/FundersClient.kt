@@ -2,6 +2,7 @@ package ktalex.dal.client
 
 import ktalex.dal.query.PageableQueryResponse
 import ktalex.dal.query.QueryBuilder
+import ktalex.dal.query.QueryResponse
 import ktalex.model.Funder
 
 class FundersClient : BaseEntityClient<Funder>() {
@@ -10,6 +11,8 @@ class FundersClient : BaseEntityClient<Funder>() {
 
     override fun getRandom(queryBuilder: QueryBuilder?): Funder =
         getEntity("$baseUrl/random${queryBuilder?.build() ?: ""}")!!
+
+    override fun getEntityWithExactType(url: String): QueryResponse<Funder> = getEntity(url)!!
 
     override fun getEntities(url: String): PageableQueryResponse<Funder> = getEntitiesInternal(url)
 

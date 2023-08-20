@@ -33,7 +33,7 @@ data class GroupByMetaInfo(
     val keyDisplayName: String?
 )
 
-class PageableQueryResponse<T>(
+data class PageableQueryResponse<T>(
     override val meta: MetaInfo?,
     override val results: List<T>?,
     override val groupBy: List<GroupByMetaInfo>?,
@@ -42,7 +42,11 @@ class PageableQueryResponse<T>(
     private val client: BaseEntityClient<T>
 ) : BaseQueryResponse<T>(), Iterable<PageableQueryResponse<T>> {
 
-    fun nextPage(): PageableQueryResponse<T> {
+    fun nextPage(): PageableQueryResponse<T>? {
+        if (results.isNullOrEmpty()) {
+            return null
+        }
+
         // set next page parameters
         queryBuilder.paginationSettings?.let { paginationSettings ->
             paginationSettings.page?.let {
@@ -55,44 +59,50 @@ class PageableQueryResponse<T>(
     }
 
     override fun iterator(): Iterator<PageableQueryResponse<T>> =
-        PageableQueryResponseIterator(url, meta?.nextCursor, queryBuilder.copy(), client)
+        PageableQueryResponseIterator(
+            lastResult = QueryResponse(meta, results, groupBy),
+            url = url,
+            nextCursor = meta?.nextCursor,
+            queryBuilder = queryBuilder.copy(),
+            client = client
+        )
 }
 
 class PageableQueryResponseIterator<T>(
+    private var lastResult: QueryResponse<T>,
     private val url: String? = null,
     private var nextCursor: String? = null,
     private val queryBuilder: QueryBuilder,
     private val client: BaseEntityClient<T>
 ) : Iterator<PageableQueryResponse<T>> {
 
+    private var peekedResponse: PageableQueryResponse<T>? = null
+
     override fun hasNext(): Boolean {
-        val queryBuilder = queryBuilder.copy()
-
         // peek into the next page
-        queryBuilder.paginationSettings?.let { paginationSettings ->
-            paginationSettings.page?.let {
-                queryBuilder.pagination(page = it + 1, perPage = 1)
-            } ?: queryBuilder.pagination(perPage = 1, cursor = nextCursor ?: "*")
-        } ?: queryBuilder.pagination(cursor = nextCursor ?: "*")
-
-        val response = url?.let { client.getEntities(it, queryBuilder) } ?: client.getEntities(queryBuilder)
-        return response.results?.isNotEmpty() ?: false
-    }
-
-    override fun next(): PageableQueryResponse<T> {
-        // set next page parameters
         queryBuilder.paginationSettings?.let { paginationSettings ->
             paginationSettings.page?.let {
                 queryBuilder.pagination(page = it + 1, perPage = paginationSettings.perPage)
             } ?: queryBuilder.pagination(perPage = paginationSettings.perPage, cursor = nextCursor ?: "*")
         } ?: queryBuilder.pagination(cursor = nextCursor ?: "*")
 
-        // get the next page
-        val response = url?.let { client.getEntities(it, queryBuilder) } ?: client.getEntities(queryBuilder)
+        peekedResponse = url?.let { client.getEntities(it, queryBuilder) } ?: client.getEntities(queryBuilder)
+        return peekedResponse!!.results?.isNotEmpty() ?: false
+    }
 
-        // update cursor, the other pagination parameters will update themselves on the next iteration
-        nextCursor = response.meta?.nextCursor
-
-        return response
+    override fun next(): PageableQueryResponse<T> {
+        return peekedResponse?.let {
+            lastResult = QueryResponse(it.meta, it.results, it.groupBy)
+            nextCursor = it.meta?.nextCursor
+            peekedResponse = null
+            it
+        } ?: PageableQueryResponse(
+            meta = lastResult.meta,
+            results = lastResult.results,
+            groupBy = lastResult.groupBy,
+            url = url,
+            queryBuilder = queryBuilder.copy(),
+            client = client
+        )
     }
 }

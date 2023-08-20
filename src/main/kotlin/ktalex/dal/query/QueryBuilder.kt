@@ -38,7 +38,7 @@ class QueryBuilder {
         copy.sortByField = sortByField
         copy.sortDescending = sortDescending
         copy.searchTerm = searchTerm
-        copy.filters.forEach { (key, value) -> copy.filters[key] = value.toMutableList() }
+        this.filters.forEach { (key, value) -> copy.filters[key] = value.toMutableList() }
         copy.sampleSize = sampleSize
         copy.sampleSeed = sampleSeed
         copy.groupBy = groupBy
@@ -343,6 +343,7 @@ class QueryBuilder {
         }
     }
 
+
     private fun prependToLastFieldName(fieldPath: String, prefix: String): String {
         val parts: MutableList<String> = fieldPath.split("\\.").toMutableList()
         val last = parts.last().prependIndent(prefix)
@@ -371,6 +372,10 @@ class QueryBuilder {
         }
 
         return this
+    }
+
+    override fun toString(): String {
+        return "QueryBuilder(paginationSettings=$paginationSettings, selectFields=$selectFields, sortByField=$sortByField, sortDescending=$sortDescending, searchTerm=$searchTerm, filters=$filters, sampleSize=$sampleSize, sampleSeed=$sampleSeed, groupBy=$groupBy)"
     }
 
 }

@@ -2,6 +2,7 @@ package ktalex.dal.client
 
 import ktalex.dal.query.PageableQueryResponse
 import ktalex.dal.query.QueryBuilder
+import ktalex.dal.query.QueryResponse
 import ktalex.model.Publisher
 
 class PublishersClient : BaseEntityClient<Publisher>() {
@@ -10,6 +11,8 @@ class PublishersClient : BaseEntityClient<Publisher>() {
 
     override fun getRandom(queryBuilder: QueryBuilder?): Publisher =
         getEntity("$baseUrl/random${queryBuilder?.build() ?: ""}")!!
+
+    override fun getEntityWithExactType(url: String): QueryResponse<Publisher> = getEntity(url)!!
 
     override fun getEntities(url: String): PageableQueryResponse<Publisher> = getEntitiesInternal(url)
 

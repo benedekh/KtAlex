@@ -19,7 +19,7 @@ import ktalex.dal.query.QueryBuilder
 import ktalex.dal.query.QueryResponse
 import ktalex.utils.extractFirstMatch
 
-abstract class BaseClient<T> : AutoCloseable {
+abstract class BaseClient<out T> : AutoCloseable {
 
     @OptIn(ExperimentalSerializationApi::class)
     protected val client = HttpClient(CIO) {
@@ -32,9 +32,7 @@ abstract class BaseClient<T> : AutoCloseable {
         }
     }
 
-
     protected inline fun <reified T> getEntity(url: String): T? {
-        println(url)
         var result: T? = null
         runBlocking {
             val response = client.get(url)
@@ -53,7 +51,7 @@ abstract class BaseClient<T> : AutoCloseable {
     }
 }
 
-abstract class BaseEntityClient<T>(protected val openAlexBaseUrl: String = "https://api.openalex.org") :
+abstract class BaseEntityClient<T>(private val openAlexBaseUrl: String = "https://api.openalex.org") :
     BaseClient<T>() {
     protected val baseUrl: String
         get() = "$openAlexBaseUrl/$entityType"
@@ -80,6 +78,8 @@ abstract class BaseEntityClient<T>(protected val openAlexBaseUrl: String = "http
         }"
     )!!
 
+    protected abstract fun getEntityWithExactType(url: String): QueryResponse<T>
+
     protected fun getEntitiesInternal(url: String): PageableQueryResponse<T> {
         val (page, urlAfterPageRemoved) = url.extractFirstMatch("page", true)
         val (perPage, urlAfterPerPageRemoved) = urlAfterPageRemoved.extractFirstMatch("per_page", true)
@@ -102,7 +102,8 @@ abstract class BaseEntityClient<T>(protected val openAlexBaseUrl: String = "http
         } else {
             "$url$queryParams"
         }
-        val response: QueryResponse<T> = getEntity(preparedUrl)!!
+
+        val response = getEntityWithExactType(preparedUrl)
         return PageableQueryResponse(
             meta = response.meta,
             results = response.results,
