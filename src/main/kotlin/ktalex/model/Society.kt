@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Society(
     val organization: String?,
-    val url: String?
+    val url: String?,
 )

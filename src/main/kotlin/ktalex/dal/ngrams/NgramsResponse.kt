@@ -7,11 +7,11 @@ import ktalex.model.Ngram
 data class NgramMetaInfo(
     val count: Int?,
     val doi: String?,
-    val openalexId: String?
+    val openalexId: String?,
 )
 
 @Serializable
 data class NgramsResponse(
     val meta: NgramMetaInfo?,
-    val ngrams: List<Ngram>?
+    val ngrams: List<Ngram>?,
 )

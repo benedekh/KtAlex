@@ -8,7 +8,7 @@ import ktalex.model.serialization.SerializedEnum
 @Serializable
 data class AutocompleteResponse(
     val meta: MetaInfo?,
-    val results: List<AutocompleteResult>?
+    val results: List<AutocompleteResult>?,
 )
 
 /**
@@ -24,7 +24,7 @@ data class AutocompleteResult(
     val entityType: SerializedEnum<EntityType>?,
     val filterKey: String?,
     val hint: String?,
-    val worksCount: Int?
+    val worksCount: Int?,
 )
 
 enum class EntityType {
@@ -34,5 +34,5 @@ enum class EntityType {
     SOURCE,
     PUBLISHER,
     FUNDER,
-    WORK
+    WORK,
 }

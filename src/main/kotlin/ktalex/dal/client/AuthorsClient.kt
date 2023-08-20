@@ -31,9 +31,4 @@ class AuthorsClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
 
     fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Author? =
         getEntity("$baseUrl/mag:$id${queryBuilder?.build() ?: ""}")
-
-}
-
-fun main() {
-    val client = AuthorsClient()
 }

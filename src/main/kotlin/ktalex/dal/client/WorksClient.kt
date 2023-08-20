@@ -34,5 +34,4 @@ class WorksClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
 
     fun getByPubMedId(id: String, queryBuilder: QueryBuilder? = null): Work? =
         getEntity("$baseUrl/pmid:$id${queryBuilder?.build() ?: ""}")
-
 }

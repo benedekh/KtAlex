@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class Grant(
     val funder: String?,
     val funderDisplayName: String?,
-    val awardId: String?
+    val awardId: String?,
 )

@@ -7,12 +7,18 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import ktalex.dal.client.*
+import ktalex.dal.client.AuthorsClient
+import ktalex.dal.client.ConceptsClient
+import ktalex.dal.client.FundersClient
+import ktalex.dal.client.InstitutionsClient
+import ktalex.dal.client.PublishersClient
+import ktalex.dal.client.SourcesClient
+import ktalex.dal.client.WorksClient
 
 @Serializable(with = ResolvableEntitySerializer::class)
 data class ResolvableEntity<T>(
     override val url: String,
-    override val id: String
+    override val id: String,
 ) : BaseSerializedId() {
     @Suppress("UNCHECKED_CAST")
     fun resolveEntity(): T? {
@@ -43,5 +49,4 @@ class ResolvableEntitySerializer<T> : KSerializer<ResolvableEntity<T>> {
         val id = url.split("/").last()
         return ResolvableEntity(url, id)
     }
-
 }

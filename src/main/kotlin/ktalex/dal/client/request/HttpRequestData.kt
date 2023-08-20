@@ -1,6 +1,6 @@
 package ktalex.dal.client.request
 
-import io.ktor.client.request.*
+import io.ktor.client.request.HttpRequestData
 
 fun HttpRequestData.toExtendedString(): String {
     val sb = StringBuilder("HttpRequestData(")

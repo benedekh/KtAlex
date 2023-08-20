@@ -20,7 +20,7 @@ data class DehydratedConcept(
     override val displayName: String?,
     override val id: SerializedId?,
     override val level: Int?,
-    override val wikidata: String?
+    override val wikidata: String?,
 ) : BaseConcept()
 
 @Serializable
@@ -29,7 +29,7 @@ data class RelatedConcept(
     override val id: SerializedId?,
     override val level: Int?,
     override val wikidata: String?,
-    val score: Float?
+    val score: Float?,
 ) : BaseConcept()
 
 @Serializable
@@ -52,7 +52,7 @@ data class Concept(
     val updatedDate: SerializedDateTime?,
     override val wikidata: String?,
     val worksApiUrl: String?,
-    val worksCount: Int?
+    val worksCount: Int?,
 ) : BaseConcept() {
     fun resolveWorks(): PageableQueryResponse<Work>? = worksApiUrl?.let { WorksClient().getEntities(it) }
 }
@@ -64,5 +64,5 @@ data class ConceptIds(
     val umlsCui: List<String>?,
     val umlsAui: String?,
     val wikidata: SerializedId?,
-    val wikipedia: String?
+    val wikipedia: String?,
 )

@@ -32,5 +32,4 @@ class SerializedDateTimeSerializer : KSerializer<SerializedDateTime> {
         val date = dateTime?.toLocalDate() ?: DateUtil.toDate(serialized)
         return SerializedDateTime(serialized, date, dateTime)
     }
-
 }

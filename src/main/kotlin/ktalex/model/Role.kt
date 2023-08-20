@@ -9,7 +9,7 @@ data class Role(
     @Serializable(with = RoleEnumSerializer::class)
     val role: SerializedEnum<RoleEnum>?,
     val id: String?,
-    val worksCount: Int?
+    val worksCount: Int?,
 )
 
 enum class RoleEnum {

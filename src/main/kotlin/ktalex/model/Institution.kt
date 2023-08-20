@@ -3,7 +3,12 @@ package ktalex.model
 import kotlinx.serialization.Serializable
 import ktalex.dal.client.WorksClient
 import ktalex.dal.query.PageableQueryResponse
-import ktalex.model.serialization.*
+import ktalex.model.serialization.InstitutionTypeSerializer
+import ktalex.model.serialization.RelationshipTypeSerializer
+import ktalex.model.serialization.SerializedDate
+import ktalex.model.serialization.SerializedDateTime
+import ktalex.model.serialization.SerializedEnum
+import ktalex.model.serialization.SerializedId
 
 @Serializable
 abstract class BaseInstitution {
@@ -21,7 +26,7 @@ data class DehydratedInstitution(
     override val id: SerializedId?,
     override val ror: String?,
     @Serializable(with = InstitutionTypeSerializer::class)
-    override val type: SerializedEnum<InstitutionType>?
+    override val type: SerializedEnum<InstitutionType>?,
 ) : BaseInstitution()
 
 @Serializable
@@ -33,7 +38,7 @@ data class AssociatedInstitution(
     @Serializable(with = InstitutionTypeSerializer::class)
     override val type: SerializedEnum<InstitutionType>?,
     @Serializable(with = RelationshipTypeSerializer::class)
-    val relationship: SerializedEnum<RelationshipType>?
+    val relationship: SerializedEnum<RelationshipType>?,
 ) : BaseInstitution()
 
 @Serializable
@@ -83,5 +88,5 @@ data class InstitutionIds(
     val openalex: SerializedId?,
     val ror: SerializedId?,
     val wikipedia: String?,
-    val wikidata: SerializedId?
+    val wikidata: SerializedId?,
 )

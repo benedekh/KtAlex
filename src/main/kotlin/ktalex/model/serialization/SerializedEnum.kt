@@ -7,7 +7,12 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import ktalex.dal.autocomplete.EntityType
-import ktalex.model.*
+import ktalex.model.AuthorPosition
+import ktalex.model.InstitutionType
+import ktalex.model.OaStatus
+import ktalex.model.RelationshipType
+import ktalex.model.RoleEnum
+import ktalex.model.SourceType
 import java.util.*
 import kotlin.reflect.KClass
 
@@ -17,7 +22,7 @@ data class SerializedEnum<E : Enum<E>>(
 )
 
 sealed class SerializedEnumSerializer<E : Enum<E>>(
-    private val enumCls: KClass<E>
+    private val enumCls: KClass<E>,
 ) : KSerializer<SerializedEnum<E>> {
 
     override val descriptor: SerialDescriptor =
@@ -33,7 +38,6 @@ sealed class SerializedEnumSerializer<E : Enum<E>>(
         val enum = enumCls.java.enumConstants.firstOrNull { it.name == preparedEnumValue }
         return SerializedEnum(serialized, enum)
     }
-
 }
 
 object AuthorPositionSerializer : SerializedEnumSerializer<AuthorPosition>(AuthorPosition::class)

@@ -18,7 +18,7 @@ abstract class BaseAuthor {
 data class DehydratedAuthor(
     override val id: SerializedId?,
     override val displayName: String?,
-    override val orcid: String?
+    override val orcid: String?,
 ) : BaseAuthor()
 
 @Serializable
@@ -37,7 +37,7 @@ data class Author(
     val updatedDate: SerializedDateTime?,
     val worksApiUrl: String?,
     val worksCount: Int?,
-    val xConcepts: List<RelatedConcept>?
+    val xConcepts: List<RelatedConcept>?,
 ) : BaseAuthor() {
     fun resolveWorks(): PageableQueryResponse<Work>? = worksApiUrl?.let { WorksClient().getEntities(it) }
 }
@@ -49,5 +49,5 @@ data class AuthorIds(
     val orcid: String?,
     val scopus: String?,
     val twitter: String?,
-    val wikipedia: String?
+    val wikipedia: String?,
 )

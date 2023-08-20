@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class SustainableDevelopmentGoal(
     val id: String?,
     val displayName: String?,
-    val score: Float?
+    val score: Float?,
 )

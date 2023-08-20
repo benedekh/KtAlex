@@ -28,7 +28,7 @@ data class Publisher(
     val sourcesApiUrl: String?,
     val summaryStats: CitationMetrics?,
     val updatedDate: SerializedDateTime?,
-    val worksCount: Int?
+    val worksCount: Int?,
 ) {
     fun resolveSources(): PageableQueryResponse<Source>? = sourcesApiUrl?.let { SourcesClient().getEntities(it) }
 }
@@ -37,5 +37,5 @@ data class Publisher(
 data class PublisherIds(
     val openalex: SerializedId?,
     val ror: SerializedId?,
-    val wikidata: SerializedId?
+    val wikidata: SerializedId?,
 )

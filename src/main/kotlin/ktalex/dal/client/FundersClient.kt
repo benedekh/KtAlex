@@ -31,5 +31,4 @@ class FundersClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
 
     fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Funder? =
         getEntity("$baseUrl/wikidata:$id${queryBuilder?.build() ?: ""}")
-
 }

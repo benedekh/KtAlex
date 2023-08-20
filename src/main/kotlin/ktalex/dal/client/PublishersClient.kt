@@ -31,5 +31,4 @@ class PublishersClient(openAlexBaseUrl: String? = null, mailTo: String? = null) 
 
     fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Publisher? =
         getEntity("$baseUrl/wikidata:$id${queryBuilder?.build() ?: ""}")
-
 }

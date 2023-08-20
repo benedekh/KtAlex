@@ -51,7 +51,7 @@ fun String.extractFirstMatch(partName: String, isDecimal: Boolean): Pair<String?
                 }
                 remainingString = remainingString.removeRange(
                     remainingString.indexOf(toBeCut),
-                    remainingString.indexOf(toBeCut) + lengthToBeCut
+                    remainingString.indexOf(toBeCut) + lengthToBeCut,
                 )
             }
         }

@@ -10,7 +10,7 @@ data class OpenAccess(
     val isOa: Boolean?,
     @Serializable(with = OaStatusSerializer::class)
     val oaStatus: SerializedEnum<OaStatus>?,
-    val oaUrl: String?
+    val oaUrl: String?,
 )
 
 enum class OaStatus {

@@ -13,10 +13,9 @@ data class Authorship(
     val institutions: List<DehydratedInstitution>?,
     val isCorresponding: Boolean?,
     val rawAffiliationString: String?,
-    val rawAffiliationStrings: List<String>?
+    val rawAffiliationStrings: List<String>?,
 )
 
 enum class AuthorPosition {
     FIRST, MIDDLE, LAST
 }
-

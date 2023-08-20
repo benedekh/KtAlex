@@ -11,5 +11,5 @@ data class Location(
     val pdfUrl: String?,
     val version: String?,
     val isAccepted: Boolean?,
-    val isPublished: Boolean?
+    val isPublished: Boolean?,
 )

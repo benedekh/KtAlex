@@ -14,7 +14,7 @@ abstract class BaseQueryResponse<T> {
 data class QueryResponse<T>(
     override val meta: MetaInfo?,
     override val results: List<T>?,
-    override val groupBy: List<GroupByMetaInfo>?
+    override val groupBy: List<GroupByMetaInfo>?,
 ) : BaseQueryResponse<T>()
 
 @Serializable
@@ -23,14 +23,14 @@ data class MetaInfo(
     val dbResponseTimeMs: Int?,
     val page: Int?,
     val perPage: Int?,
-    val nextCursor: String?
+    val nextCursor: String?,
 )
 
 @Serializable
 data class GroupByMetaInfo(
     val count: Int?,
     val key: String?,
-    val keyDisplayName: String?
+    val keyDisplayName: String?,
 )
 
 data class PageableQueryResponse<T>(
@@ -39,7 +39,7 @@ data class PageableQueryResponse<T>(
     override val groupBy: List<GroupByMetaInfo>?,
     private val url: String? = null,
     private val queryBuilder: QueryBuilder,
-    private val client: BaseEntityClient<T>
+    private val client: BaseEntityClient<T>,
 ) : BaseQueryResponse<T>(), Iterable<PageableQueryResponse<T>> {
 
     fun nextPage(): PageableQueryResponse<T>? {
@@ -64,7 +64,7 @@ data class PageableQueryResponse<T>(
             url = url,
             nextCursor = meta?.nextCursor,
             queryBuilder = queryBuilder.copy(),
-            client = client
+            client = client,
         )
 }
 
@@ -73,7 +73,7 @@ class PageableQueryResponseIterator<T>(
     private val url: String? = null,
     private var nextCursor: String? = null,
     private val queryBuilder: QueryBuilder,
-    private val client: BaseEntityClient<T>
+    private val client: BaseEntityClient<T>,
 ) : Iterator<PageableQueryResponse<T>> {
 
     private var peekedResponse: PageableQueryResponse<T>? = null
@@ -102,7 +102,7 @@ class PageableQueryResponseIterator<T>(
             groupBy = lastResult.groupBy,
             url = url,
             queryBuilder = queryBuilder.copy(),
-            client = client
+            client = client,
         )
     }
 }

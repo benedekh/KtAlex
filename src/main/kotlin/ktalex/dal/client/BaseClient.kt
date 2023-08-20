@@ -1,12 +1,16 @@
 package ktalex.dal.client
 
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.request.*
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.get
+import io.ktor.client.request.url
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -30,11 +34,13 @@ abstract class BaseClient<out T>(protected val mailTo: String? = null) : AutoClo
     @OptIn(ExperimentalSerializationApi::class)
     protected val client = HttpClient(CIO) {
         install(ContentNegotiation) {
-            json(Json {
-                explicitNulls = false
-                // ignoreUnknownKeys = true // TODO enable in production
-                namingStrategy = JsonNamingStrategy.SnakeCase
-            })
+            json(
+                Json {
+                    explicitNulls = false
+                    // ignoreUnknownKeys = true // TODO enable in production
+                    namingStrategy = JsonNamingStrategy.SnakeCase
+                },
+            )
         }
     }
 
@@ -130,8 +136,7 @@ abstract class BaseEntityClient<T> : BaseClient<T> {
             groupBy = response.groupBy,
             url = url,
             queryBuilder = preparedQueryBuilder.copy(),
-            client = this
+            client = this,
         )
     }
-
 }

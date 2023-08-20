@@ -5,7 +5,6 @@ import ktalex.dal.client.NgramsClient
 import ktalex.dal.client.WorksClient
 import ktalex.dal.ngrams.NgramsResponse
 import ktalex.dal.query.PageableQueryResponse
-import ktalex.dal.query.QueryBuilder
 import ktalex.model.serialization.ResolvableEntity
 import ktalex.model.serialization.SerializedDate
 import ktalex.model.serialization.SerializedDateTime
@@ -66,5 +65,5 @@ data class WorkIds(
     val mag: String?,
     val openalex: SerializedId?,
     val pmid: SerializedId?,
-    val pmcid: String?
+    val pmcid: String?,
 )

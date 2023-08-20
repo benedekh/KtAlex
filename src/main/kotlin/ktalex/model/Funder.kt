@@ -24,7 +24,7 @@ data class Funder(
     val roles: List<Role>?,
     val summaryStats: CitationMetrics?,
     val updatedDate: SerializedDateTime?,
-    val worksCount: Int?
+    val worksCount: Int?,
 )
 
 @Serializable
@@ -33,6 +33,5 @@ data class FunderIds(
     val doi: String?,
     val openalex: SerializedId?,
     val ror: SerializedId?,
-    val wikidata: SerializedId?
+    val wikidata: SerializedId?,
 )
-

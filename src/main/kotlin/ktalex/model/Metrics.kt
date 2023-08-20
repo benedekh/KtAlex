@@ -27,5 +27,5 @@ data class CitationMetrics(
     @SerialName("2yr_mean_citedness")
     val twoYearMeanCitedness: Float?,
     val hIndex: Int?,
-    val i10Index: Int?
+    val i10Index: Int?,
 )

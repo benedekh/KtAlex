@@ -16,7 +16,7 @@ abstract class BaseSerializedId {
 @Serializable(with = SerializedIdSerializer::class)
 data class SerializedId(
     override val url: String,
-    override val id: String
+    override val id: String,
 ) : BaseSerializedId()
 
 class SerializedIdSerializer : KSerializer<SerializedId> {
@@ -32,5 +32,4 @@ class SerializedIdSerializer : KSerializer<SerializedId> {
         val id = url.split("/").last()
         return SerializedId(url, id)
     }
-
 }

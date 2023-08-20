@@ -34,5 +34,4 @@ class SourcesClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
 
     fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Source? =
         getEntity("$baseUrl/wikidata:$id${queryBuilder?.build() ?: ""}")
-
 }

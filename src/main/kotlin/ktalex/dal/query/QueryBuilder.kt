@@ -323,7 +323,7 @@ class QueryBuilder {
                     } else {
                         ""
                     }
-                }&"
+                }&",
             )
         }
         groupBy?.let { sb.append("group_by=$it&") }
@@ -374,7 +374,6 @@ class QueryBuilder {
     override fun toString(): String {
         return "QueryBuilder(paginationSettings=$paginationSettings, selectFields=$selectFields, sortByField=$sortByField, sortDescending=$sortDescending, searchTerm=$searchTerm, filters=$filters, sampleSize=$sampleSize, sampleSeed=$sampleSeed, groupBy=$groupBy)"
     }
-
 }
 
 /**
@@ -385,7 +384,7 @@ class QueryBuilder {
 data class NumberFieldValue(
     val value: Number,
     val greaterThan: Boolean = false,
-    val lessThan: Boolean = false
+    val lessThan: Boolean = false,
 ) {
     init {
         if (greaterThan && lessThan) throw IllegalArgumentException("Cannot use both greater than, less than operators")
@@ -395,5 +394,5 @@ data class NumberFieldValue(
 data class PaginationSettings(
     val page: Int?,
     val perPage: Int?,
-    val cursor: String?
+    val cursor: String?,
 )

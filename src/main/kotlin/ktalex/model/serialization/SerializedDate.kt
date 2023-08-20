@@ -29,5 +29,4 @@ class SerializedDateSerializer : KSerializer<SerializedDate> {
         val date = DateUtil.toDate(serialized)
         return SerializedDate(serialized, date)
     }
-
 }

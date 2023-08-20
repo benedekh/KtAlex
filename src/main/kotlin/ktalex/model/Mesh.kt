@@ -8,5 +8,5 @@ data class Mesh(
     val descriptorName: String?,
     val qualifierUi: String?,
     val qualifierName: String?,
-    val isMajorTopic: Boolean?
+    val isMajorTopic: Boolean?,
 )

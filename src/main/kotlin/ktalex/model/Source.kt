@@ -3,7 +3,11 @@ package ktalex.model
 import kotlinx.serialization.Serializable
 import ktalex.dal.client.WorksClient
 import ktalex.dal.query.PageableQueryResponse
-import ktalex.model.serialization.*
+import ktalex.model.serialization.SerializedDate
+import ktalex.model.serialization.SerializedDateTime
+import ktalex.model.serialization.SerializedEnum
+import ktalex.model.serialization.SerializedId
+import ktalex.model.serialization.SourceTypeSerializer
 
 @Serializable
 abstract class BaseSource {
@@ -33,7 +37,7 @@ data class DehydratedSource(
     override val issn: List<String>?,
     override val issnL: String?,
     @Serializable(with = SourceTypeSerializer::class)
-    override val type: SerializedEnum<SourceType>?
+    override val type: SerializedEnum<SourceType>?,
 ) : BaseSource()
 
 @Serializable
@@ -66,7 +70,7 @@ data class Source(
     val updatedDate: SerializedDateTime?,
     val worksApiUrl: String?,
     val worksCount: Int?,
-    val xConcepts: List<RelatedConcept>?
+    val xConcepts: List<RelatedConcept>?,
 ) : BaseSource() {
     fun resolveWorks(): PageableQueryResponse<Work>? = worksApiUrl?.let { WorksClient().getEntities(it) }
 }
@@ -82,5 +86,5 @@ data class SourceIds(
     val issnL: String?,
     val mag: String?,
     val openalex: SerializedId?,
-    val wikidata: SerializedId?
+    val wikidata: SerializedId?,
 )

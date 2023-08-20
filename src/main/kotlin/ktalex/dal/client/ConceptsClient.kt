@@ -30,5 +30,4 @@ class ConceptsClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
 
     fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Concept? =
         getEntity("$baseUrl/wikidata:$id${queryBuilder?.build() ?: ""}")
-
 }

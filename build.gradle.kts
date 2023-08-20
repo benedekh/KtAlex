@@ -3,10 +3,19 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.9.0"
     kotlin("plugin.serialization") version "1.9.0"
+    id("com.diffplug.spotless") version "6.20.0"
 }
 
 group = "org.example"
 version = "1.0-SNAPSHOT"
+
+
+spotless {
+    kotlin {
+        ktlint("0.50.0")
+    }
+}
+
 
 repositories {
     mavenCentral()
