@@ -30,18 +30,18 @@ data class ResolvableEntity<T>(
     }
 }
 
-class ResolvableEntitySerializer : KSerializer<ResolvableEntity<*>> {
+class ResolvableEntitySerializer<T> : KSerializer<ResolvableEntity<T>> {
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor("ResolvableEntitySerializer", PrimitiveKind.STRING)
 
-    override fun serialize(encoder: Encoder, value: ResolvableEntity<*>) {
+    override fun serialize(encoder: Encoder, value: ResolvableEntity<T>) {
         encoder.encodeString(value.url)
     }
 
-    override fun deserialize(decoder: Decoder): ResolvableEntity<*> {
+    override fun deserialize(decoder: Decoder): ResolvableEntity<T> {
         val url = decoder.decodeString()
         val id = url.split("/").last()
-        return ResolvableEntity<Any>(url, id)
+        return ResolvableEntity(url, id)
     }
 
 }

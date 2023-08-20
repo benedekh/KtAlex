@@ -2,6 +2,7 @@ package ktalex.dal.autocomplete
 
 import kotlinx.serialization.Serializable
 import ktalex.dal.query.MetaInfo
+import ktalex.model.serialization.EntityTypeSerializer
 import ktalex.model.serialization.SerializedEnum
 
 @Serializable
@@ -19,6 +20,7 @@ data class AutocompleteResult(
     val citedByCount: Int?,
     val displayName: String?,
     val externalId: String?,
+    @Serializable(with = EntityTypeSerializer::class)
     val entityType: SerializedEnum<EntityType>?,
     val filterKey: String?,
     val hint: String?,
