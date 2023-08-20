@@ -1,7 +1,7 @@
 package ktalex.dal.query
 
 import ktalex.utils.camelToSnakeCase
-import java.net.URLEncoder
+import ktalex.utils.urlEncode
 import java.time.LocalDate
 
 class QueryBuilder {
@@ -74,7 +74,6 @@ class QueryBuilder {
 
         this.sampleSize = sampleSize
         this.sampleSeed = sampleSeed
-
         return this
     }
 
@@ -138,7 +137,7 @@ class QueryBuilder {
      * @param searchTerm: the term(s) to search for
      */
     fun search(searchTerm: String): QueryBuilder {
-        this.searchTerm = URLEncoder.encode(searchTerm, "utf-8")
+        this.searchTerm = searchTerm.urlEncode()
         return this
     }
 
@@ -146,13 +145,13 @@ class QueryBuilder {
      * Searches the field for the given term.
      *
      * @param fieldPath fully qualified path of the field you want to filter by (e.g. displayName, title)
-     * @param searchTerm: the term(s) to search for. For further explanation see [search]
+     * @param searchTerm the term(s) to search for. For further explanation see [search]
      */
     fun search(fieldPath: String, searchTerm: String): QueryBuilder {
         val preparedFieldName = fieldPath.camelToSnakeCase()
         val key = "$preparedFieldName.search"
 
-        val preparedSearchTerm = URLEncoder.encode(searchTerm, "utf-8")
+        val preparedSearchTerm = searchTerm.urlEncode()
         filters[key] = mutableListOf(preparedSearchTerm)
         return this
     }
@@ -298,7 +297,6 @@ class QueryBuilder {
                 it.value.toString()
             }
         }.let { put(fieldPath, negate, it.toTypedArray()) }
-
         return this
     }
 
@@ -342,7 +340,6 @@ class QueryBuilder {
         }
     }
 
-
     private fun prependToLastFieldName(fieldPath: String, prefix: String): String {
         val parts: MutableList<String> = fieldPath.split("\\.").toMutableList()
         val last = parts.last().prependIndent(prefix)
@@ -351,11 +348,13 @@ class QueryBuilder {
     }
 
     private fun put(fieldPath: String, value: String): QueryBuilder {
-        val key = fieldPath.camelToSnakeCase()
-        if (filters.containsKey(key)) {
-            filters[key]!!.add(value)
+        val preparedFieldPath = fieldPath.camelToSnakeCase()
+        val preparedValue = value.urlEncode()
+
+        if (filters.containsKey(preparedFieldPath)) {
+            filters[preparedFieldPath]!!.add(preparedValue)
         } else {
-            filters[key] = mutableListOf(value)
+            filters[preparedFieldPath] = mutableListOf(preparedValue)
         }
         return this
     }
@@ -369,7 +368,6 @@ class QueryBuilder {
         } else {
             put(fieldPath, value)
         }
-
         return this
     }
 

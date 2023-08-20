@@ -1,5 +1,8 @@
 package ktalex.utils
 
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
+
 fun String.camelToSnakeCase(): String {
     val pattern = "(?<=.)[A-Z]".toRegex()
     return this.replace(pattern, "_$0").lowercase()
@@ -56,3 +59,5 @@ fun String.extractFirstMatch(partName: String, isDecimal: Boolean): Pair<String?
 
     return Pair(firstMatch, remainingString)
 }
+
+fun String.urlEncode(): String = URLEncoder.encode(this, StandardCharsets.UTF_8.toString())
