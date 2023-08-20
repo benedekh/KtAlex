@@ -12,14 +12,20 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNamingStrategy
 import ktalex.dal.autocomplete.AutocompleteResponse
+import ktalex.dal.client.request.toExtendedString
 import ktalex.dal.error.ErrorResponse
 import ktalex.dal.error.OpenAlexException
 import ktalex.dal.query.PageableQueryResponse
 import ktalex.dal.query.QueryBuilder
 import ktalex.dal.query.QueryResponse
 import ktalex.utils.extractFirstMatch
+import mu.KotlinLogging
 
 abstract class BaseClient<out T>(protected val mailTo: String? = null) : AutoCloseable {
+
+    companion object {
+        protected val LOGGER = KotlinLogging.logger {}
+    }
 
     @OptIn(ExperimentalSerializationApi::class)
     protected val client = HttpClient(CIO) {
@@ -35,13 +41,14 @@ abstract class BaseClient<out T>(protected val mailTo: String? = null) : AutoClo
     protected inline fun <reified T> getEntity(url: String): T? {
         var result: T? = null
         runBlocking {
-            val response = mailTo?.let {
-                client.get(url) {
-                    headers {
-                        append(HttpHeaders.UserAgent, "mailto:$mailTo")
-                    }
-                }
-            } ?: client.get(url)
+            val requestBuilder = HttpRequestBuilder().apply {
+                url(url)
+                method = HttpMethod.Get
+                mailTo?.let { headers.append(HttpHeaders.UserAgent, "mailto:$mailTo") }
+            }
+            LOGGER.debug { requestBuilder.build().toExtendedString() }
+
+            val response = client.get(requestBuilder)
 
             if (response.status == HttpStatusCode.OK) {
                 result = response.body()
