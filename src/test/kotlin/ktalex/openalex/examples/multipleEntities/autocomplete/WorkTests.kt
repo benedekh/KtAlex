@@ -9,7 +9,7 @@ import ktalex.dal.query.QueryBuilder
 import ktalex.utils.shouldBeSet
 
 /**
- * https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/autocomplete-entities
+ * Based on the [OpenAlex documentation](https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/autocomplete-entities)
  */
 class WorkTests : ShouldSpec({
     lateinit var client: WorkClient

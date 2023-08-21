@@ -8,7 +8,7 @@ import io.kotest.matchers.string.shouldContain
 import ktalex.dal.client.SourceClient
 
 /**
- * https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/autocomplete-entities
+ * Based on the [OpenAlex documentation](https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/autocomplete-entities)
  */
 class SourceTests : ShouldSpec({
     lateinit var client: SourceClient

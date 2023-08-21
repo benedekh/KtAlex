@@ -93,6 +93,8 @@ class WorkTests : ShouldSpec({
             fail("Should not reach here")
         } catch (ex: OpenAlexException) {
             ex.message.shouldContain("open_access.is_oa is not a valid select field")
+        }  catch (t: Throwable) {
+            fail("Should have thrown an OpenAlexException")
         }
     }
 
@@ -102,6 +104,8 @@ class WorkTests : ShouldSpec({
             fail("Should not reach here")
         } catch (ex: OpenAlexException) {
             ex.message.shouldContain("select is not a valid parameter for the entity autocomplete endpoint")
+        } catch (t: Throwable) {
+            fail("Should have thrown an OpenAlexException")
         }
     }
 
@@ -111,6 +115,8 @@ class WorkTests : ShouldSpec({
             fail("Should not reach here")
         } catch (ex: OpenAlexException) {
             ex.message.shouldContain("select does not work with group_by")
+        } catch (t: Throwable) {
+            fail("Should have thrown an OpenAlexException")
         }
     }
 })

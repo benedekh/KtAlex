@@ -1,8 +1,8 @@
 package ktalex.dal.query
 
+import java.time.LocalDate
 import ktalex.utils.camelToSnakeCase
 import ktalex.utils.urlEncode
-import java.time.LocalDate
 
 @Suppress("detekt:TooManyFunctions")
 class QueryBuilder {
@@ -63,9 +63,10 @@ class QueryBuilder {
     }
 
     fun withDefaultPagination(): QueryBuilder {
-        return if (paginationSettings == null ||
-            (paginationSettings?.page == null && paginationSettings?.cursor == null)
-        ) {
+        val paginationIsNull = paginationSettings == null
+        val pageAndCursorAreNull = paginationSettings?.page == null && paginationSettings?.cursor == null
+
+        return if (sampleSize == null && (paginationIsNull || pageAndCursorAreNull)) {
             pagination(perPage = paginationSettings?.perPage, cursor = "*")
         } else {
             this
@@ -79,6 +80,8 @@ class QueryBuilder {
      * documentation [here](https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/sample-entity-lists).)
      */
     fun sampling(sampleSize: Int, sampleSeed: Int? = null): QueryBuilder {
+        require(paginationSettings?.cursor == null) { "Cursor cannot be used with sampling" }
+
         this.sampleSize = sampleSize
         this.sampleSeed = sampleSeed
         return this
@@ -381,8 +384,8 @@ class QueryBuilder {
 
     override fun toString(): String =
         "QueryBuilder(paginationSettings=$paginationSettings, selectFields=$selectFields, " +
-            "sortByField=$sortByField, sortDescending=$sortDescending, searchTerm=$searchTerm, filters=$filters, " +
-            "sampleSize=$sampleSize, sampleSeed=$sampleSeed, groupBy=$groupBy)"
+                "sortByField=$sortByField, sortDescending=$sortDescending, searchTerm=$searchTerm, filters=$filters, " +
+                "sampleSize=$sampleSize, sampleSeed=$sampleSeed, groupBy=$groupBy)"
 }
 
 /**

@@ -6,7 +6,7 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import ktalex.dal.client.SourceClient
 
 /**
- * https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/autocomplete-entities
+ * Based on the [OpenAlex documentation](https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/autocomplete-entities)
  */
 class EntityTypelessTests : ShouldSpec({
     lateinit var client: SourceClient
