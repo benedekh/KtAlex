@@ -9,7 +9,7 @@ import ktalex.utils.shouldBeSet
 /**
  * Based on the [OpenAlex documentation](https://docs.openalex.org/how-to-use-the-api/get-single-entities/random-result)
  */
-class InstitutionTest : ShouldSpec({
+class InstitutionTests : ShouldSpec({
     lateinit var client: InstitutionClient
 
     beforeTest {
