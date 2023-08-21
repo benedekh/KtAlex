@@ -6,6 +6,7 @@ plugins {
     kotlin("plugin.serialization") version "1.9.0"
     // detekt
     id("io.gitlab.arturbosch.detekt") version ("1.23.1")
+    jacoco
 }
 
 group = "org.example"
@@ -17,6 +18,7 @@ repositories {
 
 val ktorVersion by extra { "2.3.3" }
 val detektVersion by extra { "1.23.1" }
+val kotestVersion by extra { "5.6.2" }
 
 dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
@@ -30,11 +32,14 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
     implementation("ch.qos.logback:logback-classic:1.4.11")
 
-    testImplementation(kotlin("test"))
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+    testImplementation("io.kotest:kotest-property:$kotestVersion")
 }
 
 tasks.test {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
 }
 
 tasks.withType<KotlinCompile> {

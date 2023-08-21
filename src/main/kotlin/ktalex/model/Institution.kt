@@ -52,7 +52,7 @@ data class Institution(
     val displayNameAlternatives: List<String>?,
     val geo: Geo?,
     val homepageUrl: String?,
-    override val id: SerializedId,
+    override val id: SerializedId?,
     val ids: InstitutionIds?,
     val imageThumbnailUrl: String?,
     val imageUrl: String?,
