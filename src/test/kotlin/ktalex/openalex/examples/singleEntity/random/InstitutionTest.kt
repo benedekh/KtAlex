@@ -3,17 +3,17 @@ package ktalex.openalex.examples.singleEntity.random
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.should
-import ktalex.dal.client.InstitutionsClient
+import ktalex.dal.client.InstitutionClient
 import ktalex.utils.shouldBeSet
 
 /**
  * Based on the [OpenAlex documentation](https://docs.openalex.org/how-to-use-the-api/get-single-entities/random-result)
  */
 class InstitutionTest : ShouldSpec({
-    lateinit var client: InstitutionsClient
+    lateinit var client: InstitutionClient
 
     beforeTest {
-        client = InstitutionsClient()
+        client = InstitutionClient()
     }
     afterTest {
         client.close()

@@ -5,7 +5,7 @@ import ktalex.dal.query.QueryBuilder
 import ktalex.dal.query.QueryResponse
 import ktalex.model.Work
 
-class WorksClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
+class WorkClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
     BaseEntityClient<Work>(openAlexBaseUrl, mailTo) {
 
     override val entityType = "works"

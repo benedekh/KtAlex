@@ -3,17 +3,17 @@ package ktalex.openalex.examples.singleEntity.random
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.should
-import ktalex.dal.client.ConceptsClient
+import ktalex.dal.client.ConceptClient
 import ktalex.utils.shouldBeSet
 
 /**
  * Based on the [OpenAlex documentation](https://docs.openalex.org/how-to-use-the-api/get-single-entities/random-result)
  */
 class ConceptTests : ShouldSpec({
-    lateinit var client: ConceptsClient
+    lateinit var client: ConceptClient
 
     beforeTest {
-        client = ConceptsClient()
+        client = ConceptClient()
     }
     afterTest {
         client.close()

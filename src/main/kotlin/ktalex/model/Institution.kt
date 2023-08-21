@@ -1,7 +1,7 @@
 package ktalex.model
 
 import kotlinx.serialization.Serializable
-import ktalex.dal.client.WorksClient
+import ktalex.dal.client.WorkClient
 import ktalex.dal.query.PageableQueryResponse
 import ktalex.model.serialization.InstitutionTypeSerializer
 import ktalex.model.serialization.RelationshipTypeSerializer
@@ -69,7 +69,7 @@ data class Institution(
     val worksCount: Int?,
     val xConcepts: List<RelatedConcept>?,
 ) : BaseInstitution {
-    fun resolveWorks(): PageableQueryResponse<Work>? = worksApiUrl?.let { WorksClient().getEntities(it) }
+    fun resolveWorks(): PageableQueryResponse<Work>? = worksApiUrl?.let { WorkClient().getEntities(it) }
 }
 
 enum class InstitutionType {

@@ -7,13 +7,13 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import ktalex.dal.client.AuthorsClient
-import ktalex.dal.client.ConceptsClient
-import ktalex.dal.client.FundersClient
-import ktalex.dal.client.InstitutionsClient
-import ktalex.dal.client.PublishersClient
-import ktalex.dal.client.SourcesClient
-import ktalex.dal.client.WorksClient
+import ktalex.dal.client.AuthorClient
+import ktalex.dal.client.ConceptClient
+import ktalex.dal.client.FunderClient
+import ktalex.dal.client.InstitutionClient
+import ktalex.dal.client.PublisherClient
+import ktalex.dal.client.SourceClient
+import ktalex.dal.client.WorkClient
 
 @Serializable(with = ResolvableEntitySerializer::class)
 data class ResolvableEntity<T>(
@@ -24,13 +24,13 @@ data class ResolvableEntity<T>(
     fun resolveEntity(): T? {
         if (id.isEmpty()) return null
         return when (id[0]) {
-            'W' -> WorksClient().getByOpenAlexId(id) as T
-            'A' -> AuthorsClient().getByOpenAlexId(id) as T
-            'S' -> SourcesClient().getByOpenAlexId(id) as T
-            'I' -> InstitutionsClient().getByOpenAlexId(id) as T
-            'C' -> ConceptsClient().getByOpenAlexId(id) as T
-            'P' -> PublishersClient().getByOpenAlexId(id) as T
-            'F' -> FundersClient().getByOpenAlexId(id) as T
+            'W' -> WorkClient().getByOpenAlexId(id) as T
+            'A' -> AuthorClient().getByOpenAlexId(id) as T
+            'S' -> SourceClient().getByOpenAlexId(id) as T
+            'I' -> InstitutionClient().getByOpenAlexId(id) as T
+            'C' -> ConceptClient().getByOpenAlexId(id) as T
+            'P' -> PublisherClient().getByOpenAlexId(id) as T
+            'F' -> FunderClient().getByOpenAlexId(id) as T
             else -> null
         }
     }

@@ -7,7 +7,7 @@ import io.kotest.matchers.ints.shouldBePositive
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.should
-import ktalex.dal.client.WorksClient
+import ktalex.dal.client.WorkClient
 import ktalex.dal.query.QueryBuilder
 import ktalex.utils.shouldBeSet
 import kotlin.random.Random
@@ -17,10 +17,10 @@ import kotlin.random.nextInt
  * Based on the [OpenAlex documentation](https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/paging)
  */
 class WorkTests : ShouldSpec({
-    lateinit var client: WorksClient
+    lateinit var client: WorkClient
 
     beforeTest {
-        client = WorksClient()
+        client = WorkClient()
     }
     afterTest {
         client.close()

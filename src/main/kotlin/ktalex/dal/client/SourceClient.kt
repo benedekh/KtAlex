@@ -5,7 +5,7 @@ import ktalex.dal.query.QueryBuilder
 import ktalex.dal.query.QueryResponse
 import ktalex.model.Source
 
-class SourcesClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
+class SourceClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
     BaseEntityClient<Source>(openAlexBaseUrl, mailTo) {
 
     override val entityType = "sources"

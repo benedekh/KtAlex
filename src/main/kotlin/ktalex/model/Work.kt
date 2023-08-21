@@ -1,8 +1,8 @@
 package ktalex.model
 
 import kotlinx.serialization.Serializable
-import ktalex.dal.client.NgramsClient
-import ktalex.dal.client.WorksClient
+import ktalex.dal.client.NgramClient
+import ktalex.dal.client.WorkClient
 import ktalex.dal.ngrams.NgramsResponse
 import ktalex.dal.query.PageableQueryResponse
 import ktalex.model.serialization.ResolvableEntity
@@ -55,8 +55,8 @@ data class Work(
     val typeCrossref: String?,
     val updatedDate: SerializedDateTime?,
 ) {
-    fun resolveCitedBys(): PageableQueryResponse<Work>? = citedByApiUrl?.let { WorksClient().getEntities(it) }
-    fun resolveNgrams(): NgramsResponse? = ngramsUrl?.let { NgramsClient().getNgrams(it) }
+    fun resolveCitedBys(): PageableQueryResponse<Work>? = citedByApiUrl?.let { WorkClient().getEntities(it) }
+    fun resolveNgrams(): NgramsResponse? = ngramsUrl?.let { NgramClient().getNgrams(it) }
 }
 
 @Serializable

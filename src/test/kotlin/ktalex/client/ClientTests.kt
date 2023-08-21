@@ -2,13 +2,13 @@ package ktalex.client
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.ShouldSpec
-import ktalex.dal.client.AuthorsClient
+import ktalex.dal.client.AuthorClient
 import ktalex.dal.query.QueryBuilder
 import kotlin.coroutines.cancellation.CancellationException
 
 class ClientTests : ShouldSpec({
     should("Not work if client is closed") {
-        val client = AuthorsClient()
+        val client = AuthorClient()
         val query = QueryBuilder().select("displayName")
 
         client.getRandom(query)
