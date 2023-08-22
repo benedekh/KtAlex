@@ -19,8 +19,7 @@ class QueryBuilder {
     private var selectFields: List<String>? = null
 
     // sort
-    private var sortByField: String? = null
-    private var sortDescending: Boolean = false
+    private var sortingSettings: MutableList<SortingSettings> = mutableListOf()
 
     // search
     private var searchTerm: String? = null
@@ -40,8 +39,7 @@ class QueryBuilder {
         copy.paginationSettings =
             PaginationSettings(paginationSettings?.page, paginationSettings?.perPage, paginationSettings?.cursor)
         copy.selectFields = selectFields?.toMutableList()
-        copy.sortByField = sortByField
-        copy.sortDescending = sortDescending
+        this.sortingSettings.forEach { copy.sortingSettings.add(SortingSettings(it.sortByField, it.sortDescending)) }
         copy.searchTerm = searchTerm
         this.filters.forEach { (key, value) -> copy.filters[key] = value.toMutableList() }
         copy.sampleSize = sampleSize
@@ -107,9 +105,8 @@ class QueryBuilder {
      * @param field name of the top-level field in camelCase that you want to sort by (i.e. displayName)
      * @pparam descending whether to sort in descending order
      */
-    fun sort(field: String, descending: Boolean = false): QueryBuilder {
-        sortByField = field.camelToSnakeCase()
-        sortDescending = descending
+    fun sort(field: String, sortDescending: Boolean = false): QueryBuilder {
+        sortingSettings.add(SortingSettings(field.camelToSnakeCase(), sortDescending))
         return this
     }
 
@@ -326,17 +323,21 @@ class QueryBuilder {
         }
 
         selectFields?.let { sb.append("select=${it.joinToString(",")}&") }
-        sortByField?.let {
-            sb.append(
-                "sort=$it${
-                    if (sortDescending) {
+
+        if (sortingSettings.isNotEmpty()) {
+            sb.append("sort=")
+            val sorting = sortingSettings.joinToString(",") {
+                "${it.sortByField}${
+                    if (it.sortDescending) {
                         ":desc"
                     } else {
                         ""
                     }
-                }&",
-            )
+                }"
+            }
+            sb.append("$sorting&")
         }
+
         groupBy?.let { sb.append("group_by=$it&") }
         sampleSize?.let { sb.append("sample=$it&") }
         sampleSeed?.let { sb.append("seed=$it&") }
@@ -384,7 +385,7 @@ class QueryBuilder {
 
     override fun toString(): String =
         "QueryBuilder(paginationSettings=$paginationSettings, selectFields=$selectFields, " +
-                "sortByField=$sortByField, sortDescending=$sortDescending, searchTerm=$searchTerm, filters=$filters, " +
+                "sortingSettings=$sortingSettings, searchTerm=$searchTerm, filters=$filters, " +
                 "sampleSize=$sampleSize, sampleSeed=$sampleSeed, groupBy=$groupBy)"
 }
 
@@ -411,4 +412,9 @@ data class PaginationSettings(
     val page: Int?,
     val perPage: Int?,
     val cursor: String?,
+)
+
+data class SortingSettings(
+    val sortByField: String,
+    val sortDescending: Boolean = false,
 )
