@@ -17,7 +17,8 @@ class ConceptClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
 
     override fun getEntities(url: String): PageableQueryResponse<Concept> = getEntitiesInternal(url)
 
-    override fun getEntities(queryBuilder: QueryBuilder?): PageableQueryResponse<Concept> = getEntitiesInternal()
+    override fun getEntities(queryBuilder: QueryBuilder?): PageableQueryResponse<Concept> =
+        getEntitiesInternal(queryBuilder)
 
     override fun getEntities(url: String, queryBuilder: QueryBuilder?): PageableQueryResponse<Concept> =
         getEntitiesInternal(url, queryBuilder)
