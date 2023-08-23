@@ -54,7 +54,7 @@ class AuthorTests : ShouldSpec({
         val expectedSize = 25
         expectedIds.size.shouldBe(expectedSize)
 
-        val response = client.getEntities(QueryBuilder().eq("last_known_institution.continent", "oceania"))
+        val response = client.getEntities(QueryBuilder().eq("lastKnownInstitution.continent", "oceania"))
         response.shouldNotBeNull()
 
         val meta = response.meta
@@ -72,7 +72,7 @@ class AuthorTests : ShouldSpec({
 
     should("Get authors grouped by continent") {
         val expectedCount = 8
-        val response = client.getEntities(QueryBuilder().groupBy("last_known_institution.continent"))
+        val response = client.getEntities(QueryBuilder().groupBy("lastKnownInstitution.continent"))
         response.shouldNotBeNull()
 
         val meta = response.meta
