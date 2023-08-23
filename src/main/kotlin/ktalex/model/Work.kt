@@ -55,8 +55,10 @@ data class Work(
     val typeCrossref: String?,
     val updatedDate: SerializedDateTime?,
 ) {
-    fun resolveCitedBys(): PageableQueryResponse<Work>? = citedByApiUrl?.let { WorkClient().getEntities(it) }
-    fun resolveNgrams(): NgramsResponse? = ngramsUrl?.let { NgramClient().getNgrams(it) }
+    fun resolveCitedBys(): PageableQueryResponse<Work>? =
+        citedByApiUrl?.let { url -> WorkClient().use { it.getEntities(url) } }
+
+    fun resolveNgrams(): NgramsResponse? = ngramsUrl?.let { url -> NgramClient().use { it.getNgrams(url) } }
 }
 
 @Serializable

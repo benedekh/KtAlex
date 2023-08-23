@@ -20,17 +20,17 @@ data class ResolvableEntity<T>(
     override val url: String,
     override val id: String,
 ) : BaseSerializedId {
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST", "detekt:CyclomaticComplexMethod")
     fun resolveEntity(): T? {
         if (id.isEmpty()) return null
         return when (id[0]) {
-            'W' -> WorkClient().getByOpenAlexId(id) as T
-            'A' -> AuthorClient().getByOpenAlexId(id) as T
-            'S' -> SourceClient().getByOpenAlexId(id) as T
-            'I' -> InstitutionClient().getByOpenAlexId(id) as T
-            'C' -> ConceptClient().getByOpenAlexId(id) as T
-            'P' -> PublisherClient().getByOpenAlexId(id) as T
-            'F' -> FunderClient().getByOpenAlexId(id) as T
+            'W' -> WorkClient().use { it.getByOpenAlexId(id) } as T
+            'A' -> AuthorClient().use { it.getByOpenAlexId(id) } as T
+            'S' -> SourceClient().use { it.getByOpenAlexId(id) } as T
+            'I' -> InstitutionClient().use { it.getByOpenAlexId(id) } as T
+            'C' -> ConceptClient().use { it.getByOpenAlexId(id) } as T
+            'P' -> PublisherClient().use { it.getByOpenAlexId(id) } as T
+            'F' -> FunderClient().use { it.getByOpenAlexId(id) } as T
             else -> null
         }
     }

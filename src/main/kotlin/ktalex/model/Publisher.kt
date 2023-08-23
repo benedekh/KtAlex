@@ -30,7 +30,8 @@ data class Publisher(
     val updatedDate: SerializedDateTime?,
     val worksCount: Int?,
 ) {
-    fun resolveSources(): PageableQueryResponse<Source>? = sourcesApiUrl?.let { SourceClient().getEntities(it) }
+    fun resolveSources(): PageableQueryResponse<Source>? =
+        sourcesApiUrl?.let { url -> SourceClient().use { it.getEntities(url) } }
 }
 
 @Serializable

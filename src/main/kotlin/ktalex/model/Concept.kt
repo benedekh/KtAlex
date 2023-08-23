@@ -53,7 +53,8 @@ data class Concept(
     val worksApiUrl: String?,
     val worksCount: Int?,
 ) : BaseConcept {
-    fun resolveWorks(): PageableQueryResponse<Work>? = worksApiUrl?.let { WorkClient().getEntities(it) }
+    fun resolveWorks(): PageableQueryResponse<Work>? =
+        worksApiUrl?.let { url -> WorkClient().use { it.getEntities(url) } }
 }
 
 @Serializable

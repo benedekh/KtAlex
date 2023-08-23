@@ -71,7 +71,8 @@ data class Source(
     val worksCount: Int?,
     val xConcepts: List<RelatedConcept>?,
 ) : BaseSource {
-    fun resolveWorks(): PageableQueryResponse<Work>? = worksApiUrl?.let { WorkClient().getEntities(it) }
+    fun resolveWorks(): PageableQueryResponse<Work>? =
+        worksApiUrl?.let { url -> WorkClient().use { it.getEntities(url) } }
 }
 
 enum class SourceType {

@@ -38,7 +38,8 @@ data class Author(
     val worksCount: Int?,
     val xConcepts: List<RelatedConcept>?,
 ) : BaseAuthor {
-    fun resolveWorks(): PageableQueryResponse<Work>? = worksApiUrl?.let { WorkClient().getEntities(it) }
+    fun resolveWorks(): PageableQueryResponse<Work>? =
+        worksApiUrl?.let { url -> WorkClient().use { it.getEntities(url) } }
 }
 
 @Serializable
