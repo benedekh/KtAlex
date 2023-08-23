@@ -11,6 +11,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
+import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -24,9 +25,21 @@ import ktalex.dal.query.QueryBuilder
 import ktalex.dal.query.QueryResponse
 import ktalex.utils.extractFirstMatch
 import mu.KotlinLogging
-import java.util.concurrent.atomic.AtomicReference
 
-open class BaseClient<out T>(protected val mailTo: String? = null) : AutoCloseable {
+abstract class BaseClient : AutoCloseable {
+
+    constructor(openAlexBaseUrl: String? = null, mailTo: String? = null) {
+        this.openAlexBaseUrl = openAlexBaseUrl ?: "https://api.openalex.org"
+        this.mailTo = mailTo
+    }
+
+    protected val mailTo: String?
+    protected val openAlexBaseUrl: String
+
+    protected abstract val entityType: String
+
+    protected val baseUrl: String
+        get() = "$openAlexBaseUrl/$entityType"
 
     companion object {
         protected val LOGGER = KotlinLogging.logger {}
@@ -82,21 +95,11 @@ open class BaseClient<out T>(protected val mailTo: String? = null) : AutoCloseab
     }
 }
 
-abstract class BaseEntityClient<T> : BaseClient<T> {
-
-    constructor(openAlexBaseUrl: String? = null, mailTo: String? = null) : super(mailTo) {
-        this.openAlexBaseUrl = openAlexBaseUrl ?: "https://api.openalex.org"
-    }
-
-    private val openAlexBaseUrl: String
-
-    protected abstract val entityType: String
+abstract class BaseEntityClient<T>(openAlexBaseUrl: String? = null, mailTo: String? = null) :
+    BaseClient(openAlexBaseUrl, mailTo) {
 
     private val autocompleteBaseUrl: String
         get() = "$openAlexBaseUrl/autocomplete/$entityType"
-
-    protected val baseUrl: String
-        get() = "$openAlexBaseUrl/$entityType"
 
     abstract fun getRandom(queryBuilder: QueryBuilder? = null): T
 

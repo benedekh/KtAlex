@@ -27,7 +27,7 @@ class WorkClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
         getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
 
     fun getByDoi(id: String, queryBuilder: QueryBuilder? = null): Work? =
-        getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
+        getEntity("$baseUrl/https://orcid.org/$id${queryBuilder?.build().orEmpty()}")
 
     fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Work? =
         getEntity("$baseUrl/mag:$id${queryBuilder?.build().orEmpty()}")

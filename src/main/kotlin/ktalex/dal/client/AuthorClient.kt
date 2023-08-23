@@ -27,7 +27,7 @@ class AuthorClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
         getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
 
     fun getByOrcid(id: String, queryBuilder: QueryBuilder? = null): Author? =
-        getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
+        getEntity("$baseUrl/https://orcid.org/$id${queryBuilder?.build().orEmpty()}")
 
     fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Author? =
         getEntity("$baseUrl/mag:$id${queryBuilder?.build().orEmpty()}")
