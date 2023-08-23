@@ -28,6 +28,13 @@ import mu.KotlinLogging
 
 abstract class BaseClient : AutoCloseable {
 
+    /**
+     * @param openAlexBaseUrl the base URL of the OpenAlex API. Defaults to https://api.openalex.org
+     * @param mailTo excerpt from the OpenAlex documentation: "The polite pool has much faster and more consistent
+     * response times. To get into the polite pool, you just have to set mailTo to an email address where they can
+     * contact you."
+     * [Source](https://docs.openalex.org/how-to-use-the-api/rate-limits-and-authentication#the-polite-pool)
+     */
     constructor(openAlexBaseUrl: String? = null, mailTo: String? = null) {
         this.openAlexBaseUrl = openAlexBaseUrl ?: "https://api.openalex.org"
         this.mailTo = mailTo
@@ -95,6 +102,13 @@ abstract class BaseClient : AutoCloseable {
     }
 }
 
+/**
+ * @param openAlexBaseUrl the base URL of the OpenAlex API. Defaults to https://api.openalex.org
+ * @param mailTo excerpt from the OpenAlex documentation: "The polite pool has much faster and more consistent
+ * response times. To get into the polite pool, you just have to set mailTo to an email address where they can
+ * contact you."
+ * [Source](https://docs.openalex.org/how-to-use-the-api/rate-limits-and-authentication#the-polite-pool)
+ */
 abstract class BaseEntityClient<T>(openAlexBaseUrl: String? = null, mailTo: String? = null) :
     BaseClient(openAlexBaseUrl, mailTo) {
 

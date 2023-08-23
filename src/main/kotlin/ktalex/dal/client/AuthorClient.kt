@@ -5,6 +5,13 @@ import ktalex.dal.query.QueryBuilder
 import ktalex.dal.query.QueryResponse
 import ktalex.model.Author
 
+/**
+ * @param openAlexBaseUrl the base URL of the OpenAlex API. Defaults to https://api.openalex.org
+ * @param mailTo excerpt from the OpenAlex documentation: "The polite pool has much faster and more consistent
+ * response times. To get into the polite pool, you just have to set mailTo to an email address where they can
+ * contact you."
+ * [Source](https://docs.openalex.org/how-to-use-the-api/rate-limits-and-authentication#the-polite-pool)
+ */
 class AuthorClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
     BaseEntityClient<Author>(openAlexBaseUrl, mailTo) {
 
