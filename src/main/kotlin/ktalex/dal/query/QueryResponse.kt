@@ -43,6 +43,7 @@ data class PageableQueryResponse<T>(
 
     fun nextPage(): PageableQueryResponse<T>? {
         if (results.isNullOrEmpty()) {
+            client.close()
             return null
         }
 
@@ -90,11 +91,13 @@ class PageableQueryResponseIterator<T>(
     }
 
     override fun next(): PageableQueryResponse<T> {
-        return peekedResponse?.let {
-            lastResult = QueryResponse(it.meta, it.results, it.groupBy)
-            nextCursor = it.meta?.nextCursor
+        return peekedResponse?.apply {
+            lastResult = QueryResponse(this.meta, this.results, this.groupBy)
+            nextCursor = this.meta?.nextCursor
             peekedResponse = null
-            it
-        } ?: throw NoSuchElementException()
+        } ?: run {
+            client.close()
+            throw NoSuchElementException()
+        }
     }
 }
