@@ -23,7 +23,7 @@ class WorkTests : ShouldSpec({
         client.close()
     }
 
-    should("Get works with search term \"dna\" in the title, abstract, or fulltext:") {
+    should("Get works with search term \"dna\" in the title, abstract, or fulltext") {
         val searchTerm = "dna"
         val response = client.getEntities(QueryBuilder().search(searchTerm))
         response.shouldNotBeNull()
