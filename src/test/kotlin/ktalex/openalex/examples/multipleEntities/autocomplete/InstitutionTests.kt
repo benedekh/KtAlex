@@ -2,7 +2,9 @@ package ktalex.openalex.examples.multipleEntities.autocomplete
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
+import ktalex.dal.autocomplete.EntityType
 import ktalex.dal.client.InstitutionClient
 import ktalex.utils.shouldBeSet
 
@@ -30,6 +32,8 @@ class InstitutionTests : ShouldSpec({
         results.forEach {
             it.displayName.shouldBeSet()
             it.displayName!!.lowercase().shouldContain(searchTerm)
+            it.entityType.shouldNotBeNull()
+            it.entityType!!.enum.shouldBe(EntityType.INSTITUTION)
         }
     }
 
@@ -44,6 +48,8 @@ class InstitutionTests : ShouldSpec({
         results.forEach {
             it.displayName.shouldBeSet()
             it.displayName!!.shouldContain(searchTerm)
+            it.entityType.shouldNotBeNull()
+            it.entityType!!.enum.shouldBe(EntityType.INSTITUTION)
         }
     }
 })

@@ -4,6 +4,7 @@ import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
+import ktalex.dal.autocomplete.EntityType
 import ktalex.dal.client.WorkClient
 import ktalex.dal.query.QueryBuilder
 import ktalex.utils.shouldBeSet
@@ -38,6 +39,9 @@ class WorkTests : ShouldSpec({
         results.forEach {
             it.displayName.shouldBeSet()
             it.displayName!!.lowercase().shouldContain(autocompleteTerm)
+
+            it.entityType.shouldNotBeNull()
+            it.entityType!!.enum.shouldBe(EntityType.WORK)
         }
     }
 })

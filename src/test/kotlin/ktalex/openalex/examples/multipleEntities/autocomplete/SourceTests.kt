@@ -5,6 +5,7 @@ import io.kotest.matchers.equals.shouldBeEqual
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
+import ktalex.dal.autocomplete.EntityType
 import ktalex.dal.client.SourceClient
 
 /**
@@ -29,9 +30,12 @@ class SourceTests : ShouldSpec({
         results.shouldNotBeNull()
         results.size.shouldBe(1)
 
-        val id = results.first().id
-        id.shouldNotBeNull()
+        val result = results.first()
+        result.entityType.shouldNotBeNull()
+        result.entityType!!.enum.shouldBe(EntityType.SOURCE)
 
+        val id = result.id
+        id.shouldNotBeNull()
         id.id.shouldBeEqual(searchTerm)
         id.url.shouldContain(searchTerm)
     }
