@@ -32,4 +32,18 @@ class InstitutionTests : ShouldSpec({
             it.displayName!!.lowercase().shouldContain(searchTerm)
         }
     }
+
+    should("Get a list of random institutions containing Florida") {
+        val searchTerm = "Florida"
+        val response = client.autocomplete(searchTerm)
+        response.shouldNotBeNull()
+
+        val results = response.results
+        results.shouldNotBeNull()
+
+        results.forEach {
+            it.displayName.shouldBeSet()
+            it.displayName!!.shouldContain(searchTerm)
+        }
+    }
 })

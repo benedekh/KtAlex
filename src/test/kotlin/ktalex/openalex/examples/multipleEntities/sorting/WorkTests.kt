@@ -60,7 +60,7 @@ class WorkTests : ShouldSpec({
             it.displayName!!.lowercase().shouldContain("bioplastic")
         }
 
-        results.filter { it.relevanceScore != null }.map { it.relevanceScore!! }.shouldBeSorted(isDescending = true)
+        results.map { it.relevanceScore ?: Float.MAX_VALUE }.shouldBeSorted(isDescending = true)
         results.map { it.publicationYear!! }.shouldBeSorted(isDescending = true)
     }
 })
