@@ -69,6 +69,8 @@ class WorkTests : ShouldSpec({
             "https://openalex.org/W1997219967"
         )
         val expectedSize = 25
+        expectedIds.size.shouldBe(expectedSize)
+
         val response =
             client.getEntities(QueryBuilder().search("\"elmo\" AND \"sesame street\" NOT (cookie OR monster)"))
         response.shouldNotBeNull()
@@ -121,6 +123,8 @@ class WorkTests : ShouldSpec({
         )
         val expectedCount = 141
         val expectedSize = 25
+        expectedIds.size.shouldBe(expectedSize)
+
         val response = client.getEntities(QueryBuilder().search("\"fierce creatures\""))
         response.shouldNotBeNull()
 
@@ -173,6 +177,8 @@ class WorkTests : ShouldSpec({
         )
         val expectedCount = 141
         val expectedSize = 25
+        expectedIds.size.shouldBe(expectedSize)
+
         val response = client.getEntities(QueryBuilder().search("fierce creatures"))
         response.shouldNotBeNull()
 

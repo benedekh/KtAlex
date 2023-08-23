@@ -65,6 +65,8 @@ class WorkTests : ShouldSpec({
         )
         val expectedCount = 1765805
         val expectedSize = 25
+        expectedIds.size.shouldBe(expectedSize)
+
         val response =
             client.getEntities(
                 QueryBuilder().gt("publicationDate", LocalDate.of(2022, 1, 1))
@@ -134,6 +136,8 @@ class WorkTests : ShouldSpec({
             "https://openalex.org/W2531269403"
         )
         val expectedSize = 25
+        expectedIds.size.shouldBe(expectedSize)
+
         val response = client.getEntities(
             QueryBuilder().eq("institutions.countryCode", "fr").eq("institutions.countryCode", "gb")
         )
@@ -181,6 +185,8 @@ class WorkTests : ShouldSpec({
             "https://openalex.org/W2126930838"
         )
         val expectedSize = 25
+        expectedIds.size.shouldBe(expectedSize)
+
         val response = client.getEntities(
             QueryBuilder().or("institutions.countryCode", negate = false, "fr", "gb")
         )
