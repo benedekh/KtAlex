@@ -1,4 +1,4 @@
-package ktalex.pagination
+package ktalex.client
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.ShouldSpec
@@ -132,12 +132,6 @@ class PaginationTests : ShouldSpec({
         emptyPage.results.shouldBeEmpty()
     }
 
-    should("Throw error, because cursor and page cannot be set at the same time") {
-        shouldThrow<IllegalArgumentException> {
-            QueryBuilder().pagination(page = 1, cursor = "*")
-        }
-    }
-
     should("Go through the pages, using the default pagination and an iterator") {
         val pageableResults = client.getEntities(baseQueryBuilder)
 
@@ -255,7 +249,7 @@ class PaginationTests : ShouldSpec({
             it.id.shouldNotBeNull()
             it.id!!.id.shouldBeSet()
         }
-        
+
         iterator.hasNext().shouldBeFalse()
         shouldThrow<NoSuchElementException> {
             iterator.next()

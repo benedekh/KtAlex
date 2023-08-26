@@ -1,8 +1,8 @@
 package ktalex.dal.query
 
-import java.time.LocalDate
 import ktalex.utils.camelToSnakeCase
 import ktalex.utils.urlEncode
+import java.time.LocalDate
 
 @Suppress("detekt:TooManyFunctions")
 class QueryBuilder {
@@ -12,8 +12,7 @@ class QueryBuilder {
     }
 
     // pagination
-    var paginationSettings: PaginationSettings? = null
-        private set
+    private var paginationSettings: PaginationSettings? = null
 
     // select
     private var selectFields: List<String>? = null
@@ -178,6 +177,14 @@ class QueryBuilder {
      * @param fieldPath fully qualified path of the field you want to filter by (e.g. id, institutions.countryCode)
      * @param value value to filter by
      */
+    fun eq(fieldPath: String, value: Enum<*>): QueryBuilder = eq(fieldPath, value.toString().lowercase())
+
+    /**
+     * Adds an AND EQUALS operator to the filter as follows:
+     *
+     * @param fieldPath fully qualified path of the field you want to filter by (e.g. id, institutions.countryCode)
+     * @param value value to filter by
+     */
     fun eq(fieldPath: String, value: Number): QueryBuilder = put(fieldPath, value.toString())
 
     /**
@@ -203,6 +210,14 @@ class QueryBuilder {
      * @param value value to filter by
      */
     fun notEq(fieldPath: String, value: String): QueryBuilder = put(fieldPath, "!$value")
+
+    /**
+     * Adds an AND EQUALS operator to the filter as follows:
+     *
+     * @param fieldPath fully qualified path of the field you want to filter by (e.g. id, institutions.countryCode)
+     * @param value value to filter by
+     */
+    fun notEq(fieldPath: String, value: Enum<*>): QueryBuilder = notEq(fieldPath, value.toString().lowercase())
 
     /**
      * Adds an AND NOT EQUALS operator to the filter as follows:
@@ -385,8 +400,8 @@ class QueryBuilder {
 
     override fun toString(): String =
         "QueryBuilder(paginationSettings=$paginationSettings, selectFields=$selectFields, " +
-                "sortingSettings=$sortingSettings, searchTerm=$searchTerm, filters=$filters, " +
-                "sampleSize=$sampleSize, sampleSeed=$sampleSeed, groupBy=$groupBy)"
+            "sortingSettings=$sortingSettings, searchTerm=$searchTerm, filters=$filters, " +
+            "sampleSize=$sampleSize, sampleSeed=$sampleSeed, groupBy=$groupBy)"
 }
 
 /**
