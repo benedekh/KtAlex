@@ -81,7 +81,7 @@ class WorkTests : ShouldSpec({
         }
     }
 
-    should("Return a page with 100 entries of works and nextCursor set") {
+    should("Get a page with 100 entries of works and nextCursor set") {
         val publicationYear = 2020
         val pageSize = 200
         val response = client.getEntities(

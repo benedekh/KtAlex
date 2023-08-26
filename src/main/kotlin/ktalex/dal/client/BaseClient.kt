@@ -117,7 +117,7 @@ abstract class BaseEntityClient<T>(openAlexBaseUrl: String? = null, mailTo: Stri
 
     abstract fun getRandom(queryBuilder: QueryBuilder? = null): T
 
-    abstract fun getEntities(url: String): PageableQueryResponse<T>
+    abstract fun getEntitiesByUrl(url: String): PageableQueryResponse<T>
 
     abstract fun getEntities(queryBuilder: QueryBuilder? = null): PageableQueryResponse<T>
 
@@ -133,7 +133,7 @@ abstract class BaseEntityClient<T>(openAlexBaseUrl: String? = null, mailTo: Stri
     fun autocomplete(term: String, queryBuilder: QueryBuilder? = null): AutocompleteResponse =
         getEntity("$autocompleteBaseUrl?q=$term${queryBuilder?.let { "&${it.build().removePrefix("?")}" }.orEmpty()}")
 
-    protected abstract fun getEntityWithExactType(url: String): QueryResponse<T>
+    protected abstract fun getEntityByUrl(url: String): QueryResponse<T>
 
     protected fun getEntitiesInternal(url: String): PageableQueryResponse<T> {
         val (page, urlAfterPageRemoved) = url.extractFirstMatch("page", true)
@@ -158,7 +158,7 @@ abstract class BaseEntityClient<T>(openAlexBaseUrl: String? = null, mailTo: Stri
             "$url$queryParams"
         }
 
-        val response = getEntityWithExactType(preparedUrl)
+        val response = getEntityByUrl(preparedUrl)
         return PageableQueryResponse(
             meta = response.meta,
             results = response.results,

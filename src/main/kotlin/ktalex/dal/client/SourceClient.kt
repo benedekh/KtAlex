@@ -17,28 +17,106 @@ class SourceClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
 
     override val entityType = "sources"
 
+    /**
+     * Get a random [Source]. [queryBuilder] can be used to narrow down the search.
+     *
+     *  * see filter fields in the [documentation](https://docs.openalex.org/api-entities/sources/filter-sources)
+     *  * see search fields in the [documentation](https://docs.openalex.org/api-entities/sources/search-sources)
+     *  * see group by fields in the [documentation](https://docs.openalex.org/api-entities/sources/group-sources)
+     *
+     * @param queryBuilder to add search, filter, sort, group by terms to the query
+     */
     override fun getRandom(queryBuilder: QueryBuilder?): Source =
         getEntity("$baseUrl/random${queryBuilder?.build().orEmpty()}")
 
-    override fun getEntityWithExactType(url: String): QueryResponse<Source> = getEntity(url)
+    /**
+     * Get a [Source] by its URL.
+     *
+     * @param url the [Source]'s URL
+     */
+    override fun getEntityByUrl(url: String): QueryResponse<Source> = getEntity(url)
 
-    override fun getEntities(url: String): PageableQueryResponse<Source> = getEntitiesInternal(url)
+    /**
+     * Get a list of [Source]s by their URL.
+     *
+     * @param url the URL of a list of [Source]s
+     */
+    override fun getEntitiesByUrl(url: String): PageableQueryResponse<Source> = getEntitiesInternal(url)
 
+    /**
+     * Get a list of [Source]s. [queryBuilder] can be used to narrow down the search.
+     *
+     * * see filter fields in the [documentation](https://docs.openalex.org/api-entities/sources/filter-sources)
+     * * see search fields in the [documentation](https://docs.openalex.org/api-entities/sources/search-sources)
+     * * see group by fields in the [documentation](https://docs.openalex.org/api-entities/sources/group-sources)
+     *
+     * @param queryBuilder to add search, filter, sort, group by terms to the query
+     */
     override fun getEntities(queryBuilder: QueryBuilder?): PageableQueryResponse<Source> =
         getEntitiesInternal(queryBuilder)
 
+    /**
+     * Get a list of [Source]s by their URL. [queryBuilder] can be used to narrow down the search.
+     *
+     * * see filter fields in the [documentation](https://docs.openalex.org/api-entities/sources/filter-sources)
+     * * see search fields in the [documentation](https://docs.openalex.org/api-entities/sources/search-sources)
+     * * see group by fields in the [documentation](https://docs.openalex.org/api-entities/sources/group-sources)
+     *
+     * @param url the URL of a list of [Source]s
+     * @param queryBuilder to add search, filter, sort, group by terms to the query
+     */
     override fun getEntities(url: String, queryBuilder: QueryBuilder?): PageableQueryResponse<Source> =
         getEntitiesInternal(url, queryBuilder)
 
+    /**
+     * Get a [Source] by its OpenAlex ID. [queryBuilder] can be used to narrow down the search.
+     *
+     * * see filter fields in the [documentation](https://docs.openalex.org/api-entities/sources/filter-sources)
+     * * see search fields in the [documentation](https://docs.openalex.org/api-entities/sources/search-sources)
+     * * see group by fields in the [documentation](https://docs.openalex.org/api-entities/sources/group-sources)
+     *
+     * @param id the OpenAlex ID of the [Source]
+     * @param queryBuilder to add search, filter, sort, group by terms to the query
+     */
     fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Source =
         getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
 
+    /**
+     * Get a [Source] by its Microsoft Academic Graph ID. [queryBuilder] can be used to narrow down the search.
+     *
+     * * see filter fields in the [documentation](https://docs.openalex.org/api-entities/sources/filter-sources)
+     * * see search fields in the [documentation](https://docs.openalex.org/api-entities/sources/search-sources)
+     * * see group by fields in the [documentation](https://docs.openalex.org/api-entities/sources/group-sources)
+     *
+     * @param id the Microsoft Academic Graph ID of the [Source]
+     * @param queryBuilder to add search, filter, sort, group by terms to the query
+     */
     fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Source =
         getEntity("$baseUrl/mag:$id${queryBuilder?.build().orEmpty()}")
 
+    /**
+     * Get a [Source] by its ISSN. [queryBuilder] can be used to narrow down the search.
+     *
+     * * see filter fields in the [documentation](https://docs.openalex.org/api-entities/sources/filter-sources)
+     * * see search fields in the [documentation](https://docs.openalex.org/api-entities/sources/search-sources)
+     * * see group by fields in the [documentation](https://docs.openalex.org/api-entities/sources/group-sources)
+     *
+     * @param id the ISSN of the [Source]
+     * @param queryBuilder to add search, filter, sort, group by terms to the query
+     */
     fun getByIssn(id: String, queryBuilder: QueryBuilder? = null): Source =
         getEntity("$baseUrl/issn:$id${queryBuilder?.build().orEmpty()}")
 
+    /**
+     * Get a [Source] by its Wikidata ID. [queryBuilder] can be used to narrow down the search.
+     *
+     * * see filter fields in the [documentation](https://docs.openalex.org/api-entities/sources/filter-sources)
+     * * see search fields in the [documentation](https://docs.openalex.org/api-entities/sources/search-sources)
+     * * see group by fields in the [documentation](https://docs.openalex.org/api-entities/sources/group-sources)
+     *
+     * @param id the Wikidata ID of the [Source]
+     * @param queryBuilder to add search, filter, sort, group by terms to the query
+     */
     fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Source =
         getEntity("$baseUrl/wikidata:$id${queryBuilder?.build().orEmpty()}")
 }

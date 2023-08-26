@@ -1,6 +1,7 @@
 package ktalex.dal.client
 
 import ktalex.dal.ngrams.NgramsResponse
+import ktalex.model.Work
 
 /**
  * @param openAlexBaseUrl the base URL of the OpenAlex API. Defaults to https://api.openalex.org
@@ -13,10 +14,25 @@ class NgramClient(openAlexBaseUrl: String? = null, mailTo: String? = null) : Bas
 
     override val entityType = "works"
 
+    /**
+     * Get Ngrams by the OpenAlex ID of the corresponding [Work].
+     *
+     * @param id the OpenAlex ID of the [Work]
+     */
     fun getByOpenAlexId(id: String): NgramsResponse = getEntity("$baseUrl/$id/ngrams")
 
+    /**
+     * Get Ngrams by the DOI of the corresponding [Work].
+     *
+     * @param id the DOI of the [Work]
+     */
     fun getByDoi(id: String): NgramsResponse = getEntity("$baseUrl/$id/ngrams")
 
+    /**
+     * Get ngrams by their URL.
+     *
+     * @param id the URL of the ngrams
+     */
     fun getNgrams(url: String): NgramsResponse = getEntity(url)
 
 }

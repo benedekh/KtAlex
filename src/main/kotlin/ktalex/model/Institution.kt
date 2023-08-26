@@ -70,7 +70,7 @@ data class Institution(
     val xConcepts: List<RelatedConcept>?,
 ) : BaseInstitution {
     fun resolveWorks(): PageableQueryResponse<Work>? =
-        worksApiUrl?.let { url -> WorkClient().use { it.getEntities(url) } }
+        worksApiUrl?.let { url -> WorkClient().use { it.getEntitiesByUrl(url) } }
 }
 
 enum class InstitutionType {

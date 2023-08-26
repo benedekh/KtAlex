@@ -72,7 +72,7 @@ data class Source(
     val xConcepts: List<RelatedConcept>?,
 ) : BaseSource {
     fun resolveWorks(): PageableQueryResponse<Work>? =
-        worksApiUrl?.let { url -> WorkClient().use { it.getEntities(url) } }
+        worksApiUrl?.let { url -> WorkClient().use { it.getEntitiesByUrl(url) } }
 }
 
 enum class SourceType {
