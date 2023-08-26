@@ -87,17 +87,19 @@ class WorkTests : ShouldSpec({
         }
     }
 
+    @Suppress("detekt:SwallowedException")
     should("Throw exception if tries to access non-top-level field") {
         try {
             client.getEntities(QueryBuilder().select("openAccess.isOa"))
             fail("Should not reach here")
         } catch (ex: OpenAlexException) {
             ex.message.shouldContain("open_access.is_oa is not a valid select field")
-        }  catch (t: Throwable) {
+        } catch (t: Throwable) {
             fail("Should have thrown an OpenAlexException")
         }
     }
 
+    @Suppress("detekt:SwallowedException")
     should("Throw exception if we use select in autocomplete") {
         try {
             client.autocomplete("greenhou", QueryBuilder().select("id"))
@@ -109,6 +111,7 @@ class WorkTests : ShouldSpec({
         }
     }
 
+    @Suppress("detekt:SwallowedException")
     should("Throw exception if we use select with group by") {
         try {
             client.getEntities(QueryBuilder().select("id").groupBy("oaStatus"))

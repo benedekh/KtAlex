@@ -7,7 +7,6 @@ import io.kotest.matchers.equals.shouldNotBeEqual
 import io.kotest.matchers.ints.shouldBePositive
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import ktalex.dal.client.AuthorClient
 import ktalex.dal.client.InstitutionClient
 import ktalex.dal.query.QueryBuilder
 
@@ -26,7 +25,7 @@ class InstitutionTests : ShouldSpec({
 
     should("Get institutions from Oceania") {
         val expectedIds = listOf(
-           "https://openalex.org/I129604602",
+            "https://openalex.org/I129604602",
             "https://openalex.org/I165779595",
             "https://openalex.org/I165143802",
             "https://openalex.org/I31746571",

@@ -32,6 +32,7 @@ class SourceTests : ShouldSpec({
         firstResponse.results!!.shouldBeEqual(secondResponse.results!!)
     }
 
+    @Suppress("detekt:SwallowedException")
     should("Not sample more than 10 000 records") {
         val response = client.getEntities(QueryBuilder().sampling(10000))
         response.shouldNotBeNull()
@@ -46,6 +47,7 @@ class SourceTests : ShouldSpec({
         }
     }
 
+    @Suppress("detekt:SwallowedException")
     should("Cursor pagination is not supported with sampling") {
         try {
             QueryBuilder().sampling(1).pagination(cursor = "*")

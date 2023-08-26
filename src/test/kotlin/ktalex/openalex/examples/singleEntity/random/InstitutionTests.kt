@@ -31,4 +31,3 @@ class InstitutionTests : ShouldSpec({
         }
     }
 })
-

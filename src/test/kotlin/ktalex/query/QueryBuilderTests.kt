@@ -3,9 +3,9 @@ package ktalex.query
 import io.kotest.assertions.throwables.shouldThrowWithMessage
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
-import java.time.LocalDate
 import ktalex.dal.query.NumberFieldValue
 import ktalex.dal.query.QueryBuilder
+import java.time.LocalDate
 
 class QueryBuilderTests : ShouldSpec({
 
@@ -49,8 +49,8 @@ class QueryBuilderTests : ShouldSpec({
             ).build()
 
         val expectedQuery = "?filter=title.search:radiation,from_publication_date:2020-01-01," +
-                "to_publication_date:2020-12-31,language:en%7Cde,is_retracted:false,has_fulltext:true," +
-                "institutions_distinct_count:%215%7C6&sample=12&seed=42&page=2&per_page=11"
+            "to_publication_date:2020-12-31,language:en%7Cde,is_retracted:false,has_fulltext:true," +
+            "institutions_distinct_count:%215%7C6&sample=12&seed=42&page=2&per_page=11"
         query.shouldBe(expectedQuery)
     }
 
