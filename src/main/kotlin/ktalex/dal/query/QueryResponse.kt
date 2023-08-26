@@ -57,7 +57,7 @@ data class PageableQueryResponse<T>(
             peekedPage
         }
     }
-    
+
     override fun iterator(): Iterator<PageableQueryResponse<T>> =
         PageableQueryResponseIterator(
             lastResult = this,

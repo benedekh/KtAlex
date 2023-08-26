@@ -34,5 +34,4 @@ class NgramClient(openAlexBaseUrl: String? = null, mailTo: String? = null) : Bas
      * @param id the URL of the ngrams
      */
     fun getNgrams(url: String): NgramsResponse = getEntity(url)
-
 }

@@ -45,8 +45,8 @@ fun String.removeAllMatchesOfRegexps(regexps: List<Regex>): String {
     var remainingString: String = this
     regexps.forEach {
         var matchResult: MatchResult?
-        while (it.find(remainingString).also { matchResult = it } != null) {
-            val toBeCut = matchResult!!.value
+        while (it.find(remainingString).also { match -> matchResult = match } != null) {
+            val toBeCut = matchResult?.value.orEmpty()
             val lengthToBeCut = if (toBeCut.endsWith("&")) {
                 toBeCut.length - 1
             } else {

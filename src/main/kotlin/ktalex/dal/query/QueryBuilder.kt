@@ -19,7 +19,7 @@ class QueryBuilder {
     private var selectFields: List<String>? = null
 
     // sort
-    private var sortingSettings: MutableList<SortingSettings> = mutableListOf()
+    private val sortingSettings: MutableList<SortingSettings> = mutableListOf()
 
     // search
     private var searchTerm: String? = null
