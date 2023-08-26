@@ -30,12 +30,12 @@ class PublisherClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
     override fun getEntities(url: String, queryBuilder: QueryBuilder?): PageableQueryResponse<Publisher> =
         getEntitiesInternal(url, queryBuilder)
 
-    fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Publisher? =
+    fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Publisher =
         getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
 
-    fun getByRorId(id: String, queryBuilder: QueryBuilder? = null): Publisher? =
+    fun getByRorId(id: String, queryBuilder: QueryBuilder? = null): Publisher =
         getEntity("$baseUrl/ror:$id${queryBuilder?.build().orEmpty()}")
 
-    fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Publisher? =
+    fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Publisher =
         getEntity("$baseUrl/wikidata:$id${queryBuilder?.build().orEmpty()}")
 }

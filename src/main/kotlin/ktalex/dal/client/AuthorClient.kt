@@ -30,12 +30,12 @@ class AuthorClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
     override fun getEntities(url: String, queryBuilder: QueryBuilder?): PageableQueryResponse<Author> =
         getEntitiesInternal(url, queryBuilder)
 
-    fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Author? =
+    fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Author =
         getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
 
-    fun getByOrcid(id: String, queryBuilder: QueryBuilder? = null): Author? =
+    fun getByOrcid(id: String, queryBuilder: QueryBuilder? = null): Author =
         getEntity("$baseUrl/https://orcid.org/$id${queryBuilder?.build().orEmpty()}")
 
-    fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Author? =
+    fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Author =
         getEntity("$baseUrl/mag:$id${queryBuilder?.build().orEmpty()}")
 }

@@ -30,12 +30,12 @@ class ConceptClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
     override fun getEntities(url: String, queryBuilder: QueryBuilder?): PageableQueryResponse<Concept> =
         getEntitiesInternal(url, queryBuilder)
 
-    fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Concept? =
+    fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Concept =
         getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
 
-    fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Concept? =
+    fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Concept =
         getEntity("$baseUrl/mag:$id${queryBuilder?.build().orEmpty()}")
 
-    fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Concept? =
+    fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Concept =
         getEntity("$baseUrl/wikidata:$id${queryBuilder?.build().orEmpty()}")
 }

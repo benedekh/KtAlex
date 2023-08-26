@@ -30,15 +30,15 @@ class InstitutionClient(openAlexBaseUrl: String? = null, mailTo: String? = null)
     override fun getEntities(url: String, queryBuilder: QueryBuilder?): PageableQueryResponse<Institution> =
         getEntitiesInternal(url, queryBuilder)
 
-    fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Institution? =
+    fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Institution =
         getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
 
-    fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Institution? =
+    fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Institution =
         getEntity("$baseUrl/mag:$id${queryBuilder?.build().orEmpty()}r")
 
-    fun getByRorId(id: String, queryBuilder: QueryBuilder? = null): Institution? =
+    fun getByRorId(id: String, queryBuilder: QueryBuilder? = null): Institution =
         getEntity("$baseUrl/ror:$id${queryBuilder?.build().orEmpty()}")
 
-    fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Institution? =
+    fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Institution =
         getEntity("$baseUrl/wikidata:$id${queryBuilder?.build().orEmpty()}")
 }

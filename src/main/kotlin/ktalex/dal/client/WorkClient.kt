@@ -30,15 +30,15 @@ class WorkClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
     override fun getEntities(url: String, queryBuilder: QueryBuilder?): PageableQueryResponse<Work> =
         getEntitiesInternal(url, queryBuilder)
 
-    fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Work? =
+    fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Work =
         getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
 
-    fun getByDoi(id: String, queryBuilder: QueryBuilder? = null): Work? =
+    fun getByDoi(id: String, queryBuilder: QueryBuilder? = null): Work =
         getEntity("$baseUrl/https://doi.org/$id${queryBuilder?.build().orEmpty()}")
 
-    fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Work? =
+    fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Work =
         getEntity("$baseUrl/mag:$id${queryBuilder?.build().orEmpty()}")
 
-    fun getByPubMedId(id: String, queryBuilder: QueryBuilder? = null): Work? =
+    fun getByPubMedId(id: String, queryBuilder: QueryBuilder? = null): Work =
         getEntity("$baseUrl/pmid:$id${queryBuilder?.build().orEmpty()}")
 }

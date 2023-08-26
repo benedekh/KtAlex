@@ -30,15 +30,15 @@ class SourceClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
     override fun getEntities(url: String, queryBuilder: QueryBuilder?): PageableQueryResponse<Source> =
         getEntitiesInternal(url, queryBuilder)
 
-    fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Source? =
+    fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Source =
         getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
 
-    fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Source? =
+    fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Source =
         getEntity("$baseUrl/mag:$id${queryBuilder?.build().orEmpty()}")
 
-    fun getByIssn(id: String, queryBuilder: QueryBuilder? = null): Source? =
+    fun getByIssn(id: String, queryBuilder: QueryBuilder? = null): Source =
         getEntity("$baseUrl/issn:$id${queryBuilder?.build().orEmpty()}")
 
-    fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Source? =
+    fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Source =
         getEntity("$baseUrl/wikidata:$id${queryBuilder?.build().orEmpty()}")
 }

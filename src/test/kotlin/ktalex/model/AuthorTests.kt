@@ -1,9 +1,12 @@
 package ktalex.model
 
+import io.kotest.assertions.throwables.shouldThrowWithMessage
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.ktor.http.HttpStatusCode
 import ktalex.dal.client.AuthorClient
+import ktalex.dal.error.OpenAlexException
 import ktalex.utils.shouldBeSet
 
 class AuthorTests : ShouldSpec({
@@ -38,6 +41,16 @@ class AuthorTests : ShouldSpec({
             it.id.shouldNotBeNull()
             it.id!!.id.shouldBeSet()
             it.title.shouldBeSet()
+        }
+    }
+
+    should("Not find author") {
+        shouldThrowWithMessage<OpenAlexException>(
+            "Unexpected response status: ${
+                HttpStatusCode.NotFound.toString().uppercase()
+            }"
+        ) {
+            client.getByOrcid("123-123-123")
         }
     }
 })

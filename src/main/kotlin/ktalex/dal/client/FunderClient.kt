@@ -30,12 +30,12 @@ class FunderClient(openAlexBaseUrl: String? = null, mailTo: String? = null) :
     override fun getEntities(url: String, queryBuilder: QueryBuilder?): PageableQueryResponse<Funder> =
         getEntitiesInternal(url, queryBuilder)
 
-    fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Funder? =
+    fun getByOpenAlexId(id: String, queryBuilder: QueryBuilder? = null): Funder =
         getEntity("$baseUrl/$id${queryBuilder?.build().orEmpty()}")
 
-    fun getByRorId(id: String, queryBuilder: QueryBuilder? = null): Funder? =
+    fun getByRorId(id: String, queryBuilder: QueryBuilder? = null): Funder =
         getEntity("$baseUrl/ror:$id${queryBuilder?.build().orEmpty()}")
 
-    fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Funder? =
+    fun getByWikidataId(id: String, queryBuilder: QueryBuilder? = null): Funder =
         getEntity("$baseUrl/wikidata:$id${queryBuilder?.build().orEmpty()}")
 }
