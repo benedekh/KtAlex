@@ -1,5 +1,11 @@
 name: Build and test
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request: {}
+  # allow manual execution
+  workflow_dispatch: {}
 jobs:
   build-and-test:
     name: Build and test
