@@ -1,0 +1,38 @@
+name: Build and test
+on: [push, pull_request]
+jobs:
+  build-and-test:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 11
+
+      - name: Run static analysis
+        run: ./gradlew detekt
+
+      - name: Archive detekt reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: detekt-reports
+          path: build/reports/detekt
+
+      - name: Build
+        run: ./gradlew build -x test
+
+      - name: Run tests
+        run: ./gradlew test
+
+      - name: Archive test reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-reports
+          path: |
+            build/reports/jacoco
+            build/reports/tests
