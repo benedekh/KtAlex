@@ -46,11 +46,12 @@ class QueryBuilderTests : ShouldSpec({
                 negate = true,
                 NumberFieldValue(5),
                 NumberFieldValue(6)
-            ).build()
+            ).select("displayName")
+            .build()
 
         val expectedQuery = "?filter=title.search:radiation,from_publication_date:2020-01-01," +
             "to_publication_date:2020-12-31,language:en%7Cde,is_retracted:false,has_fulltext:true," +
-            "institutions_distinct_count:%215%7C6&sample=12&seed=42&page=2&per_page=11"
+            "institutions_distinct_count:%215%7C6&select=display_name&sample=12&seed=42&page=2&per_page=11"
         query.shouldBe(expectedQuery)
     }
 
