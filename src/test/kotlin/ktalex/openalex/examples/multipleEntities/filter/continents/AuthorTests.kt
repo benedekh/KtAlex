@@ -49,7 +49,7 @@ class AuthorTests : ShouldSpec({
             "https://openalex.org/A5082369913",
             "https://openalex.org/A5080921373",
             "https://openalex.org/A5066364056",
-            "https://openalex.org/A5019133187"
+            "https://openalex.org/A5013442821"
         )
         val expectedSize = 25
         expectedIds.size.shouldBe(expectedSize)

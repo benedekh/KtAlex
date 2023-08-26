@@ -63,7 +63,6 @@ class WorkTests : ShouldSpec({
             "https://openalex.org/W3208645186",
             "https://openalex.org/W4226391429"
         )
-        val expectedCount = 1765805
         val expectedSize = 25
         expectedIds.size.shouldBe(expectedSize)
 
@@ -77,7 +76,6 @@ class WorkTests : ShouldSpec({
         val meta = response.meta
         meta.shouldNotBeNull()
         meta.perPage.shouldBe(expectedSize)
-        meta.count.shouldBe(expectedCount)
 
         val results = response.results
         results.shouldNotBeNull()

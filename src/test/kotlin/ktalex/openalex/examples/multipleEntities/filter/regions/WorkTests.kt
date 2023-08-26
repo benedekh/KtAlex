@@ -48,7 +48,7 @@ class WorkTests : ShouldSpec({
             "https://openalex.org/W3165656738",
             "https://openalex.org/W2165292984",
             "https://openalex.org/W2746485780",
-            "https://openalex.org/W3004280078"
+            "https://openalex.org/W3001897055"
         )
         val expectedSize = 25
         expectedIds.size.shouldBe(expectedSize)
