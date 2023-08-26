@@ -12,7 +12,8 @@ class QueryBuilder {
     }
 
     // pagination
-    private var paginationSettings: PaginationSettings? = null
+    var paginationSettings: PaginationSettings? = null
+        private set
 
     // select
     private var selectFields: List<String>? = null

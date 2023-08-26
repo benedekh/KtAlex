@@ -44,8 +44,9 @@ fun String.extractFirstMatch(partName: String, isDecimal: Boolean): Pair<String?
 fun String.removeAllMatchesOfRegexps(regexps: List<Regex>): String {
     var remainingString: String = this
     regexps.forEach {
-        it.findAll(remainingString).forEach { matchResult ->
-            val toBeCut = matchResult.value
+        var matchResult: MatchResult?
+        while (it.find(remainingString).also { matchResult = it } != null) {
+            val toBeCut = matchResult!!.value
             val lengthToBeCut = if (toBeCut.endsWith("&")) {
                 toBeCut.length - 1
             } else {
