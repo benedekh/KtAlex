@@ -1,6 +1,7 @@
 package ktalex.utils
 
 import java.net.URLEncoder
+import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 
 fun String.camelToSnakeCase(): String {
@@ -61,4 +62,17 @@ fun String.removeAllMatchesOfRegexps(regexps: List<Regex>): String {
     return remainingString
 }
 
-fun String.urlEncode(): String = URLEncoder.encode(this, StandardCharsets.UTF_8.toString())
+fun String.urlEncode(): String {
+    // java -> kotlin String encoding trick (windows-1252 -> utf 8): if the utf8-encoded string contains %83, %85,
+    // then we must encode it with the default charset, otherwise with utf 8
+    val utf8Encoded = URLEncoder.encode(this, StandardCharsets.UTF_8)
+    val mustBeEncodedWithDefaultCharset = utf8Encoded.contains("%83") || utf8Encoded.contains("%85")
+
+    val encoded = if (mustBeEncodedWithDefaultCharset) {
+        URLEncoder.encode(this, Charset.defaultCharset())
+    } else {
+        utf8Encoded
+    }
+
+    return encoded
+}
