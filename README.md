@@ -144,4 +144,4 @@ You can read more about the OpenAlex API, and the entities (work, author, source
 
 ## How to contribute?
 
-Check out the [CONTRIBUTION](CONTRIBUTION) guide to get started.
+Check out the [contribution guide](CONTRIBUTING.md) to get started.
