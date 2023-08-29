@@ -92,7 +92,7 @@ class InstitutionClient(openAlexBaseUrl: String? = null, mailTo: String? = null)
      * @param queryBuilder to add search, filter, sort, group by terms to the query
      */
     fun getByMicrosoftAcademicGraphId(id: String, queryBuilder: QueryBuilder? = null): Institution =
-        getEntity("$baseUrl/mag:$id${queryBuilder?.build().orEmpty()}r")
+        getEntity("$baseUrl/mag:$id${queryBuilder?.build().orEmpty()}")
 
     /**
      * Get an [Institution] by its ROR ID. [queryBuilder] can be used to narrow down the search.

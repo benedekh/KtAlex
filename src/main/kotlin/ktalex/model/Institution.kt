@@ -83,7 +83,7 @@ enum class RelationshipType {
 @Serializable
 data class InstitutionIds(
     val grid: String?,
-    val mag: Int?,
+    val mag: String?,
     val openalex: SerializedId?,
     val ror: SerializedId?,
     val wikipedia: String?,
