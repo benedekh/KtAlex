@@ -56,9 +56,9 @@ data class Work(
     val updatedDate: SerializedDateTime?,
 ) {
     fun resolveCitedBys(): PageableQueryResponse<Work>? =
-        citedByApiUrl?.let { url -> WorkClient().use { it.getEntitiesByUrl(url) } }
+        citedByApiUrl?.let { url -> WorkClient().getEntitiesByUrl(url) }
 
-    fun resolveNgrams(): NgramsResponse? = ngramsUrl?.let { url -> NgramClient().use { it.getNgrams(url) } }
+    fun resolveNgrams(): NgramsResponse? = ngramsUrl?.let { url -> NgramClient().getNgrams(url) }
 }
 
 @Serializable

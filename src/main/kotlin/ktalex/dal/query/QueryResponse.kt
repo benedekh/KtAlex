@@ -52,6 +52,7 @@ data class PageableQueryResponse<T>(
         // peek into the next page
         val peekedPage = url?.let { client.getEntities(it, queryBuilder) } ?: client.getEntities(queryBuilder)
         return if (peekedPage.results.isNullOrEmpty()) {
+            client.close()
             null
         } else {
             peekedPage
@@ -80,11 +81,12 @@ class PageableQueryResponseIterator<T>(
 
     @Suppress("detekt:ReturnCount")
     override fun hasNext(): Boolean {
-        if (!hasReturnedInitialResults) {
-            return lastResult != null
-        }
         if (lastResult == null) {
+            client.close()
             return false
+        }
+        if (!hasReturnedInitialResults) {
+            return true
         }
 
         // peek into the next page
@@ -97,6 +99,7 @@ class PageableQueryResponseIterator<T>(
         lastResult = url?.let { client.getEntities(it, queryBuilder) } ?: client.getEntities(queryBuilder)
         val hasNext = lastResult?.results?.isNotEmpty() ?: false
         if (!hasNext) {
+            client.close()
             lastResult = null
         }
         return hasNext
