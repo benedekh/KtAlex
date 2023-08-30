@@ -15,7 +15,13 @@ With KtAlex you can:
 1. Add the following dependency to your `build.gradle(.kts)` file:
 
 ```groovy
-implementation("io.github.benedekh:ktalex:1.0.0")
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("io.github.benedekh:ktalex:1.0.0")
+}
 ```
 
 2. Dependening on your target language, follow one of the examples below:
