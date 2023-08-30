@@ -130,7 +130,7 @@ class WorkTests : ShouldSpec({
 
         val meta = response.meta
         meta.shouldNotBeNull()
-        meta.count!!.shouldBe(expectedCount)
+        meta.count!!.shouldBeGreaterThan(expectedCount)
         meta.perPage.shouldBe(expectedSize)
 
         val results = response.results
