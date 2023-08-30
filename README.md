@@ -15,7 +15,7 @@ With KtAlex you can:
 1. Add the following dependency to your `build.gradle(.kts)` file:
 
 ```groovy
-implementation("org.bensoft:ktalex:1.0.0")
+implementation("io.github.benedekh:ktalex:1.0.0")
 ```
 
 2. Dependening on your target language, follow one of the examples below:
@@ -131,7 +131,7 @@ Works per page: 25
 </configuration>
 ```
 
-4. The source code is published together with the compiled JAR. In  the sources JAR you will find the documentation of the entity client API, the QueryBuilder and some other classes. If you use IntelliJ, then simply click on the `Download Sources` button when opening one of the class files. Alternatively, you can download the `org.bensoft:ktalex-sources` JAR from one of the public repositories and add it to the classpath.
+4. The source code is published together with the compiled JAR. In  the sources JAR you will find the documentation of the entity client API, the QueryBuilder and some other classes. If you use IntelliJ, then simply click on the `Download Sources` button when opening one of the class files. Alternatively, you can download the `io.github.benedekh:ktalex-sources` JAR from one of the public repositories and add it to the classpath.
 
 ## Where to read more?
 
