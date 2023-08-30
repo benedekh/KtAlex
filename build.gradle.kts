@@ -66,9 +66,9 @@ val javadocJar by tasks.creating(Jar::class) {
 }
 
 signing {
-    val signingKey = (project.findProperty("GPG_SIGNING_KEY") ?: System.getenv("GPG_SIGNING_KEY")) as String
+    val signingKey = (project.findProperty("GPG_SIGNING_KEY") ?: System.getenv("GPG_SIGNING_KEY")) as String?
     val signingPassphrase =
-        (project.findProperty("GPG_SIGNING_PASSPHRASE") ?: System.getenv("GPG_SIGNING_PASSPHRASE")) as String
+        (project.findProperty("GPG_SIGNING_PASSPHRASE") ?: System.getenv("GPG_SIGNING_PASSPHRASE")) as String?
 
     useInMemoryPgpKeys(signingKey, signingPassphrase)
     val extension = extensions.getByName("publishing") as PublishingExtension
@@ -126,8 +126,8 @@ nexusPublishing {
             nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
             snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
 
-            val ossrhUsername = (project.findProperty("OSSRH_USERNAME") ?: System.getenv("OSSRH_USERNAME")) as String
-            val ossrhPassword = (project.findProperty("OSSRH_PASSWORD") ?: System.getenv("OSSRH_PASSWORD")) as String
+            val ossrhUsername = (project.findProperty("OSSRH_USERNAME") ?: System.getenv("OSSRH_USERNAME")) as String?
+            val ossrhPassword = (project.findProperty("OSSRH_PASSWORD") ?: System.getenv("OSSRH_PASSWORD")) as String?
             username.set(ossrhUsername)
             password.set(ossrhPassword)
         }
