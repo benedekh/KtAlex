@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.9.22"
-    kotlin("plugin.serialization") version "1.9.21"
+    kotlin("plugin.serialization") version "1.9.22"
     id("io.gitlab.arturbosch.detekt") version ("1.23.1")
     id("jacoco")
     id("org.jetbrains.dokka") version "1.9.10"
