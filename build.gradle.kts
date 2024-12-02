@@ -2,7 +2,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "2.0.21"
+    kotlin("jvm") version "2.1.0"
     kotlin("plugin.serialization") version "2.0.21"
     id("io.gitlab.arturbosch.detekt") version ("1.23.1")
     id("jacoco")
