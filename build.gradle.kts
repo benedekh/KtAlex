@@ -1,10 +1,7 @@
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("jvm") version "2.1.21"
     kotlin("plugin.serialization") version "2.1.21"
-    id("io.gitlab.arturbosch.detekt") version ("1.23.1")
+    id("io.gitlab.arturbosch.detekt") version ("1.23.8")
     id("jacoco")
     id("org.jetbrains.dokka") version "2.0.0"
     id("maven-publish")
@@ -20,9 +17,9 @@ repositories {
     mavenLocal()
 }
 
-val ktorVersion by extra { "2.3.3" }
-val detektVersion by extra { "1.23.1" }
-val kotestVersion by extra { "5.6.2" }
+val ktorVersion by extra { "2.3.13" }
+val detektVersion by extra { "1.23.8" }
+val kotestVersion by extra { "5.9.1" }
 
 dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
@@ -47,12 +44,19 @@ tasks.test {
     testLogging {
         events("skipped", "failed")
         showStackTraces = true
-        exceptionFormat = TestExceptionFormat.FULL
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
     }
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
 }
 
 val sourcesJar by tasks.registering(Jar::class) {

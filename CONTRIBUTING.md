@@ -22,7 +22,7 @@ All submissions need to be reviewed before being merged. When you are ready with
 ## Recommended setup
 
 1. Install Git and configure your GitHub access.
-2. Install a Java SDK (e.g. [Eclipse Temurin](https://adoptium.net/temurin/releases)) with compliance level Java 11 at least.
+2. Install a Java SDK (e.g. [Eclipse Temurin](https://adoptium.net/temurin/releases)) with compliance level Java 17 at least.
    - Set the `JAVA_HOME` environment variable to the installation directory of the Java SDK.
 3. Install [IntelliJ IDEA](https://www.jetbrains.com/idea/download/) (Community Edition is enough).
 4. Install the [detekt plugin](https://plugins.jetbrains.com/plugin/10761-detekt) in IntelliJ.
@@ -40,7 +40,7 @@ All submissions need to be reviewed before being merged. When you are ready with
       4. unselect all packages in the `Import Layout` list.
 6. Clone the repository and open it in IntelliJ.
 7. Make sure to use the Java SDK you installed in step 2. Set it in `File -> Project Structure -> Project -> Project SDK`.
-8. Make sure to use Java 11 as the language level. Set it in `File -> Project Structure -> Project -> Project language level`.
+8. Make sure to use Java 17 as the language level. Set it in `File -> Project Structure -> Project -> Project language level`.
 9. Develop your code.
 10. Build and test the project with `./gradlew build` (or `gradlew.bat build` on Windows).
 11. Fix any findings of the static code analysis tool (detekt).
@@ -49,7 +49,7 @@ All submissions need to be reviewed before being merged. When you are ready with
 ## Alternative setup
 
 1. Install Git and configure your GitHub access.
-2. Install a Java SDK (e.g. [Eclipse Temurin](https://adoptium.net/temurin/releases)) with compliance level Java 11 at least.
+2. Install a Java SDK (e.g. [Eclipse Temurin](https://adoptium.net/temurin/releases)) with compliance level Java 17 at least.
     - Set the `JAVA_HOME` environment variable to the installation directory of the Java SDK.
 3. Install [Gradle](https://gradle.org/install/).
 4. Clone the repository and open it in your favourite IDE.
@@ -57,3 +57,10 @@ All submissions need to be reviewed before being merged. When you are ready with
 6. Build and test the project with `./gradlew build` (or `gradlew.bat build` on Windows).
 7. Fix any findings of the static code analysis tool (detekt). 
 8. Fix any failing tests.
+
+
+## Troubleshooting
+
+## Gradle: "Could not connect to Kotlin compile daemon"
+
+If you experience `Could not connect to Kotlin compile daemon` while running Gradle build by the Gradle plugin in intelliJ, then run `./gradle build` and the other Gradle commands via the CLI. 
