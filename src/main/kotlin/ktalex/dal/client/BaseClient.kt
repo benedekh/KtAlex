@@ -85,7 +85,7 @@ abstract class BaseClient : AutoCloseable {
 
                 HttpStatusCode.Forbidden -> {
                     val error: ErrorResponse = response.body()
-                    error.message?.let { throw OpenAlexException(it) }
+                    throw OpenAlexException(error.message ?: "Access forbidden by OpenAlex API")
                 }
 
                 else -> {
